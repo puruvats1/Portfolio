@@ -77,9 +77,11 @@ export function Hero() {
                     <div className="h-[1px] w-full bg-[#EAEAEA] mb-6 -mt-2" />
 
                     {/* Dialogue Main Statement - DM Sans SemiBold 32.29px / 1.2em */}
-                    <p className="font-sans text-[23px] sm:text-[27px] lg:text-[32.3px] font-semibold leading-[1.2] tracking-[-0.015em] text-[#2B2B2A]">
-                      I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
-                      <span className="text-[#468FFD] font-bold">best friends.</span>
+                    <p className="font-sans text-[23px] sm:text-[27px] lg:text-[32.3px] font-semibold leading-[1.2] tracking-[-0.015em]">
+                      <span className="bg-gradient-to-b from-[#42423E] via-[#60605A] to-[#80807A] bg-clip-text text-transparent [-webkit-text-fill-color:transparent] inline">
+                        I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
+                      </span>
+                      <span className="text-[#468FFD] [-webkit-text-fill-color:#468FFD] font-bold inline">best friends.</span>
                     </p>
                   </motion.div>
                 ) : (

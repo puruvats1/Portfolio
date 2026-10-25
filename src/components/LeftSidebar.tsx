@@ -6,6 +6,7 @@ export type SectionId = 'hero' | 'work' | 'about' | 'working-with-me' | 'testimo
 export interface NavItem {
   id: SectionId;
   label: string;
+  hoverLabel: string;
   icon: string;
   gradient: string;
   border: string;
@@ -20,6 +21,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'hero',
     label: 'hello!!',
+    hoverLabel: 'hello!',
     icon: './waving_hand.svg',
     gradient: 'from-[#FFF9CE] to-[#FEEA80]',
     border: 'border-[#F7DF59]',
@@ -31,6 +33,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'work',
     label: 'work',
+    hoverLabel: ':work:',
     icon: './work_icon.svg',
     gradient: 'from-[#E6F1FE] to-[#72BDFF]', // Exact Figma node 58:3013
     border: 'border-[#93C5FD]',
@@ -42,6 +45,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'about',
     label: 'about',
+    hoverLabel: "'about'",
     icon: './about_icon.svg',
     gradient: 'from-[#FFE9DC] to-[#FED2BE]',
     border: 'border-[#FDBA74]',
@@ -52,7 +56,8 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     id: 'working-with-me',
-    label: '<skills>',
+    label: 'skills',
+    hoverLabel: '<skills>',
     icon: './skills_icon.svg',
     gradient: 'from-[#EDFA7E] to-[#D5F24B]',
     border: 'border-[#BEF264]',
@@ -64,6 +69,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'testimonials',
     label: 't’monials',
+    hoverLabel: "/t'monials",
     icon: './testimonials_icon.svg',
     gradient: 'from-[#D7F8E8] to-[#B2F2D1]',
     border: 'border-[#6EE7B7]',
@@ -75,6 +81,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'contact',
     label: 'contact',
+    hoverLabel: '#contact',
     icon: './contact_icon.svg',
     gradient: 'from-[#FFE3EA] to-[#FFC3D1]',
     border: 'border-[#FDA4AF]',
@@ -88,6 +95,9 @@ export const NAV_ITEMS: NavItem[] = [
 export function LeftSidebar() {
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isHoveredNear, setIsHoveredNear] = useState(false);
+  const [hoveredTitleId, setHoveredTitleId] = useState<SectionId | null>(null);
+
+  const isAnyHovered = isHoveredNear || hoveredTitleId !== null;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -132,11 +142,15 @@ export function LeftSidebar() {
     <>
       {/* DESKTOP SMART NAVBAR: Tightly stacked tactile buttons matching Figma node 46:1356.
           - When cursor is away: ONLY the active section's filled supporting popup is visible; grey titles are hidden.
-          - When hovered near: Grey titles for non-selected sections smoothly appear. */}
+          - When hovered near / any title hovered: Grey titles smoothly appear displaying their playful hover forms:
+            hello!, :work:, 'about', <skills>, /t'monials, #contact */}
       <aside
         onMouseEnter={() => setIsHoveredNear(true)}
-        onMouseLeave={() => setIsHoveredNear(false)}
-        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-1/2 -translate-y-1/2 z-40 flex-col -space-y-1.5 select-none py-6 pr-20 -mr-20"
+        onMouseLeave={() => {
+          setIsHoveredNear(false);
+          setHoveredTitleId(null);
+        }}
+        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-1/2 -translate-y-1/2 z-40 flex-col -space-y-1.5 select-none py-6 pr-24 -mr-24"
         aria-label="Website Navigation"
       >
         {NAV_ITEMS.map((item) => {
@@ -154,6 +168,8 @@ export function LeftSidebar() {
                 whileHover={{ scale: 1.05, y: -1 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 450, damping: 25 }}
+                onMouseEnter={() => setHoveredTitleId(item.id)}
+                onMouseLeave={() => setHoveredTitleId(null)}
                 onClick={() => scrollTo(item.id)}
                 className={`w-[82px] h-[60px] xl:w-[86px] xl:h-[64px] rounded-[24px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${
                   isActive ? `${item.activeBorder} scale-105` : item.border
@@ -168,33 +184,37 @@ export function LeftSidebar() {
               </motion.button>
 
               {/* Smart Label Popup Area */}
-              <div className="flex items-center min-w-[100px]">
-                <AnimatePresence>
+              <div className="flex items-center min-w-[120px]">
+                <AnimatePresence mode="wait">
                   {isActive ? (
-                    /* Active section filled supporting button: ALWAYS visible */
+                    /* Active section filled supporting button: ALWAYS visible (shows hoverLabel when any title hovered) */
                     <motion.button
-                      key="active-filled"
-                      initial={{ scale: 0.82, opacity: 0, x: -8 }}
+                      key={`active-pill-${item.id}-${isAnyHovered}`}
+                      initial={{ scale: 0.88, opacity: 0, x: -6 }}
                       animate={{ scale: 1, opacity: 1, x: 0 }}
-                      exit={{ scale: 0.85, opacity: 0, x: -6 }}
+                      exit={{ scale: 0.88, opacity: 0, x: -6 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 26 }}
+                      onMouseEnter={() => setHoveredTitleId(item.id)}
+                      onMouseLeave={() => setHoveredTitleId(null)}
                       onClick={() => scrollTo(item.id)}
-                      className={`px-4 py-2 rounded-[18px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.pillShadow} ${item.textColor} font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] lowercase cursor-pointer select-none shadow-xs`}
+                      className={`px-4 py-2 rounded-[18px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.pillShadow} ${item.textColor} font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] cursor-pointer select-none shadow-xs`}
                     >
-                      {item.label}
+                      {isAnyHovered ? item.hoverLabel : item.label}
                     </motion.button>
-                  ) : isHoveredNear ? (
-                    /* Non-selected section grey title: Appears ONLY when hovered near! */
+                  ) : isAnyHovered ? (
+                    /* Non-selected section grey title: Appears when hovered near / over any title */
                     <motion.button
-                      key="hover-grey-text"
+                      key={`hover-grey-text-${item.id}`}
                       initial={{ opacity: 0, x: -10, filter: 'blur(2px)' }}
                       animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                       exit={{ opacity: 0, x: -8, filter: 'blur(2px)' }}
                       transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      onMouseEnter={() => setHoveredTitleId(item.id)}
+                      onMouseLeave={() => setHoveredTitleId(null)}
                       onClick={() => scrollTo(item.id)}
-                      className="font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] lowercase text-[#A3A3A3] hover:text-[#333333] transition-colors cursor-pointer select-none px-2 py-1"
+                      className="font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] text-[#A3A3A3] hover:text-[#111110] hover:scale-105 transition-all duration-150 cursor-pointer select-none px-2 py-1 text-left"
                     >
-                      {item.label}
+                      {item.hoverLabel}
                     </motion.button>
                   ) : null}
                 </AnimatePresence>
