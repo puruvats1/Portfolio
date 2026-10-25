@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { PenTool, Code2, Compass, Sparkles } from 'lucide-react';
+import { PenTool, Code2, Compass, Music, Palette } from 'lucide-react';
 
 // Sequence of tokens for the bottom animating strip in refined grey tones
 const WORDS_SEQUENCE = [
@@ -30,12 +30,13 @@ export function Hero() {
     }
   };
 
-  // 4 Capability icons taking up the left side's top half space on the profile card
+  // 5 Capability icons taking up the left side's top half space on the profile card
   const profileLeftIcons = [
     { id: 'design', label: 'Design', icon: PenTool },
     { id: 'code', label: 'Code', icon: Code2 },
     { id: 'research', label: 'Research', icon: Compass },
-    { id: 'art', label: 'Art', icon: Sparkles },
+    { id: 'music', label: 'Music', icon: Music },
+    { id: 'art', label: 'Art', icon: Palette },
   ];
 
   return (
@@ -160,20 +161,27 @@ export function Hero() {
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className="w-full max-w-[340px] sm:w-[316px] xl:w-[330px] h-[405px] clay-binder-card border border-[#EBEBEB] rounded-[28px] sm:rounded-[30px] relative overflow-hidden flex flex-col justify-between -rotate-[2deg] hover:rotate-0 transition-transform duration-300 mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
               >
-                {/* 1. TOP-HALF LEFT END ICONS: Design, Code, Research, Art (nodes 58:2960 to 58:2963) */}
+                {/* 1. TOP-HALF LEFT END ICONS: Design, Code, Research, Music, Art */}
                 <div
-                  className="absolute left-3.5 sm:left-4 top-4 flex flex-col gap-2 z-20"
-                  aria-label="Capabilities: Design, Code, Research, Art"
+                  className="absolute left-3.5 sm:left-4 top-3.5 flex flex-col gap-1.5 z-20"
+                  aria-label="Capabilities: Design, Code, Research, Music, Art"
                 >
                   {profileLeftIcons.map((item) => {
                     const IconComponent = item.icon;
+                    const isCurrent = WORDS_SEQUENCE[wordIndex].id === item.id;
                     return (
                       <div
                         key={item.id}
                         title={item.label}
-                        className="w-[36px] h-[40px] flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors cursor-default group"
+                        className={`w-[34px] h-[34px] flex items-center justify-center transition-all duration-300 cursor-default group ${
+                          isCurrent
+                            ? item.id === 'music'
+                              ? 'text-[#468FFD] scale-115'
+                              : 'text-neutral-900 scale-110'
+                            : 'text-neutral-400/80 hover:text-neutral-900'
+                        }`}
                       >
-                        <IconComponent className="w-5 h-5 transition-transform group-hover:scale-115" />
+                        <IconComponent className="w-[19px] h-[19px] transition-transform group-hover:scale-115" />
                       </div>
                     );
                   })}
