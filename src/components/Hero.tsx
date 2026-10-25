@@ -185,14 +185,16 @@ export function Hero() {
                   <div className="absolute top-2 right-2 w-[220px] h-[220px] rounded-full bg-[#FEEE94] opacity-95 blur-[0.5px] pointer-events-none" />
                   <div className="absolute top-12 right-6 w-[170px] h-[150px] rounded-[40px] bg-[#FEF3A8] opacity-80 pointer-events-none" />
 
-                  {/* 3D Clay Curly-Haired Avatar Bust */}
-                  <motion.img
-                    animate={{ y: [0, -6, 0] }}
-                    transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                    src="./avatar_bust.png"
-                    alt="Puru Vats 3D Avatar"
-                    className="relative z-10 w-[165px] xl:w-[178px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
-                  />
+                  {/* 3D Clay Curly-Haired Avatar Bust (Flipped horizontally to face inwards towards content) */}
+                  <div className="-scale-x-100 relative z-10 flex items-center justify-center translate-x-1 sm:translate-x-2">
+                    <motion.img
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+                      src="./avatar_bust.png"
+                      alt="Puru Vats 3D Avatar"
+                      className="w-[168px] xl:w-[182px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
+                    />
+                  </div>
                 </div>
 
                 {/* 3. BOTTOM ANIMATING STRIP: Snappy switching where words stick to left end in grey tones */}
