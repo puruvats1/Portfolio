@@ -6,10 +6,14 @@ import { Testimonials } from './components/Testimonials';
 import { Contact } from './components/Contact';
 import { LeftSidebar } from './components/LeftSidebar';
 import { TopNav } from './components/TopNav';
+import { CustomCursor } from './components/CustomCursor';
 
 export default function App() {
   return (
     <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink overflow-x-hidden">
+      {/* 3D Cartoon White Glove Custom Cursor matching Figma node 55:2552 */}
+      <CustomCursor />
+
       {/* Top navigation with branding on left and Resume & Behance on right */}
       <TopNav />
 
