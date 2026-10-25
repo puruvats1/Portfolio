@@ -1,9 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PenTool, Code2, Compass, Sparkles } from 'lucide-react';
 
+// Sequence of tokens for the bottom animating strip in refined grey tones
+const WORDS_SEQUENCE = [
+  { id: 'design', text: '<Design>', color: 'text-[#555555] font-semibold' },
+  { id: 'code', text: '{code}', color: 'text-[#666666] font-medium' },
+  { id: 'research', text: '(research)', color: 'text-[#777777] font-normal' },
+  { id: 'music', text: '^Music^', color: 'text-[#468FFD] font-bold' },
+  { id: 'art', text: '[Art]', color: 'text-[#666666] font-semibold' },
+];
+
 export function Hero() {
   const [isDialogueOpen, setIsDialogueOpen] = useState(true);
+  const [wordIndex, setWordIndex] = useState(0);
+
+  // Snappy sequential switching where each word sticks to the left end
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % WORDS_SEQUENCE.length);
+    }, 2200);
+    return () => clearInterval(timer);
+  }, []);
 
   const scrollToWork = () => {
     const el = document.getElementById('work');
@@ -98,29 +116,29 @@ export function Hero() {
 
                   <div className="flex flex-wrap items-center gap-6 sm:gap-7">
                     {/* D. E. Shaw Logo */}
-                    <div className="h-7 flex items-center hover:opacity-100 opacity-85 transition-opacity" title="D. E. Shaw & Co.">
+                    <div className="h-6 flex items-center hover:opacity-100 opacity-85 transition-opacity" title="D. E. Shaw & Co.">
                       <img
                         src="./deshaw_logo.svg"
                         alt="D. E. Shaw & Co."
-                        className="h-5 sm:h-5.5 w-auto object-contain"
+                        className="h-4 sm:h-4.5 w-auto object-contain"
                       />
                     </div>
 
-                    {/* GE3S Sustainability Logo */}
-                    <div className="h-7 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
+                    {/* GE3S Sustainability Logo - Cropped exact 400x171 aspect ratio matching Figma 56x24 */}
+                    <div className="h-6 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
                       <img
                         src="./ge3s_logo.png"
                         alt="GE3S"
-                        className="h-6 sm:h-6.5 w-auto object-contain"
+                        className="h-[21px] sm:h-[23px] w-auto object-contain"
                       />
                     </div>
 
                     {/* Akai Space Logo */}
-                    <div className="h-7 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
+                    <div className="h-6 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
                       <img
                         src="./logo2.png"
                         alt="AKAISPACE"
-                        className="h-4.5 sm:h-5 w-auto object-contain"
+                        className="h-3.5 sm:h-4 w-auto object-contain"
                       />
                     </div>
                   </div>
@@ -130,7 +148,7 @@ export function Hero() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: The 3D Profile Card with Left Icons, Avatar, & Big 44px Running Animation at Bottom */}
+          {/* RIGHT COLUMN: The 3D Profile Card with Left Icons, Avatar, & Snappy Grey Word Switcher */}
           <div className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center pt-4 lg:pt-0">
             <div className="flex flex-col items-center lg:items-end gap-3.5 w-full sm:w-auto">
               
@@ -175,26 +193,33 @@ export function Hero() {
                   />
                 </div>
 
-                {/* 3. BOTTOM MARQUEE: Big 44px Urbanist sentence running on a moving animation moving from left to right (node 58:2959) */}
-                <div className="w-full overflow-hidden whitespace-nowrap py-2.5 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto">
-                  <motion.div
-                    className="inline-flex gap-8 whitespace-nowrap"
-                    animate={{ x: ['-50%', '0%'] }}
-                    transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
-                  >
-                    {[0, 1].map((copyIdx) => (
-                      <div
-                        key={copyIdx}
-                        className="flex items-center gap-3.5 text-[34px] sm:text-[38px] lg:text-[44px] leading-[1.2] font-display font-medium tracking-tight whitespace-nowrap select-none"
+                {/* 3. BOTTOM ANIMATING STRIP: Snappy switching where words stick to left end in grey tones */}
+                <div className="w-full overflow-hidden whitespace-nowrap py-2.5 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto pl-4 sm:pl-5 pr-2">
+                  <div className="h-[48px] flex items-center overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={wordIndex}
+                        initial={{ x: 38, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: -38, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 28, mass: 0.75 }}
+                        className="flex items-center gap-3.5 text-[34px] sm:text-[38px] lg:text-[44px] leading-[1.2] font-display tracking-tight select-none whitespace-nowrap"
                       >
-                        <span className="font-bold text-[#111110]">&lt;Design&gt;</span>
-                        <span className="text-[#525252] font-medium">&#123;code&#125;</span>
-                        <span className="text-[#737373] font-normal">(research)</span>
-                        <span className="text-[#468FFD] font-bold">^Music^</span>
-                        <span className="text-[#262626] font-semibold">[Art]</span>
-                      </div>
-                    ))}
-                  </motion.div>
+                        {/* Active word sticking cleanly to the left end (in grey tones, not black) */}
+                        <span className={WORDS_SEQUENCE[wordIndex].color}>
+                          {WORDS_SEQUENCE[wordIndex].text}
+                        </span>
+
+                        {/* Trailing upcoming words in soft, subtle grey */}
+                        <span className="text-neutral-400/60 font-medium text-[32px] sm:text-[36px] lg:text-[42px]">
+                          {WORDS_SEQUENCE[(wordIndex + 1) % WORDS_SEQUENCE.length].text}
+                        </span>
+                        <span className="text-neutral-300/40 font-normal text-[30px] sm:text-[34px] lg:text-[40px]">
+                          {WORDS_SEQUENCE[(wordIndex + 2) % WORDS_SEQUENCE.length].text}
+                        </span>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
                 </div>
               </motion.div>
 
