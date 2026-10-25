@@ -102,7 +102,6 @@ export function LeftSidebar() {
         return;
       }
 
-      // Check section top offsets relative to viewport top with comfortable offset
       const scrollThreshold = window.scrollY + window.innerHeight * 0.35;
 
       const sectionElements = NAV_ITEMS.map((item) => ({
@@ -136,7 +135,7 @@ export function LeftSidebar() {
 
   return (
     <>
-      {/* DESKTOP NAVBAR: Stays consistently on the left, does not change, supporting filled button pops up */}
+      {/* DESKTOP NAVBAR: Stays consistently on the left with exact 20px Urbanist bold lowercase labels */}
       <aside
         className="hidden lg:flex fixed left-5 xl:left-10 2xl:left-16 top-1/2 -translate-y-1/2 z-40 flex-col gap-3.5 select-none"
         aria-label="Website Navigation"
@@ -146,13 +145,13 @@ export function LeftSidebar() {
 
           return (
             <div key={item.id} className="flex items-center gap-3.5 group">
-              {/* The Tactile Pastel Squircle Icon Button */}
+              {/* Tactile Pastel Squircle Button (matching Figma 78x52 / 84x58, radius 25.9px) */}
               <motion.button
                 whileHover={{ scale: 1.07, y: -2 }}
                 whileTap={{ scale: 0.94 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 onClick={() => scrollTo(item.id)}
-                className={`w-[66px] h-[52px] xl:w-[70px] xl:h-[55px] rounded-[22px] bg-gradient-to-b ${item.gradient} border-[1.7px] ${
+                className={`w-[74px] h-[52px] xl:w-[80px] xl:h-[56px] rounded-[24px] bg-gradient-to-b ${item.gradient} border-[1.7px] ${
                   isActive ? `${item.activeBorder} ring-2 ring-neutral-900/10 scale-105` : item.border
                 } clay-tab-shadow flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200`}
                 aria-label={item.label}
@@ -160,22 +159,22 @@ export function LeftSidebar() {
                 <img
                   src={item.icon}
                   alt={item.label}
-                  className="w-6 h-6 xl:w-7 xl:h-7 object-contain select-none pointer-events-none transition-transform duration-200 group-hover:scale-110"
+                  className="w-7 h-7 xl:w-8 xl:h-8 object-contain select-none pointer-events-none transition-transform duration-200 group-hover:scale-110"
                 />
               </motion.button>
 
-              {/* The Section Label: Supporting Filled Button Pops Up when Active! */}
-              <div className="flex items-center min-w-[90px]">
+              {/* Section Label (Urbanist Bold 20px, lineHeight 24px, letterSpacing -0.02em, lowercase) */}
+              <div className="flex items-center min-w-[95px]">
                 <AnimatePresence mode="wait">
                   {isActive ? (
                     <motion.button
                       key="active-filled"
-                      initial={{ scale: 0.82, opacity: 0, x: -6 }}
+                      initial={{ scale: 0.85, opacity: 0, x: -6 }}
                       animate={{ scale: 1, opacity: 1, x: 0 }}
                       exit={{ scale: 0.85, opacity: 0, x: -4 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 26 }}
                       onClick={() => scrollTo(item.id)}
-                      className={`px-3.5 py-1.5 rounded-[15px] bg-gradient-to-b ${item.activeBgGradient} border-[1.5px] ${item.activeBorderColor} ${item.activeShadow} ${item.textColor} font-display font-bold text-[18px] xl:text-[19px] tracking-tight cursor-pointer shadow-xs select-none`}
+                      className={`px-3.5 py-1.5 rounded-[15px] bg-gradient-to-b ${item.activeBgGradient} border-[1.5px] ${item.activeBorderColor} ${item.activeShadow} ${item.textColor} font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] lowercase cursor-pointer shadow-xs select-none`}
                     >
                       {item.label}
                     </motion.button>
@@ -187,7 +186,7 @@ export function LeftSidebar() {
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.15 }}
                       onClick={() => scrollTo(item.id)}
-                      className="font-display font-bold text-[18px] xl:text-[19px] tracking-tight text-[#A3A3A3] hover:text-[#404040] transition-colors cursor-pointer select-none px-2 py-1"
+                      className="font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] lowercase text-[#A3A3A3] hover:text-[#404040] transition-colors cursor-pointer select-none px-2 py-1"
                     >
                       {item.label}
                     </motion.button>
@@ -199,7 +198,7 @@ export function LeftSidebar() {
         })}
       </aside>
 
-      {/* MOBILE & TABLET FLOATING DOCK: Perfectly responsive, active section pops up with filled badge */}
+      {/* MOBILE & TABLET FLOATING DOCK */}
       <nav
         className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2 rounded-full bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[96vw] overflow-x-auto"
         aria-label="Mobile Navigation"
@@ -226,7 +225,6 @@ export function LeftSidebar() {
                 className="w-4 h-4 object-contain select-none pointer-events-none"
               />
 
-              {/* Active filled text pops up on mobile too */}
               <AnimatePresence>
                 {isActive && (
                   <motion.span
@@ -234,7 +232,7 @@ export function LeftSidebar() {
                     animate={{ opacity: 1, width: 'auto' }}
                     exit={{ opacity: 0, width: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    className={`font-display font-bold text-xs tracking-tight whitespace-nowrap overflow-hidden ${item.textColor}`}
+                    className={`font-display font-bold text-[13px] tracking-tight lowercase whitespace-nowrap overflow-hidden ${item.textColor}`}
                   >
                     {item.label}
                   </motion.span>

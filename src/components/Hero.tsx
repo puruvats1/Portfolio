@@ -12,7 +12,7 @@ export function Hero() {
     }
   };
 
-  // 4 Icons taking up the left side's top half space on the profile card
+  // 4 Capability icons taking up the left side's top half space on the profile card
   const profileLeftIcons = [
     { id: 'design', label: 'Design', icon: PenTool },
     { id: 'code', label: 'Code', icon: Code2 },
@@ -29,7 +29,7 @@ export function Hero() {
           <div className="lg:col-span-7 flex flex-col justify-center">
             <div className="flex flex-col gap-7 sm:gap-8 max-w-2xl">
               
-              {/* Clay Dialogue Card */}
+              {/* Clay Dialogue Card (Matching Figma node 58:2972, w=601.26, h=249.65) */}
               <AnimatePresence mode="wait">
                 {isDialogueOpen ? (
                   <motion.div
@@ -38,7 +38,7 @@ export function Hero() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.92, y: -10 }}
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="clay-dialogue-card border border-[#EDEDED] rounded-[28px] sm:rounded-[32px] p-6 sm:p-9 relative overflow-hidden"
+                    className="clay-dialogue-card border border-[#EDEDED] rounded-[28px] sm:rounded-[30px] p-6 sm:p-9 relative overflow-hidden"
                   >
                     {/* Top line with close circle button */}
                     <div className="flex items-center justify-end pb-3 sm:pb-4 mb-2">
@@ -58,8 +58,8 @@ export function Hero() {
 
                     <div className="h-[1px] w-full bg-[#EAEAEA] mb-6 -mt-2" />
 
-                    {/* Dialogue Main Statement */}
-                    <p className="font-sans text-[22px] sm:text-[28px] lg:text-[31px] font-medium sm:font-semibold leading-[1.28] tracking-tight text-[#2B2B2A]">
+                    {/* Dialogue Main Statement - DM Sans SemiBold 32.29px / 1.2em */}
+                    <p className="font-sans text-[23px] sm:text-[27px] lg:text-[32.3px] font-semibold leading-[1.2] tracking-[-0.015em] text-[#2B2B2A]">
                       I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
                       <span className="text-[#468FFD] font-bold">best friends.</span>
                     </p>
@@ -84,13 +84,15 @@ export function Hero() {
 
               {/* Narrative Subtitle & Previous Experience */}
               <div className="flex flex-col gap-6 pl-1 sm:pl-2">
-                <p className="font-sans text-[15.5px] sm:text-[16.5px] text-[#525252] leading-relaxed max-w-xl font-normal">
+                {/* DM Sans Regular 16.15px / 26.24px (#525252) */}
+                <p className="font-sans text-[15px] sm:text-[16.15px] text-[#525252] leading-[26.24px] max-w-xl font-normal">
                   B.Des '27 student at IDC, IIT Bombay. I’m drawn to challenging challenges ;) Always growing as an individual and as a professional.
                 </p>
 
                 {/* Previously At Logos */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 pt-2">
-                  <span className="font-sans text-[12.5px] font-medium text-[#A3A3A3] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 pt-1">
+                  {/* Previously at - DM Sans Medium 12.11px / 16.15px (#A3A3A3) */}
+                  <span className="font-sans text-[12.11px] leading-[16.15px] font-medium text-[#A3A3A3] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
                     Previously at
                   </span>
 
@@ -128,17 +130,17 @@ export function Hero() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: The 3D Profile Card with Left Icons, Avatar, & Big Running Animation at Bottom */}
+          {/* RIGHT COLUMN: The 3D Profile Card with Left Icons, Avatar, & Big 44px Running Animation at Bottom */}
           <div className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center pt-4 lg:pt-0">
-            <div className="flex flex-col items-center lg:items-end gap-4 w-full sm:w-auto">
+            <div className="flex flex-col items-center lg:items-end gap-3.5 w-full sm:w-auto">
               
-              {/* Profile Card */}
+              {/* Profile Card (matching Figma node 58:2955, w=312.13, h=390.63, radius=27.5px) */}
               <motion.div
                 whileHover={{ rotate: 0, y: -4 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="w-full max-w-[340px] sm:w-[325px] xl:w-[345px] h-[410px] clay-binder-card border border-[#EBEBEB] rounded-[32px] relative overflow-hidden flex flex-col justify-between -rotate-[2deg] hover:rotate-0 transition-transform duration-300 mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
+                className="w-full max-w-[340px] sm:w-[316px] xl:w-[330px] h-[405px] clay-binder-card border border-[#EBEBEB] rounded-[28px] sm:rounded-[30px] relative overflow-hidden flex flex-col justify-between -rotate-[2deg] hover:rotate-0 transition-transform duration-300 mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
               >
-                {/* 1. TOP-HALF LEFT END ICONS: Design, Code, Research, Art */}
+                {/* 1. TOP-HALF LEFT END ICONS: Design, Code, Research, Art (nodes 58:2960 to 58:2963) */}
                 <div
                   className="absolute left-3.5 sm:left-4 top-4 flex flex-col gap-2.5 z-20"
                   aria-label="Capabilities: Design, Code, Research, Art"
@@ -158,8 +160,8 @@ export function Hero() {
                 </div>
 
                 {/* 2. AVATAR AREA: Yellow organic blob backdrop and 3D curly avatar bust */}
-                <div className="relative w-full flex-1 flex items-center justify-center pt-3 pl-8 overflow-hidden">
-                  {/* Yellow Organic Blob Background */}
+                <div className="relative w-full flex-1 flex items-center justify-center pt-2 pl-8 overflow-hidden">
+                  {/* Yellow Organic Blob Background (#FEEE94) */}
                   <div className="absolute top-2 right-2 w-[220px] h-[220px] rounded-full bg-[#FEEE94] opacity-95 blur-[0.5px] pointer-events-none" />
                   <div className="absolute top-12 right-6 w-[170px] h-[150px] rounded-[40px] bg-[#FEF3A8] opacity-80 pointer-events-none" />
 
@@ -169,12 +171,12 @@ export function Hero() {
                     transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
                     src="./avatar_bust.png"
                     alt="Puru Vats 3D Avatar"
-                    className="relative z-10 w-[170px] xl:w-[185px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
+                    className="relative z-10 w-[165px] xl:w-[178px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
                   />
                 </div>
 
-                {/* 3. BOTTOM MARQUEE: Big sentence running on a moving animation moving from left to right */}
-                <div className="w-full overflow-hidden whitespace-nowrap py-3 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto">
+                {/* 3. BOTTOM MARQUEE: Big 44px Urbanist sentence running on a moving animation moving from left to right (node 58:2959) */}
+                <div className="w-full overflow-hidden whitespace-nowrap py-2.5 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto">
                   <motion.div
                     className="inline-flex gap-8 whitespace-nowrap"
                     animate={{ x: ['-50%', '0%'] }}
@@ -183,10 +185,10 @@ export function Hero() {
                     {[0, 1].map((copyIdx) => (
                       <div
                         key={copyIdx}
-                        className="flex items-center gap-3.5 text-[30px] sm:text-[34px] font-display font-medium tracking-tight whitespace-nowrap select-none"
+                        className="flex items-center gap-3.5 text-[34px] sm:text-[38px] lg:text-[44px] leading-[1.2] font-display font-medium tracking-tight whitespace-nowrap select-none"
                       >
                         <span className="font-bold text-[#111110]">&lt;Design&gt;</span>
-                        <span className="text-[#525252] font-semibold">&#123;code&#125;</span>
+                        <span className="text-[#525252] font-medium">&#123;code&#125;</span>
                         <span className="text-[#737373] font-normal">(research)</span>
                         <span className="text-[#468FFD] font-bold">^Music^</span>
                         <span className="text-[#262626] font-semibold">[Art]</span>
@@ -196,10 +198,10 @@ export function Hero() {
                 </div>
               </motion.div>
 
-              {/* know me through my work ↓ CTA */}
+              {/* know me through my work ↓ CTA - DM Sans SemiBold 12.11px / 16.15px (#747373) (node 58:2965) */}
               <button
                 onClick={scrollToWork}
-                className="inline-flex items-center gap-2 text-xs sm:text-[13px] font-semibold font-sans text-[#404040] hover:text-[#111110] transition-colors cursor-pointer group mt-1"
+                className="inline-flex items-center gap-2 font-sans text-[12.11px] leading-[16.15px] font-semibold text-[#747373] hover:text-[#111110] transition-colors cursor-pointer group mt-1"
               >
                 <span>know me through my work</span>
                 <img
