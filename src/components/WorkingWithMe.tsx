@@ -83,7 +83,7 @@ export function WorkingWithMe() {
           {/* Columns 1-3: Section title "Working with me" and "it's in the works" illustration */}
           <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
-              <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient">
                 Working with me
               </h2>
             </ScrollRevealTitle>
@@ -144,7 +144,7 @@ export function WorkingWithMe() {
           {/* Columns 1-3: Title "Skills & capabilities" sticky until scrolled past */}
           <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
-              <h3 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
+              <h3 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient">
                 Skills & capabilities
               </h3>
             </ScrollRevealTitle>

@@ -56,7 +56,7 @@ export function Testimonials() {
         {/* Title shifted to top, no longer column-divided */}
         <div className="mb-8 sm:mb-10 lg:mb-12">
           <ScrollRevealTitle>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight heading-gradient">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient">
               About me from others
             </h2>
           </ScrollRevealTitle>

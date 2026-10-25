@@ -87,7 +87,7 @@ export function Work() {
         {/* Section title & View Mode Toggle (Grid / List) in the Blue Nav Clay style */}
         <div className="mb-6 sm:mb-8 lg:mb-10 flex items-center justify-between gap-4 flex-wrap">
           <ScrollRevealTitle>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight heading-gradient">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient">
               My Work
             </h2>
           </ScrollRevealTitle>
@@ -192,7 +192,7 @@ export function Work() {
                     {/* Title with hover arrow & category */}
                     <div className="flex flex-col gap-0.5">
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-display text-base sm:text-lg lg:text-xl font-semibold heading-gradient group-hover:opacity-85 transition-opacity">
+                        <h3 className="font-display text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-snug heading-gradient group-hover:opacity-85 transition-opacity">
                           {project.title}
                         </h3>
                         <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100 shrink-0" />
@@ -239,7 +239,7 @@ export function Work() {
                       />
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 min-w-0">
-                      <h3 className="font-display text-base sm:text-lg font-semibold heading-gradient group-hover:opacity-85 transition-opacity truncate">
+                      <h3 className="font-display text-[15.5px] sm:text-[16.5px] font-semibold heading-gradient group-hover:opacity-85 transition-opacity truncate">
                         {project.title}
                       </h3>
                       {/* Non-disruptive Tags */}

@@ -54,12 +54,12 @@ export function Hero() {
 
   return (
     <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center pt-24 sm:pt-28 pb-16 sm:pb-20 overflow-hidden sm:overflow-visible">
-      <div className="w-full my-auto flex flex-col justify-center">
-        <div className="flex flex-col xl:flex-row items-center xl:items-start justify-between gap-10 xl:gap-12 2xl:gap-16 w-full overflow-visible">
+      <div className="w-full my-auto flex flex-col justify-center items-center">
+        <div className="flex flex-col xl:flex-row items-center justify-center gap-10 xl:gap-14 2xl:gap-20 w-full max-w-6xl mx-auto overflow-visible">
           
           {/* CENTER NARRATIVE & DIALOGUE CARD */}
-          <div className="flex-1 min-w-0 sm:min-w-[400px] lg:min-w-[440px] max-w-[620px] w-full flex flex-col justify-start">
-            <div className="flex flex-col gap-5 sm:gap-6 max-w-[620px]">
+          <div className="flex-1 min-w-0 sm:min-w-[400px] lg:min-w-[440px] max-w-[620px] w-full flex flex-col items-center xl:items-start justify-center">
+            <div className="flex flex-col gap-5 sm:gap-6 w-full max-w-[620px]">
               
               {/* Clay Dialogue Card (Matching reference image) */}
               <AnimatePresence mode="wait">
@@ -83,7 +83,7 @@ export function Hero() {
                     </button>
 
                     {/* Dialogue Main Statement - clean typography and layout matching reference image */}
-                    <p className="font-sans text-[20px] sm:text-[23px] md:text-[27px] xl:text-[30px] font-medium leading-[1.3] tracking-[-0.015em] text-[#60605D] max-w-[95%] pr-6 sm:pr-8 pt-1 sm:pt-2">
+                    <p className="font-sans text-[19px] sm:text-[21px] md:text-[24px] xl:text-[26px] font-medium leading-[1.38] tracking-[-0.015em] text-[#60605D] max-w-[95%] pr-6 sm:pr-8 pt-1 sm:pt-2">
                       I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
                       <span className="text-[#2B7FFF] font-bold inline">best friends.</span>
                     </p>
@@ -108,8 +108,8 @@ export function Hero() {
 
               {/* Narrative Subtitle & Previous Experience */}
               <div className="flex flex-col gap-5 pl-1 sm:pl-2">
-                {/* DM Sans Regular, body text increased by 20% */}
-                <p className="font-sans text-[15.5px] sm:text-[16.5px] text-[#555552] leading-[26px] max-w-xl font-normal">
+                {/* DM Sans Regular, balanced body text with room for negative space */}
+                <p className="font-sans text-[14px] sm:text-[15px] text-[#555552] leading-[24px] max-w-xl font-normal">
                   B.Des '27 student at IDC, IIT Bombay. I’m drawn to challenging challenges ;) Always growing as an individual and as a professional.
                 </p>
 
@@ -154,9 +154,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: The 3D Profile Card (Guaranteed distance from dialogue card) */}
-          <div className="shrink-0 w-full max-w-[312px] sm:w-[316px] xl:w-[326px] flex flex-col items-center xl:items-end justify-start pt-2 sm:pt-4 xl:pt-0 relative overflow-visible">
-            <div className="flex flex-col items-center xl:items-end gap-3.5 w-full sm:w-auto">
+          {/* RIGHT COLUMN: The 3D Profile Card */}
+          <div className="shrink-0 w-full max-w-[312px] sm:w-[316px] xl:w-[326px] flex flex-col items-center justify-start pt-2 sm:pt-4 xl:pt-0 relative overflow-visible">
+            <div className="flex flex-col items-center gap-3.5 w-full sm:w-auto">
               
               {/* Profile Card (matching Figma node 58:2955, w=312.13, h=390.63, radius=27.5px) */}
               <motion.div
@@ -251,7 +251,7 @@ export function Hero() {
                           <span
                             key={`${word.id}-${i}-${wordIdx}`}
                             ref={i === 0 ? firstWordRef : i === 1 ? secondWordRef : null}
-                            className={`inline-block whitespace-nowrap text-[26px] sm:text-[29px] lg:text-[32px] font-display font-bold leading-none tracking-tight transition-all duration-500 ${
+                            className={`inline-block whitespace-nowrap text-[22px] sm:text-[25px] lg:text-[27px] font-display font-bold leading-none tracking-tight transition-all duration-500 ${
                               isBlack
                                 ? 'text-ink opacity-100'
                                 : 'text-[#9B9B96] opacity-40'

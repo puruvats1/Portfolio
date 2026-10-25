@@ -9,7 +9,7 @@ export function About() {
         {/* Section title: 'bout me! */}
         <div className="mb-8 sm:mb-10 lg:mb-12">
           <ScrollRevealTitle>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight heading-gradient">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient">
               'bout me!
             </h2>
           </ScrollRevealTitle>
@@ -20,7 +20,7 @@ export function About() {
           
           {/* Column 1: Left narrative & updated person image */}
           <div className="flex flex-col gap-6 sm:gap-8">
-            <p className="font-sans text-[17.5px] sm:text-[18.5px] text-[#40403E] leading-[1.65] font-normal">
+            <p className="font-sans text-[15px] sm:text-[15.5px] text-[#40403E] leading-[1.68] font-normal">
               I'm a multidisciplinary person, from clay sculpting to zines to oil pastels I have tried multiple things but i keep coming back to <strong className="font-semibold text-ink">Interaction Design</strong>.
             </p>
 
@@ -41,7 +41,7 @@ export function About() {
 
           {/* Column 2: Right narrative, hobbies collage & reflection text */}
           <div className="flex flex-col gap-6 sm:gap-8">
-            <p className="font-sans text-[17.5px] sm:text-[18.5px] text-[#40403E] leading-[1.65] font-normal">
+            <p className="font-sans text-[15px] sm:text-[15.5px] text-[#40403E] leading-[1.68] font-normal">
               Inspired by the beauty of everyday life and human behaviour supported by the skills I've gathered along from my visual craft to my sense of humor I try to make digital experiences <span className="font-medium text-ink">more meaningful</span>.
             </p>
 
@@ -60,7 +60,7 @@ export function About() {
             </motion.div>
 
             {/* Reflection text directly below the hobbies collage */}
-            <p className="font-sans text-[15.5px] sm:text-[16px] text-[#71716E] leading-[1.6] max-w-lg">
+            <p className="font-sans text-[13px] sm:text-[13.5px] text-[#71716E] leading-[1.65] max-w-lg">
               Other than that I've got the music taste of a divorced dad & I sing my heart out at karaoke, i play the guitar, piano, I killed 2 plants and currently taking care of 3 after learning a lesson.
             </p>
           </div>

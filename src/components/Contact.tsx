@@ -19,7 +19,7 @@ export function Contact() {
           {/* Columns 1-3: Section title "Work with me" sticky until scrolled past */}
           <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
-              <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient-light">
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient-light">
                 Work with me
               </h2>
             </ScrollRevealTitle>
@@ -28,7 +28,7 @@ export function Contact() {
           {/* Columns 4-8: Minimal Contact details and footer links (paragraphs removed) */}
           <div className="lg:col-span-5 flex flex-col gap-10">
             <div>
-              <h3 className="font-display text-2xl sm:text-3xl font-semibold leading-tight tracking-tight heading-gradient-light">
+              <h3 className="font-display text-xl sm:text-2xl font-semibold leading-tight tracking-tight heading-gradient-light">
                 Got something complicated?
               </h3>
             </div>
