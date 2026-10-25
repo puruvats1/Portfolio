@@ -53,13 +53,13 @@ export function Hero() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-[90vh] flex flex-col justify-center pt-28 pb-16 lg:pt-32 lg:pb-24 overflow-hidden">
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 xl:gap-12 items-center">
+    <section id="hero" className="relative min-h-[85vh] flex flex-col justify-center pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 xl:px-14">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:gap-12 items-center">
           
-          {/* CENTER NARRATIVE & DIALOGUE CARD (Cols 1-7 on desktop) */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
-            <div className="flex flex-col gap-7 sm:gap-8 max-w-2xl">
+          {/* CENTER NARRATIVE & DIALOGUE CARD (Cols 1-7 on xl desktop) */}
+          <div className="xl:col-span-7 flex flex-col justify-center">
+            <div className="flex flex-col gap-6 sm:gap-8 max-w-2xl xl:max-w-none">
               
               {/* Clay Dialogue Card (Matching Figma node 58:2972, w=601.26, h=249.65) */}
               <AnimatePresence mode="wait">
@@ -70,7 +70,7 @@ export function Hero() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.92, y: -10 }}
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="clay-dialogue-card border border-[#EDEDED] rounded-[28px] sm:rounded-[30px] p-6 sm:p-9 relative overflow-hidden"
+                    className="clay-dialogue-card border border-[#EDEDED] rounded-[24px] sm:rounded-[30px] p-5 sm:p-7 md:p-9 relative overflow-hidden"
                   >
                     {/* Top line with close circle button */}
                     <div className="flex items-center justify-end pb-3 sm:pb-4 mb-2">
@@ -88,10 +88,10 @@ export function Hero() {
                       </button>
                     </div>
 
-                    <div className="h-[1px] w-full bg-[#EAEAEA] mb-6 -mt-2" />
+                    <div className="h-[1px] w-full bg-[#EAEAEA] mb-5 sm:mb-6 -mt-2" />
 
                     {/* Dialogue Main Statement - DM Sans SemiBold 32.29px / 1.2em */}
-                    <p className="font-sans text-[23px] sm:text-[27px] lg:text-[32.3px] font-semibold leading-[1.2] tracking-[-0.015em]">
+                    <p className="font-sans text-[20px] sm:text-[24px] md:text-[28px] xl:text-[32.3px] font-semibold leading-[1.25] sm:leading-[1.2] tracking-[-0.015em]">
                       <span className="bg-gradient-to-b from-[#42423E] via-[#60605A] to-[#80807A] bg-clip-text text-transparent [-webkit-text-fill-color:transparent] inline">
                         I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
                       </span>
@@ -165,14 +165,14 @@ export function Hero() {
           </div>
 
           {/* RIGHT COLUMN: The 3D Profile Card with Left Icons, Avatar, & Snappy Grey Word Switcher */}
-          <div className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center pt-4 lg:pt-0">
-            <div className="flex flex-col items-center lg:items-end gap-3.5 w-full sm:w-auto">
+          <div className="xl:col-span-5 flex flex-col items-center xl:items-end justify-center pt-2 sm:pt-4 xl:pt-0">
+            <div className="flex flex-col items-center xl:items-end gap-3.5 w-full sm:w-auto">
               
               {/* Profile Card (matching Figma node 58:2955, w=312.13, h=390.63, radius=27.5px) */}
               <motion.div
                 whileHover={{ rotate: 0, y: -4 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="w-full max-w-[340px] sm:w-[316px] xl:w-[330px] h-[405px] clay-binder-card border border-[#EBEBEB] rounded-[28px] sm:rounded-[30px] relative overflow-hidden flex flex-col justify-between -rotate-[2deg] hover:rotate-0 transition-transform duration-300 mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
+                className="w-full max-w-[312px] sm:w-[316px] xl:w-[326px] h-[395px] sm:h-[405px] clay-binder-card border border-[#EBEBEB] rounded-[26px] sm:rounded-[30px] relative overflow-hidden flex flex-col justify-between rotate-0 sm:-rotate-[2deg] hover:rotate-0 transition-transform duration-300 mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
               >
                 {/* 1. TOP-HALF LEFT END ICONS: Design, Code, Research, Music, Art */}
                 <div

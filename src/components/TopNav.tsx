@@ -32,13 +32,13 @@ export function TopNav() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 px-6 sm:px-10 lg:px-14 py-5 transition-all duration-300 pointer-events-none ${
+      className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 lg:px-7 xl:px-10 2xl:px-14 py-3.5 sm:py-5 transition-all duration-300 pointer-events-none ${
         isDark
           ? 'bg-[#111110]/90 backdrop-blur-md text-white border-b border-neutral-800'
           : 'bg-white/80 backdrop-blur-md text-[#111110]'
       }`}
     >
-      <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+      <div className="w-full flex items-center justify-between">
         {/* Left: Brand Identifier (Matching Figma node 58:2937) */}
         <div className="pointer-events-auto flex items-center gap-3 sm:gap-4">
           <button

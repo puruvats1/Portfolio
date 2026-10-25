@@ -13,7 +13,7 @@ export function AboutFigmaCard() {
         }}
         className={`
           relative w-full aspect-[718/379]
-          rounded-[60px] sm:rounded-[100px] lg:rounded-[146px]
+          rounded-[32px] sm:rounded-[70px] md:rounded-[100px] lg:rounded-[146px]
           bg-gradient-to-b from-[#F4F4F4] to-[#E3E3E3]
           overflow-hidden isolate border border-neutral-300/40
         `}
@@ -37,7 +37,7 @@ export function AboutFigmaCard() {
             left: '8.22%',
             top: '13.43%',
           }}
-          className="absolute rounded-[40px] sm:rounded-[70px] lg:rounded-[106px] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.04)] overflow-hidden"
+          className="absolute rounded-[22px] sm:rounded-[48px] md:rounded-[70px] lg:rounded-[106px] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.04)] overflow-hidden"
         >
           {/* Playful Young Man in Black Cap 1 */}
           <div className="relative w-full h-full flex items-end justify-center overflow-hidden">
@@ -133,7 +133,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[15px] sm:text-[22px] lg:text-[28px] tracking-[-0.9px] leading-none"
+            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -158,7 +158,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[15px] sm:text-[22px] lg:text-[28px] tracking-[-0.9px] leading-none"
+            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -183,7 +183,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[15px] sm:text-[22px] lg:text-[28px] tracking-[-0.9px] leading-none"
+            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -208,7 +208,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[15px] sm:text-[22px] lg:text-[28px] tracking-[-0.9px] leading-none"
+            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -233,7 +233,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[15px] sm:text-[22px] lg:text-[28px] tracking-[-0.9px] leading-none"
+            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -258,7 +258,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[15px] sm:text-[22px] lg:text-[28px] tracking-[-0.9px] leading-none"
+            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>

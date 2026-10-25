@@ -6,9 +6,9 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative pt-24 pb-28 lg:pt-32 lg:pb-32 bg-ink text-canvas rounded-t-[2.5rem] mt-24 border-t border-white/10 will-change-transform"
+      className="relative pt-20 pb-32 sm:pb-36 lg:pt-28 lg:pb-32 bg-ink text-canvas rounded-t-[2.5rem] mt-20 sm:mt-24 border-t border-white/10 will-change-transform"
     >
-      <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-12">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-14">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}

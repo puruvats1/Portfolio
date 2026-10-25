@@ -56,9 +56,9 @@ const TESTIMONIALS: Testimonial[] = [
       'Designing with Puru felt fast and effortless. His prototypes accounted for edge cases, asynchronous latency, and keyboard accessibility before we even brought them up. He elevates the standard of the entire room.',
     renderLogo: () => (
       <img
-        src="/public/assets/aistudio/akai_space_logo.png"
+        src="./logo2.png"
         alt="Akai Space"
-        className="h-3.5 w-auto object-contain opacity-85"
+        className="h-3.5 sm:h-4 w-auto object-contain opacity-85"
       />
     ),
   },
@@ -72,9 +72,9 @@ const TESTIMONIALS: Testimonial[] = [
       'Puru transformed an unmanageable regulatory reporting portal into a structured, delightful digital tool. He has a rare ability to simplify without compromising data integrity.',
     renderLogo: () => (
       <img
-        src="/public/assets/aistudio/ge3s_trimmed.png"
+        src="./ge3s_logo.png"
         alt="Ge3s"
-        className="h-4.5 w-auto object-contain opacity-85"
+        className="h-5 sm:h-5.5 w-auto object-contain opacity-85"
       />
     ),
   },
@@ -98,8 +98,8 @@ export function Testimonials() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   return (
-    <section id="testimonials" className="pt-24 pb-24 lg:pt-32 lg:pb-32">
-      <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-12">
+    <section id="testimonials" className="py-16 sm:py-20 lg:py-28">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Columns 1-4: Section title "About me from others" sticky until scrolled past */}
           <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
@@ -112,7 +112,7 @@ export function Testimonials() {
 
           {/* Columns 5-12: Testimonial cards */}
           <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               {TESTIMONIALS.map((t) => {
                 const isHovered = hoveredCard === t.id;
                 return (
@@ -121,7 +121,7 @@ export function Testimonials() {
                     onMouseEnter={() => setHoveredCard(t.id)}
                     onMouseLeave={() => setHoveredCard(null)}
                     className={`
-                      flex flex-col justify-between p-7 rounded-2xl border border-neutral-200/80 transition-shadow duration-300
+                      flex flex-col justify-between p-5 sm:p-7 rounded-[20px] sm:rounded-2xl border border-neutral-200/80 transition-shadow duration-300
                       bg-[#FDFDFD]
                       ${isHovered ? 'shadow-[0_12px_28px_rgba(0,0,0,0.08)]' : 'shadow-[0_2px_8px_rgba(0,0,0,0.02)]'}
                     `}
@@ -133,7 +133,7 @@ export function Testimonials() {
                       </p>
                     </div>
 
-                    <div className="mt-8 pt-5 border-t border-neutral-100 flex items-center justify-between gap-3">
+                    <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-neutral-100 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
                         {/* Name initial profile icon */}
                         <div className="w-9 h-9 rounded-full bg-[#EAEAE6] border border-neutral-300/80 flex items-center justify-center font-display font-bold text-xs text-ink shrink-0">

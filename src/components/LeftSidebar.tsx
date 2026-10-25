@@ -150,7 +150,7 @@ export function LeftSidebar() {
           setIsHoveredNear(false);
           setHoveredTitleId(null);
         }}
-        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-1/2 -translate-y-1/2 z-40 flex-col -space-y-2 select-none py-6 pr-24 -mr-24"
+        className="hidden lg:flex fixed left-4 xl:left-7 2xl:left-12 top-1/2 -translate-y-1/2 z-40 flex-col -space-y-2 select-none py-6 pr-16 -mr-16"
         aria-label="Website Navigation"
       >
         {NAV_ITEMS.map((item) => {
@@ -226,7 +226,7 @@ export function LeftSidebar() {
 
       {/* MOBILE & TABLET FLOATING DOCK */}
       <nav
-        className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 p-2 rounded-full bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[96vw] overflow-x-auto"
+        className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 p-1.5 sm:p-2 rounded-full bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[calc(100vw-20px)] overflow-x-auto no-scrollbar"
         aria-label="Mobile Navigation"
       >
         {NAV_ITEMS.map((item) => {

@@ -56,10 +56,10 @@ const PROJECTS: Project[] = [
 
 export function Work() {
   return (
-    <section id="work" className="pt-20 pb-24 lg:pt-28 lg:pb-32">
-      <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-12">
+    <section id="work" className="py-16 sm:py-20 lg:py-28">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-14">
         {/* Section title placed directly above project thumbnails */}
-        <div className="mb-8 sm:mb-10 lg:mb-12">
+        <div className="mb-6 sm:mb-8 lg:mb-10">
           <ScrollRevealTitle>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight heading-gradient">
               My Work
@@ -68,14 +68,14 @@ export function Work() {
         </div>
 
         {/* Project cards now span the full width with spacious 2-column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 w-full">
           {PROJECTS.map((project) => (
             <div
               key={project.id}
               className="flex flex-col gap-3.5 group cursor-pointer w-full"
             >
               {/* Generous, spacious light rectangular placeholder */}
-              <div className="w-full aspect-[16/10] sm:aspect-[4/3] rounded-[24px] sm:rounded-[28px] bg-[#F2F1ED] border border-neutral-200/70 transition-all duration-300 group-hover:bg-[#ECEBE6] group-hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] group-hover:-translate-y-1 relative overflow-hidden flex items-center justify-center">
+              <div className="w-full aspect-[16/10] sm:aspect-[4/3] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 transition-all duration-300 group-hover:bg-[#ECEBE6] group-hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] group-hover:-translate-y-1 relative overflow-hidden flex items-center justify-center">
                 <span className="text-neutral-400/50 font-mono text-sm font-medium tracking-widest group-hover:text-neutral-500/70 transition-colors">
                   {project.id}
                 </span>

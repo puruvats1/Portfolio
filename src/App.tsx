@@ -21,7 +21,7 @@ export default function App() {
       <LeftSidebar />
 
       {/* Main continuous scroll stream with comfortable left clearance for the persistent navbar */}
-      <div className="w-full min-h-screen pb-24 lg:pb-0 lg:pl-56 xl:pl-64 2xl:pl-72">
+      <div className="w-full min-h-screen pb-0 lg:pl-[280px] xl:pl-[320px] 2xl:pl-[360px]">
         <main className="flex flex-col">
           {/* 1. Hello / Hero */}
           <Hero />
