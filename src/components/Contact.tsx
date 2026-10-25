@@ -14,10 +14,10 @@ export function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
+          className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start"
         >
-          {/* Columns 1-4: Section title "Work with me" sticky until scrolled past */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
+          {/* Columns 1-3: Section title "Work with me" sticky until scrolled past */}
+          <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
               <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient-light">
                 Work with me
@@ -25,8 +25,8 @@ export function Contact() {
             </ScrollRevealTitle>
           </div>
 
-          {/* Columns 5-12: Contact details and footer */}
-          <div className="lg:col-span-8 flex flex-col gap-12">
+          {/* Columns 4-8: Contact details and footer (5 of 8 columns) */}
+          <div className="lg:col-span-5 flex flex-col gap-12">
             <div className="flex flex-col gap-2">
               <p className="font-display text-2xl sm:text-3xl font-semibold leading-tight tracking-tight">
                 <span className="heading-gradient-light">

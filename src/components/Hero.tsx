@@ -53,12 +53,12 @@ export function Hero() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-[80vh] flex flex-col justify-center pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-18 lg:pb-20 overflow-hidden">
+    <section id="hero" className="relative min-h-[85vh] flex flex-col justify-start pt-20 sm:pt-24 lg:pt-[104px] xl:pt-[108px] pb-14 sm:pb-18 lg:pb-24 overflow-visible">
       <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
           
-          {/* CENTER NARRATIVE & DIALOGUE CARD (Cols 1-7 on xl desktop) */}
-          <div className="xl:col-span-7 flex flex-col justify-center">
+          {/* CENTER NARRATIVE & DIALOGUE CARD (Cols 1-5 on 8-column grid, top edge aligned with Nav Menu) */}
+          <div className="lg:col-span-5 flex flex-col justify-start">
             <div className="flex flex-col gap-6 sm:gap-7 max-w-2xl xl:max-w-none">
               
               {/* Clay Dialogue Card (Matching Figma node 58:2972, w=601.26, h=249.65) */}
@@ -165,9 +165,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: The 3D Profile Card with Left Icons, Avatar, & Snappy Grey Word Switcher */}
-          <div className="xl:col-span-5 flex flex-col items-center xl:items-end justify-center pt-2 sm:pt-4 xl:pt-0">
-            <div className="flex flex-col items-center xl:items-end gap-3.5 w-full sm:w-auto">
+          {/* RIGHT COLUMN: The 3D Profile Card (Cols 6-8 on 8-column grid with 20% liberty to go out of the grid) */}
+          <div className="lg:col-span-3 flex flex-col items-center lg:items-end justify-start pt-2 sm:pt-4 lg:pt-0 relative overflow-visible">
+            <div className="flex flex-col items-center lg:items-end gap-3.5 w-full sm:w-auto lg:-mr-4 xl:-mr-8 2xl:-mr-12">
               
               {/* Profile Card (matching Figma node 58:2955, w=312.13, h=390.63, radius=27.5px) */}
               <motion.div

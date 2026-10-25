@@ -98,11 +98,11 @@ export function Testimonials() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   return (
-    <section id="testimonials" className="py-16 sm:py-20 lg:py-28">
+    <section id="testimonials" className="py-16 sm:py-20 lg:py-28 overflow-visible">
       <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Columns 1-4: Section title "About me from others" sticky until scrolled past */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
+        <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
+          {/* Columns 1-3: Section title "About me from others" sticky until scrolled past */}
+          <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
               <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
                 About me from others
@@ -110,9 +110,9 @@ export function Testimonials() {
             </ScrollRevealTitle>
           </div>
 
-          {/* Columns 5-12: Testimonial cards */}
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {/* Columns 4-8: Testimonial cards (5 of 8 columns) */}
+          <div className="lg:col-span-5 overflow-visible">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
               {TESTIMONIALS.map((t) => {
                 const isHovered = hoveredCard === t.id;
                 return (

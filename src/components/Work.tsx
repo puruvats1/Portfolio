@@ -67,12 +67,12 @@ export function Work() {
           </ScrollRevealTitle>
         </div>
 
-        {/* Project cards now span the full width with spacious 2-column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 w-full">
+        {/* Project cards in an 8-column grid: 4 columns each (4 + 4 = 8) with 20% breakout hover freedom */}
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 w-full overflow-visible">
           {PROJECTS.map((project) => (
             <div
               key={project.id}
-              className="flex flex-col gap-3.5 group cursor-pointer w-full"
+              className="md:col-span-4 flex flex-col gap-3.5 group cursor-pointer w-full transition-all duration-300 hover:scale-[1.015]"
             >
               {/* Generous, spacious light rectangular placeholder */}
               <div className="w-full aspect-[16/10] sm:aspect-[4/3] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 transition-all duration-300 group-hover:bg-[#ECEBE6] group-hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] group-hover:-translate-y-1 relative overflow-hidden flex items-center justify-center">

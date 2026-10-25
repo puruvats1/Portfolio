@@ -87,26 +87,26 @@ export function WorkingWithMe() {
   ];
 
   return (
-    <section id="working-with-me" className="py-16 sm:py-20 lg:py-28 flex flex-col gap-20 sm:gap-24 lg:gap-28">
+    <section id="working-with-me" className="py-16 sm:py-20 lg:py-28 flex flex-col gap-20 sm:gap-24 lg:gap-28 overflow-visible">
       
       {/* PART 1: Working with me */}
-      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Columns 1-4: Section title "Working with me" sticky until scrolled past */}
-          <div className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-28 self-start">
+      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 overflow-visible">
+        <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
+          {/* Columns 1-3: Section title "Working with me" sticky until scrolled past */}
+          <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
               <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
                 Working with me
               </h2>
             </ScrollRevealTitle>
 
-            <div className="hidden lg:block pt-1">
+            <div className="hidden lg:block pt-1 -ml-1">
               <CardSpread label="Studio artifacts" />
             </div>
           </div>
 
-          {/* Columns 5-12: Principles editorial */}
-          <div className="lg:col-span-8 max-w-3xl space-y-12 sm:space-y-16">
+          {/* Columns 4-8: Principles editorial (5 of 8 columns) */}
+          <div className="lg:col-span-5 max-w-3xl space-y-12 sm:space-y-16">
             {principles.map((p) => (
               <article key={p.num} className="flex flex-col gap-3">
                 <div className="flex items-baseline gap-3">
@@ -137,10 +137,10 @@ export function WorkingWithMe() {
       </div>
 
       {/* PART 2: Skills & capabilities */}
-      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 pt-16 border-t border-neutral-200/50">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Columns 1-4: Title "Skills & capabilities" sticky until scrolled past */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
+      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 pt-16 border-t border-neutral-200/50 overflow-visible">
+        <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
+          {/* Columns 1-3: Title "Skills & capabilities" sticky until scrolled past */}
+          <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
               <h3 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
                 Skills & capabilities
@@ -148,8 +148,8 @@ export function WorkingWithMe() {
             </ScrollRevealTitle>
           </div>
 
-          {/* Columns 5-12: Skills categories with app icons along exact same line */}
-          <div className="lg:col-span-8 max-w-3xl">
+          {/* Columns 4-8: Skills categories with app icons along exact same line (5 of 8 columns) */}
+          <div className="lg:col-span-5 max-w-3xl">
             <div className="grid sm:grid-cols-2 gap-8 text-xs">
               {skillCategories.map((cat) => (
                 <div key={cat.title} className="flex flex-col gap-3">

@@ -143,7 +143,7 @@ export function LeftSidebar() {
           setIsHoveredNear(false);
           setHoveredTitleId(null);
         }}
-        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-1/2 -translate-y-1/2 z-40 flex-col -space-y-2 select-none py-6 pr-16 -mr-16"
+        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-[104px] xl:top-[108px] z-40 flex-col -space-y-2 select-none pr-16 -mr-16"
         aria-label="Website Navigation"
       >
         {NAV_ITEMS.map((item) => {
