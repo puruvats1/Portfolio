@@ -56,45 +56,45 @@ const PROJECTS: Project[] = [
 
 export function Work() {
   return (
-    <section id="work" className="pt-24 pb-24 lg:pt-32 lg:pb-32">
+    <section id="work" className="pt-20 pb-24 lg:pt-28 lg:pb-32">
       <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Columns 1-4: Section title "My Work" sticky until scrolled past */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
-            <ScrollRevealTitle>
-              <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
-                My Work
-              </h2>
-            </ScrollRevealTitle>
-          </div>
+        {/* Section title placed directly above project thumbnails */}
+        <div className="mb-8 sm:mb-10 lg:mb-12">
+          <ScrollRevealTitle>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight heading-gradient">
+              My Work
+            </h2>
+          </ScrollRevealTitle>
+        </div>
 
-          {/* Columns 5-12: 6 spacious project cards with minimal clean copy */}
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-              {PROJECTS.map((project) => (
-                <div
-                  key={project.id}
-                  className="flex flex-col gap-3 group cursor-pointer w-full"
-                >
-                  {/* Generous, spacious light rectangular placeholder */}
-                  <div className="w-full aspect-[4/3] rounded-2xl bg-[#F2F1ED] border border-neutral-200/70 transition-all duration-300 group-hover:bg-[#ECEBE6] group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)]" />
+        {/* Project cards now span the full width with spacious 2-column grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 w-full">
+          {PROJECTS.map((project) => (
+            <div
+              key={project.id}
+              className="flex flex-col gap-3.5 group cursor-pointer w-full"
+            >
+              {/* Generous, spacious light rectangular placeholder */}
+              <div className="w-full aspect-[16/10] sm:aspect-[4/3] rounded-[24px] sm:rounded-[28px] bg-[#F2F1ED] border border-neutral-200/70 transition-all duration-300 group-hover:bg-[#ECEBE6] group-hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] group-hover:-translate-y-1 relative overflow-hidden flex items-center justify-center">
+                <span className="text-neutral-400/50 font-mono text-sm font-medium tracking-widest group-hover:text-neutral-500/70 transition-colors">
+                  {project.id}
+                </span>
+              </div>
 
-                  {/* Clean text formatting with grey gradient title and concise metadata */}
-                  <div className="flex flex-col gap-1 px-1">
-                    <h3 className="font-display text-lg sm:text-xl font-semibold heading-gradient group-hover:opacity-85 transition-opacity">
-                      {project.title}
-                    </h3>
+              {/* Clean text formatting with grey gradient title and concise metadata */}
+              <div className="flex flex-col gap-1 px-1">
+                <h3 className="font-display text-lg sm:text-xl lg:text-2xl font-semibold heading-gradient group-hover:opacity-85 transition-opacity">
+                  {project.title}
+                </h3>
 
-                    <div className="flex items-center gap-2 text-xs text-neutral-500 font-medium">
-                      <span>{project.category}</span>
-                      <span className="text-neutral-300">·</span>
-                      <span>{project.year}</span>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-500 font-medium">
+                  <span>{project.category}</span>
+                  <span className="text-neutral-300">·</span>
+                  <span>{project.year}</span>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
