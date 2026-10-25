@@ -33,29 +33,29 @@ export function TopNav() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 px-6 sm:px-10 lg:px-12 py-5 sm:py-6 pointer-events-none transition-colors duration-400 ${
+      className={`fixed top-0 left-0 right-0 z-50 px-6 sm:px-10 lg:px-14 py-5 transition-all duration-300 pointer-events-none ${
         isDark
-          ? 'bg-gradient-to-b from-[#111110] via-[#111110]/95 to-transparent'
-          : 'bg-gradient-to-b from-[#F7F7F5] via-[#F7F7F5]/90 to-transparent'
+          ? 'bg-[#111110]/90 backdrop-blur-md text-white border-b border-neutral-800'
+          : 'bg-white/80 backdrop-blur-md text-[#111110]'
       }`}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-        {/* Left branding: puru. */}
-        <div className="pointer-events-auto">
+        {/* Left: Brand Identifier */}
+        <div className="pointer-events-auto flex items-center gap-3 sm:gap-4">
           <button
             onClick={scrollToTop}
-            className="text-left cursor-pointer group flex items-baseline gap-2 sm:gap-2.5 transition-opacity hover:opacity-80"
+            className="text-left cursor-pointer group flex items-baseline gap-2.5 sm:gap-3 transition-opacity hover:opacity-85"
           >
             <span
-              className={`font-display text-lg sm:text-xl font-bold tracking-tight leading-none transition-all ${
-                isDark ? 'heading-gradient-light' : 'heading-gradient'
+              className={`font-display text-2xl sm:text-[28px] font-bold tracking-tight leading-none ${
+                isDark ? 'text-white' : 'text-[#111110]'
               }`}
             >
               puru.
             </span>
             <span
-              className={`text-xs sm:text-sm font-normal tracking-tight leading-none transition-colors ${
-                isDark ? 'text-neutral-400' : 'text-neutral-400'
+              className={`text-xs sm:text-[15px] font-normal tracking-normal leading-none hidden sm:inline ${
+                isDark ? 'text-neutral-400' : 'text-[#A3A3A3]'
               }`}
             >
               Interaction Design Student @ IDC IIT Bombay
@@ -63,37 +63,38 @@ export function TopNav() {
           </button>
         </div>
 
-        {/* Right buttons: Behance (no fill/outline) & Resume (black, shifted to right) */}
-        <div className="pointer-events-auto flex items-center gap-2 sm:gap-3">
-          {/* Behance button: without any fill or outline */}
+        {/* Right: Actions */}
+        <div className="pointer-events-auto flex items-center gap-4 sm:gap-6">
+          {/* Behance Link */}
           <a
-            href="https://www.behance.net"
+            href="https://www.behance.net/puruvats"
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
-              isDark
-                ? 'text-neutral-300 hover:text-white'
-                : 'text-neutral-600 hover:text-ink'
+            className={`font-display text-sm sm:text-[15px] font-medium transition-colors cursor-pointer ${
+              isDark ? 'text-neutral-300 hover:text-white' : 'text-[#525252] hover:text-[#111110]'
             }`}
           >
-            <ExternalLink size={13} className={isDark ? 'text-neutral-400' : 'text-neutral-500'} />
-            <span>Behance</span>
-            <ArrowUpRight size={11} className={isDark ? 'text-neutral-500' : 'text-neutral-400'} />
+            Behance
           </a>
 
-          {/* Resume button: shifted to the far right, black background (bg-ink) */}
+          {/* Resume Button: Primary solid black */}
           <a
             href="#contact"
             onClick={scrollToContact}
-            className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer ${
+            className={`group inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-[15px] text-sm sm:text-[14.5px] font-medium font-display transition-all duration-200 cursor-pointer shadow-xs active:scale-95 ${
               isDark
-                ? 'bg-white text-ink hover:bg-neutral-200'
-                : 'bg-ink text-white hover:bg-neutral-800'
+                ? 'bg-white text-[#111110] hover:bg-neutral-200'
+                : 'bg-[#111110] text-white hover:bg-neutral-800'
             }`}
           >
-            <FileText size={13} className={isDark ? 'text-neutral-700' : 'text-neutral-300'} />
             <span>Resume</span>
-            <ArrowUpRight size={11} className={isDark ? 'text-neutral-500' : 'text-neutral-400'} />
+            <img
+              src="./resume_arrow.svg"
+              alt=""
+              className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${
+                isDark ? 'invert' : ''
+              }`}
+            />
           </a>
         </div>
       </div>

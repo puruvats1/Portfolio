@@ -1,8 +1,9 @@
-import { motion } from 'motion/react';
-import { ArrowDown } from 'lucide-react';
-import { ScrollRevealTitle } from './ScrollRevealTitle';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function Hero() {
+  const [isDialogueOpen, setIsDialogueOpen] = useState(true);
+
   const scrollToWork = () => {
     const el = document.getElementById('work');
     if (el) {
@@ -10,87 +11,292 @@ export function Hero() {
     }
   };
 
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // 6 Nav buttons matching Figma node 58:2824
+  const navTabs = [
+    {
+      id: 'hero',
+      label: 'hello!!',
+      icon: './waving_hand.svg',
+      gradient: 'from-[#FFF9CE] to-[#FEEA80]',
+      border: 'border-[#F7DF59]',
+      textColor: 'text-[#92400E]',
+      shadow: 'clay-tab-shadow',
+      isBadge: false,
+    },
+    {
+      id: 'work',
+      label: 'work',
+      icon: './work_icon.svg',
+      gradient: 'from-[#E6F1FE] to-[#72BDFF]',
+      border: 'border-[#93C5FD]',
+      textColor: 'text-[#1D4ED8]',
+      shadow: 'clay-tab-shadow-blue',
+      isBadge: false,
+    },
+    {
+      id: 'about',
+      label: 'about',
+      icon: './about_icon.svg',
+      gradient: 'from-[#FFE9DC] to-[#FED2BE]',
+      border: 'border-[#FDBA74]',
+      textColor: 'text-[#C2410C]',
+      shadow: 'clay-tab-shadow',
+      isBadge: false,
+    },
+    {
+      id: 'working-with-me',
+      label: '<skills>',
+      icon: './skills_icon.svg',
+      gradient: 'from-[#EDFA7E] to-[#D5F24B]',
+      border: 'border-[#BEF264]',
+      textColor: 'text-[#4D7C0F]',
+      shadow: 'clay-tab-shadow',
+      isBadge: true,
+    },
+    {
+      id: 'testimonials',
+      label: 't’monials',
+      icon: './testimonials_icon.svg',
+      gradient: 'from-[#D7F8E8] to-[#B2F2D1]',
+      border: 'border-[#6EE7B7]',
+      textColor: 'text-[#047857]',
+      shadow: 'clay-tab-shadow',
+      isBadge: false,
+    },
+    {
+      id: 'contact',
+      label: 'contact',
+      icon: './contact_icon.svg',
+      gradient: 'from-[#FFE3EA] to-[#FFC3D1]',
+      border: 'border-[#FDA4AF]',
+      textColor: 'text-[#BE123C]',
+      shadow: 'clay-tab-shadow',
+      isBadge: false,
+    },
+  ];
+
   return (
-    <section id="hero" className="relative min-h-[90vh] flex flex-col justify-center pt-32 pb-24 lg:pt-36 lg:pb-32">
-      <div className="max-w-7xl mx-auto w-full px-6 sm:px-10 lg:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
-        >
-          {/* Columns 1-4: Section title "Hello" sticky until scrolled past */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
-            <ScrollRevealTitle>
-              <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
-                Hello
-              </h2>
-            </ScrollRevealTitle>
+    <section id="hero" className="relative min-h-[92vh] flex flex-col justify-center pt-28 pb-16 lg:pt-32 lg:pb-24">
+      <div className="max-w-[1440px] mx-auto w-full px-6 sm:px-10 lg:px-14">
+        {/* Main 3-column / 12-column grid directly translating Figma node 58:2824 */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
+          
+          {/* LEFT COLUMN (Cols 1-3): The Tactile Nav Concept showcase */}
+          <div className="lg:col-span-3 flex flex-col justify-center">
+            <div className="flex flex-col gap-3 sm:gap-3.5">
+              {navTabs.map((tab, idx) => (
+                <div key={tab.id} className="flex items-center gap-4 group">
+                  {/* The Tactile Pill Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                    onClick={() => scrollToSection(tab.id)}
+                    className={`w-[78px] sm:w-[84px] h-[52px] sm:h-[58px] rounded-[22px] sm:rounded-[26px] bg-gradient-to-b ${tab.gradient} border-[1.7px] ${tab.border} ${tab.shadow} flex items-center justify-center shrink-0 cursor-pointer transition-transform duration-200`}
+                    aria-label={tab.label}
+                  >
+                    <img
+                      src={tab.icon}
+                      alt={tab.label}
+                      className="w-7 h-7 sm:w-8 sm:h-8 object-contain select-none pointer-events-none transition-transform duration-200 group-hover:scale-110"
+                    />
+                  </motion.button>
+
+                  {/* The Playful Section Label */}
+                  <button
+                    onClick={() => scrollToSection(tab.id)}
+                    className="cursor-pointer text-left transition-opacity hover:opacity-100 opacity-90"
+                  >
+                    {tab.isBadge ? (
+                      <span className="inline-block px-3 py-1 rounded-[12px] bg-gradient-to-b from-[#EDFA7E] to-[#D5F24B] border border-[#BEF264] text-[17px] sm:text-[19px] font-bold font-display tracking-tight text-[#4D7C0F] shadow-xs">
+                        {tab.label}
+                      </span>
+                    ) : (
+                      <span
+                        className={`font-display text-[19px] sm:text-[21px] font-bold tracking-tight lowercase ${tab.textColor} group-hover:translate-x-1 inline-block transition-transform duration-200`}
+                      >
+                        {tab.label}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Columns 5-12: Main Hero Statement & Introduction with grey gradient */}
-          <div className="lg:col-span-8">
-            <div className="flex flex-col gap-6">
-              <h1 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight">
-                <span className="heading-gradient">
-                  I’m Puru and I <strong className="font-bold">resolve conflict</strong> between humans and computers so that they can be <span className="font-bold italic">best friends</span>.
-                </span>
-              </h1>
+          {/* CENTER COLUMN (Cols 4-8): The Dialogue Card & Narrative */}
+          <div className="lg:col-span-6 flex flex-col justify-center">
+            <div className="flex flex-col gap-7 sm:gap-8">
+              {/* The Clay Dialogue Card */}
+              <AnimatePresence mode="wait">
+                {isDialogueOpen ? (
+                  <motion.div
+                    key="dialogue"
+                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.92, y: -10 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    className="clay-dialogue-card border border-[#EDEDED] rounded-[28px] sm:rounded-[32px] p-6 sm:p-9 relative overflow-hidden"
+                  >
+                    {/* Top line with close circle button */}
+                    <div className="flex items-center justify-end pb-3 sm:pb-4 mb-2">
+                      <button
+                        onClick={() => setIsDialogueOpen(false)}
+                        className="w-7 h-7 rounded-full bg-[#D9D9D9] hover:bg-[#C8C8C8] flex items-center justify-center transition-colors cursor-pointer group shadow-xs"
+                        aria-label="Close dialog"
+                        title="Dismiss card"
+                      >
+                        <img
+                          src="./close_icon.svg"
+                          alt="Close"
+                          className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity"
+                        />
+                      </button>
+                    </div>
 
-              <p className="text-base text-neutral-600 leading-relaxed font-normal max-w-2xl">
-                B.Des '27 student at IDC, IIT Bombay. I’m drawn to challenging challenges, always growing as an individual and as a professional.
-              </p>
+                    <div className="h-[1px] w-full bg-[#EAEAEA] mb-6 -mt-2" />
 
-              {/* Previously at with optical sizing for company logos */}
-              <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                <span className="text-xs font-medium text-neutral-400 shrink-0">
-                  Previously at
-                </span>
-
-                <div className="flex flex-wrap items-center gap-6 sm:gap-8">
-                  {/* D. E. Shaw Logo */}
-                  <div className="h-8 flex items-center" title="D. E. Shaw & Co.">
-                    <svg
-                      viewBox="18 250 620 140"
-                      className="h-5 sm:h-5.5 w-auto fill-current text-ink opacity-85 hover:opacity-100 transition-opacity"
-                      aria-label="D. E. Shaw & Co."
+                    {/* Dialogue Main Statement */}
+                    <p className="font-sans text-[23px] sm:text-[28px] lg:text-[31px] font-medium sm:font-semibold leading-[1.28] tracking-tight text-[#2B2B2A]">
+                      I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
+                      <span className="text-[#468FFD] font-bold">best friends.</span>
+                    </p>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="closed-state"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="flex items-center gap-3"
+                  >
+                    <button
+                      onClick={() => setIsDialogueOpen(true)}
+                      className="px-4 py-2 rounded-full bg-white border border-neutral-200 shadow-xs text-xs font-medium text-neutral-600 hover:text-ink hover:border-neutral-300 transition-all flex items-center gap-2 cursor-pointer"
                     >
-                      <path d="M157.3,313.8v18.5h-3.1c-3.1-13.2-5.3-15-16.2-15h-12v28.2c15.1-0.2,17.4-2.6,17.8-11.1h3.4V360h-3.5c-0.4-8.3-2.8-10.7-17.7-10.8v32.4h2c23.2,0,25.9-5.4,27.6-17.9h3.5l-1.8,21.4H106v-3.5h9.1v-64.4H106v-3.4H157.3 M502.9,288.7h115.3v3.5H502.9L502.9,288.7z M491,255.2l-80.2,33.7H21.6v3.5h389.9l80.9-33.8l-1.4-3.1 M65.9,383.1c-6.3,1.7-12.7,2.3-19.2,2H21.6v-3.5h9.1v-64.4h-9.1v-3.4h25.1c6.4-0.3,12.9,0.4,19.1,2c14.1,4.2,21.3,15.7,21.3,33.7S80,379,65.9,383.1 M63.3,319.8c-5.3-2-11-2.8-16.6-2.6h-5.1v64.4h5.1c5.7,0.3,11.3-0.6,16.6-2.4c8.3-3.9,11.8-12.6,11.8-29.7S71.8,323.7,63.3,319.8L63.3,319.8z M394,385.2l11.2-48h7v-3.5h-19.5v3.5h8.6l-8.8,37.2l-2.1-8.5l-8-27.4h-7.3l-10.3,35.9l-1.7-8.6l-6.8-28.7h7.8v-3.5h-23.9v3.5h6.8l11.5,47.9h7.3l10.4-36.8l2.4,9.4l8.1,27.4L394,385.2 M597.7,332.9c16.2,0,23.9,8.3,23.9,26.7s-7.7,26.7-23.9,26.7s-23.8-8.6-23.8-26.8c0-18.3,7.6-26.7,23.8-26.7 M597.7,336.2c-5.8,0-13.1,2.8-13.1,23.2s7.3,23.2,13.1,23.2s13.2-2.8,13.2-23.2s-7.3-23.4-13.2-23.4V336.2z M565.7,315.9c-6.4-2.3-13.3-3.4-20.1-3.1c-23.9,0-35.9,12.8-35.9,36.7c0,23.4,11.9,36.7,35.9,36.7c6.9,0.1,13.7-1.2,20-3.9l1.6-18.4h-3.5c-2.3,11.8-8.6,18.6-18.8,18.6c-5.1,0.4-10.1-1.3-14-4.7c-5.4-5.2-8.3-14.4-8.3-28.2c0-13.8,3-23.8,8.9-28.9c3.4-2.9,7.8-4.3,12.2-4.2c11,0,16.9,6.8,18.8,15.7h3.1L565.7,315.9 M225.2,316.1c-5.7-2.2-11.8-3.3-18-3.1c-15,0-23.5,7.2-23.5,18.6c0,10.2,5.5,15.4,15,19.3l9.7,4.1c0,0,10,7.8,10,14.4c0,8.5-4.8,13.2-13.8,13.2s-16.3-6.7-19.1-18.8h-3.1l1.6,18.6c5.9,2.6,12.4,3.9,18.8,3.8c15.3,0,25.5-7.8,25.5-21.3c0-11.5-6.3-16-15.7-19.9l-9.4-3.9c-6.6-2.7-9.4-6-9.4-13.2c0-7.2,5.3-11.3,12.1-11.3c8.9,0,13.9,5.4,15.9,15.9h3.4L225.2,316.1 M282.1,347.2c0-10.4-6.6-14.8-14.1-14.8c-7-0.2-13.5,3.4-17,9.4v-28.2h-16.9v3.5h7v64.5h-7v3.5h24.3v-3.5H251v-28.2c-0.1-3.4,0.8-6.7,2.4-9.7c2.2-3.9,6.3-6.4,10.9-6.5c5.1,0,7.9,3.6,7.9,10v34.5h-7.3v3.5h24.2v-3.6h-7V347 M334.2,369.3v-22.6c0-10.4-7.5-14.1-19-14.1s-19.5,4.1-19.5,11.5c0,2.9,2.3,5.2,5.2,5.3h0.6c1.8,0.2,3.6-0.5,4.9-1.9v-2.4c0-5.9,2.9-9.2,8.6-9.2c4.5-0.6,8.6,2.6,9.1,7c0.1,0.6,0.1,1.2,0,1.9v7.7l-17,5.4c-4.7,1.7-12.6,4.5-12.6,13.7c0,10.2,7.1,14.7,16.4,14.7c7.5,0,12.6-2.6,15.1-8.3c1.4,6.3,7.5,8.8,14.6,7.4v-3.1c-3.5-1.1-6.3-5.4-6.3-12.9 M324.6,369.3c0,8.3-3.4,12.2-9.7,12.2c-5.6,0-8.8-3.8-8.8-10c0-8.9,4.6-10.5,10.7-12.6l7.8-2.7V369.3z M479.6,376.1c6.3-6.6,9.6-15.5,9.1-24.7c-0.1-4.3-0.8-8.5-2.1-12.6h-16.9v3.1c3.9-0.2,7.8,1.1,10.7,3.7c2.6,2.9,4,6.8,3.7,10.7c0,6.4-2.5,12.6-6.9,17.3c-0.7-0.8-2-2-2.7-2.8c-10.4-10.5-19.4-22.4-26.5-35.3c-1.5-2.8-2.4-6-2.5-9.2c-0.4-5.3,3.6-9.9,8.9-10.3c0.5,0,0.9,0,1.4,0c6.7,0,11.8,3.9,14.1,15.7h3.1V316c-5-2.3-10.5-3.4-16-3.1c-11.9,0-20.3,5.6-20.3,17.1c0.1,3.8,1,7.5,2.7,11c-8.5,2.9-14,11-13.7,20c0,12.4,9.4,25.6,28.2,25.6c6.5,0.2,12.9-1.4,18.6-4.6c5.2,2.6,10.8,4.1,16.6,4.4l1-2.8c-3.8-2-7.3-4.5-10.5-7.3 M459.2,382.2c-6.4,0.1-12.6-2.3-17.3-6.8c-4.6-4.8-7.1-11.2-7-17.9c-0.4-5.4,1.5-10.7,5.3-14.5c6.6,12.4,15.2,23.7,25.3,33.5c1.2,1.2,2.5,2.4,3.9,3.5C466.3,381.4,462.8,382.2,459.2,382.2L459.2,382.2z" />
-                    </svg>
-                  </div>
+                      <span>💬 Show message: "I resolve conflict between humans & computers..."</span>
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-                  {/* Ge3s Logo */}
-                  <div className="h-8 flex items-center" title="Ge3s Sustainability">
-                    <img
-                      src="/public/assets/aistudio/ge3s_trimmed.png"
-                      alt="Ge3s"
-                      className="h-6 sm:h-6.5 w-auto object-contain opacity-85 hover:opacity-100 transition-opacity"
-                    />
-                  </div>
+              {/* Narrative & Previous Experience */}
+              <div className="flex flex-col gap-6 pl-1 sm:pl-2">
+                <p className="font-sans text-[15.5px] sm:text-[16.5px] text-[#525252] leading-relaxed max-w-xl font-normal">
+                  B.Des '27 student at IDC, IIT Bombay. I’m drawn to challenging challenges, always growing as an individual and as a professional.
+                </p>
 
-                  {/* Akai Space Logo (with complete red icon) */}
-                  <div className="h-8 flex items-center" title="Akai Space Labs">
-                    <img
-                      src="/public/assets/aistudio/akai_space_logo.png"
-                      alt="Akai Space"
-                      className="h-4.5 sm:h-5 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
-                    />
+                {/* Previously At Logos */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 pt-2">
+                  <span className="font-sans text-[12.5px] font-medium text-[#A3A3A3] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
+                    Previously at
+                  </span>
+
+                  <div className="flex flex-wrap items-center gap-6 sm:gap-7">
+                    {/* D. E. Shaw Logo */}
+                    <div className="h-7 flex items-center hover:opacity-100 opacity-85 transition-opacity" title="D. E. Shaw & Co.">
+                      <img
+                        src="./deshaw_logo.svg"
+                        alt="D. E. Shaw & Co."
+                        className="h-5 sm:h-5.5 w-auto object-contain"
+                      />
+                    </div>
+
+                    {/* GE3S Sustainability Logo */}
+                    <div className="h-7 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
+                      <img
+                        src="./ge3s_logo.png"
+                        alt="GE3S"
+                        className="h-6 sm:h-6.5 w-auto object-contain"
+                      />
+                    </div>
+
+                    {/* Akai Space Logo */}
+                    <div className="h-7 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
+                      <img
+                        src="./logo2.png"
+                        alt="AKAISPACE"
+                        className="h-4.5 sm:h-5 w-auto object-contain"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div className="mt-4">
-                <button
-                  onClick={scrollToWork}
-                  className="inline-flex items-center gap-2 text-xs font-medium text-neutral-500 hover:text-ink transition-colors cursor-pointer group"
-                >
-                  <span>know me through my work</span>
-                  <ArrowDown size={14} className="group-hover:translate-y-1 transition-transform" />
-                </button>
-              </div>
             </div>
           </div>
-        </motion.div>
+
+          {/* RIGHT COLUMN (Cols 9-12): The 3D Binder Card & CTA */}
+          <div className="lg:col-span-3 flex flex-col items-center lg:items-end justify-center pt-6 lg:pt-0">
+            <div className="flex flex-col items-center lg:items-end gap-5">
+              
+              {/* Clay Binder Card with punch holes & curly avatar */}
+              <motion.div
+                whileHover={{ rotate: -1, y: -4 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="w-[290px] sm:w-[312px] h-[360px] sm:h-[390px] clay-binder-card border border-[#EBEBEB] rounded-[28px] relative overflow-hidden flex flex-col justify-between p-5 sm:p-6 cursor-default -rotate-[2.5deg] hover:rotate-0 transition-transform duration-300"
+              >
+                {/* 4 Binder Punch Holes along the left edge */}
+                <div className="absolute left-3 sm:left-3.5 top-6 bottom-6 flex flex-col justify-between z-10">
+                  {[0, 1, 2, 3].map((ring) => (
+                    <div
+                      key={ring}
+                      className="w-3.5 sm:w-4 h-7 sm:h-8 rounded-full bg-[#D4D4D4] shadow-[inset_0px_1.5px_2px_rgba(0,0,0,0.2)] border border-[#C5C5C5]/40"
+                    />
+                  ))}
+                </div>
+
+                {/* Yellow Organic Blob Background behind avatar */}
+                <div className="absolute top-4 right-3 w-[220px] h-[220px] rounded-full bg-[#FEEE94] opacity-95 blur-[0.5px] pointer-events-none" />
+                <div className="absolute top-16 right-8 w-[180px] h-[160px] rounded-[40px] bg-[#FEF3A8] opacity-80 pointer-events-none" />
+
+                {/* 3D Clay Curly-Haired Avatar Bust */}
+                <div className="relative z-10 flex justify-center items-center pt-2 pl-4">
+                  <motion.img
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+                    src="./avatar_bust.png"
+                    alt="Puru Vats 3D Avatar"
+                    className="w-[165px] sm:w-[178px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
+                  />
+                </div>
+
+                {/* Bottom Strip: <Design>{code}(research)^Music^[Art] */}
+                <div className="relative z-10 pl-5 pr-2 pt-2">
+                  <p className="font-display text-[17px] sm:text-[19px] font-semibold tracking-tight text-[#3A3A38] text-center leading-tight">
+                    <span>&lt;Design&gt;</span>
+                    <span className="text-neutral-500 font-medium">&#123;code&#125;</span>
+                    <span className="text-neutral-400 font-normal">(research)</span>
+                    <br />
+                    <span className="text-[#468FFD] font-bold">^Music^</span>
+                    <span className="text-neutral-600 font-semibold">[Art]</span>
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* know me through my work ↓ CTA */}
+              <button
+                onClick={scrollToWork}
+                className="inline-flex items-center gap-2 text-xs sm:text-[13px] font-semibold font-sans text-[#404040] hover:text-[#111110] transition-colors cursor-pointer group mt-2"
+              >
+                <span>know me through my work</span>
+                <img
+                  src="./cta_arrow.svg"
+                  alt=""
+                  className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-1"
+                />
+              </button>
+
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   );
