@@ -13,11 +13,11 @@ export default function App() {
       {/* Top navigation with branding on left and Resume & Behance on right */}
       <TopNav />
 
-      {/* Persistent Left Navbar with tactile squircle buttons and active section filled button pop-up */}
+      {/* Persistent Left Navbar with exact Figma node 58:3013 button styling and supporting filled popup pills */}
       <LeftSidebar />
 
-      {/* Main continuous scroll stream with dedicated desktop left offset for the navbar */}
-      <div className="w-full min-h-screen pb-24 lg:pb-0 lg:pl-52 xl:pl-60 2xl:pl-64">
+      {/* Main continuous scroll stream with comfortable left clearance for the persistent navbar */}
+      <div className="w-full min-h-screen pb-24 lg:pb-0 lg:pl-56 xl:pl-64 2xl:pl-72">
         <main className="flex flex-col">
           {/* 1. Hello / Hero */}
           <Hero />

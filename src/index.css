@@ -26,16 +26,82 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Claymorphic and tactile 3D utility classes matching Figma */
-.clay-tab-shadow {
-  box-shadow: 0px 5.2px 17.3px 0px rgba(0, 0, 0, 0.04), 
-              inset 0px 2.6px 0.9px 1.7px rgba(255, 255, 255, 0.95);
+/* ========================================================
+   Tactile 3D Jelly-Clay Shadows matching Figma node 58:3013
+   Outer drop shadow + top specular bevel + bottom diffuse gloss
+   ======================================================== */
+
+.btn-clay-yellow {
+  box-shadow: 0px 6.91px 17.27px 0px rgba(180, 83, 9, 0.12),
+              inset 0px 2.59px 0.86px 1.73px rgba(255, 255, 255, 0.95),
+              inset 0px -27.63px 30.22px 0px rgba(255, 255, 255, 0.65);
 }
 
-.clay-tab-shadow-blue {
-  box-shadow: 0px 6.9px 17.3px 0px rgba(44, 20, 152, 0.1), 
-              inset 0px 2.6px 0.9px 1.7px rgba(255, 255, 255, 0.95), 
-              inset 0px -27.6px 30.2px 0px rgba(255, 255, 255, 0.63);
+.btn-clay-blue {
+  box-shadow: 0px 6.91px 17.27px 0px rgba(44, 20, 152, 0.1),
+              inset 0px 2.59px 0.86px 1.73px rgba(255, 255, 255, 0.95),
+              inset 0px -27.63px 30.22px 0px rgba(255, 255, 255, 0.63);
+}
+
+.btn-clay-peach {
+  box-shadow: 0px 6.91px 17.27px 0px rgba(194, 65, 12, 0.12),
+              inset 0px 2.59px 0.86px 1.73px rgba(255, 255, 255, 0.95),
+              inset 0px -27.63px 30.22px 0px rgba(255, 255, 255, 0.65);
+}
+
+.btn-clay-lime {
+  box-shadow: 0px 6.91px 17.27px 0px rgba(77, 124, 15, 0.14),
+              inset 0px 2.59px 0.86px 1.73px rgba(255, 255, 255, 0.95),
+              inset 0px -27.63px 30.22px 0px rgba(255, 255, 255, 0.65);
+}
+
+.btn-clay-mint {
+  box-shadow: 0px 6.91px 17.27px 0px rgba(4, 120, 87, 0.12),
+              inset 0px 2.59px 0.86px 1.73px rgba(255, 255, 255, 0.95),
+              inset 0px -27.63px 30.22px 0px rgba(255, 255, 255, 0.65);
+}
+
+.btn-clay-pink {
+  box-shadow: 0px 6.91px 17.27px 0px rgba(190, 18, 60, 0.12),
+              inset 0px 2.59px 0.86px 1.73px rgba(255, 255, 255, 0.95),
+              inset 0px -27.63px 30.22px 0px rgba(255, 255, 255, 0.65);
+}
+
+/* Supporting text popup pill shadows */
+.pill-clay-yellow {
+  box-shadow: 0px 5px 15px 0px rgba(180, 83, 9, 0.12),
+              inset 0px 2px 0.8px 1.2px rgba(255, 255, 255, 0.95),
+              inset 0px -16px 20px 0px rgba(255, 255, 255, 0.60);
+}
+
+.pill-clay-blue {
+  box-shadow: 0px 5px 15px 0px rgba(44, 20, 152, 0.1),
+              inset 0px 2px 0.8px 1.2px rgba(255, 255, 255, 0.95),
+              inset 0px -16px 20px 0px rgba(255, 255, 255, 0.60);
+}
+
+.pill-clay-peach {
+  box-shadow: 0px 5px 15px 0px rgba(194, 65, 12, 0.12),
+              inset 0px 2px 0.8px 1.2px rgba(255, 255, 255, 0.95),
+              inset 0px -16px 20px 0px rgba(255, 255, 255, 0.60);
+}
+
+.pill-clay-lime {
+  box-shadow: 0px 5px 15px 0px rgba(77, 124, 15, 0.14),
+              inset 0px 2px 0.8px 1.2px rgba(255, 255, 255, 0.95),
+              inset 0px -16px 20px 0px rgba(255, 255, 255, 0.60);
+}
+
+.pill-clay-mint {
+  box-shadow: 0px 5px 15px 0px rgba(4, 120, 87, 0.12),
+              inset 0px 2px 0.8px 1.2px rgba(255, 255, 255, 0.95),
+              inset 0px -16px 20px 0px rgba(255, 255, 255, 0.60);
+}
+
+.pill-clay-pink {
+  box-shadow: 0px 5px 15px 0px rgba(190, 18, 60, 0.12),
+              inset 0px 2px 0.8px 1.2px rgba(255, 255, 255, 0.95),
+              inset 0px -16px 20px 0px rgba(255, 255, 255, 0.60);
 }
 
 .clay-dialogue-card {
