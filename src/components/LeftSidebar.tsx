@@ -15,7 +15,7 @@ export interface NavItem {
   pillShadow: string;
 }
 
-// Exactly calibrated to Figma node 58:3013 (Blue button sample) and extended to all 6 tabs
+// Exactly calibrated to Figma node 58:3013 (Blue button sample) & node 46:1356 (Navbar stacked state)
 export const NAV_ITEMS: NavItem[] = [
   {
     id: 'hero',
@@ -32,11 +32,11 @@ export const NAV_ITEMS: NavItem[] = [
     id: 'work',
     label: 'work',
     icon: './work_icon.svg',
-    gradient: 'from-[#E6F1FE] to-[#72BDFF]', // Exact Figma node 58:3013 gradient
-    border: 'border-[#93C5FD]',             // Exact Figma node 58:3013 stroke
+    gradient: 'from-[#E6F1FE] to-[#72BDFF]', // Exact Figma node 58:3013
+    border: 'border-[#93C5FD]',
     activeBorder: 'border-[#2563EB]',
     textColor: 'text-[#1D4ED8]',
-    btnShadow: 'btn-clay-blue',             // Exact Figma node 58:3013 multi-layer shadow
+    btnShadow: 'btn-clay-blue',
     pillShadow: 'pill-clay-blue',
   },
   {
@@ -87,6 +87,7 @@ export const NAV_ITEMS: NavItem[] = [
 
 export function LeftSidebar() {
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
+  const [isHoveredNear, setIsHoveredNear] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -129,38 +130,48 @@ export function LeftSidebar() {
 
   return (
     <>
-      {/* DESKTOP NAVBAR: Replicating exact Figma node 58:3013 styling across all buttons & supporting popups */}
+      {/* DESKTOP SMART NAVBAR: Tightly stacked tactile buttons matching Figma node 46:1356.
+          - When cursor is away: ONLY the active section's filled supporting popup is visible; grey titles are hidden.
+          - When hovered near: Grey titles for non-selected sections smoothly appear. */}
       <aside
-        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-1/2 -translate-y-1/2 z-40 flex-col gap-4 select-none"
+        onMouseEnter={() => setIsHoveredNear(true)}
+        onMouseLeave={() => setIsHoveredNear(false)}
+        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-1/2 -translate-y-1/2 z-40 flex-col -space-y-1.5 select-none py-6 pr-20 -mr-20"
         aria-label="Website Navigation"
       >
         {NAV_ITEMS.map((item) => {
           const isActive = activeSection === item.id;
 
           return (
-            <div key={item.id} className="flex items-center gap-4 group">
-              {/* Tactile Pastel Jelly-Clay Squircle Button (exact Figma node 58:3013 specs: ~88px x 68px, radius 25.9px, stroke 1.73px) */}
+            <div
+              key={item.id}
+              className={`relative flex items-center gap-3.5 transition-transform duration-200 ${
+                isActive ? 'z-20' : 'z-10'
+              }`}
+            >
+              {/* Tactile Pastel Jelly-Clay Squircle Button: Tightly stacked (touching/nested) */}
               <motion.button
-                whileHover={{ scale: 1.06, y: -2 }}
-                whileTap={{ scale: 0.94 }}
+                whileHover={{ scale: 1.05, y: -1 }}
+                whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 450, damping: 25 }}
                 onClick={() => scrollTo(item.id)}
-                className={`w-[84px] h-[64px] xl:w-[89px] xl:h-[68px] rounded-[26px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${
-                  isActive ? `${item.activeBorder} ring-2 ring-neutral-900/10 scale-105` : item.border
+                className={`w-[82px] h-[60px] xl:w-[86px] xl:h-[64px] rounded-[24px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${
+                  isActive ? `${item.activeBorder} scale-105` : item.border
                 } ${item.btnShadow} flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200`}
                 aria-label={item.label}
               >
                 <img
                   src={item.icon}
                   alt={item.label}
-                  className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] object-contain select-none pointer-events-none opacity-85 transition-transform duration-200 group-hover:scale-110"
+                  className="w-[30px] h-[30px] xl:w-[32px] xl:h-[32px] object-contain select-none pointer-events-none opacity-85 transition-transform duration-200 group-hover:scale-110"
                 />
               </motion.button>
 
-              {/* Section Label: When active, pops up with matching Figma 58:3013 jelly-clay pill styling! */}
+              {/* Smart Label Popup Area */}
               <div className="flex items-center min-w-[100px]">
-                <AnimatePresence mode="wait">
+                <AnimatePresence>
                   {isActive ? (
+                    /* Active section filled supporting button: ALWAYS visible */
                     <motion.button
                       key="active-filled"
                       initial={{ scale: 0.82, opacity: 0, x: -8 }}
@@ -168,23 +179,24 @@ export function LeftSidebar() {
                       exit={{ scale: 0.85, opacity: 0, x: -6 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 26 }}
                       onClick={() => scrollTo(item.id)}
-                      className={`px-4 py-2 rounded-[18px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.pillShadow} ${item.textColor} font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] lowercase cursor-pointer select-none`}
+                      className={`px-4 py-2 rounded-[18px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.pillShadow} ${item.textColor} font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] lowercase cursor-pointer select-none shadow-xs`}
                     >
                       {item.label}
                     </motion.button>
-                  ) : (
+                  ) : isHoveredNear ? (
+                    /* Non-selected section grey title: Appears ONLY when hovered near! */
                     <motion.button
-                      key="inactive-text"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
+                      key="hover-grey-text"
+                      initial={{ opacity: 0, x: -10, filter: 'blur(2px)' }}
+                      animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, x: -8, filter: 'blur(2px)' }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                       onClick={() => scrollTo(item.id)}
-                      className="font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] lowercase text-[#A3A3A3] hover:text-[#404040] transition-colors cursor-pointer select-none px-2 py-1"
+                      className="font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] lowercase text-[#A3A3A3] hover:text-[#333333] transition-colors cursor-pointer select-none px-2 py-1"
                     >
                       {item.label}
                     </motion.button>
-                  )}
+                  ) : null}
                 </AnimatePresence>
               </div>
             </div>
@@ -194,7 +206,7 @@ export function LeftSidebar() {
 
       {/* MOBILE & TABLET FLOATING DOCK */}
       <nav
-        className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2.5 rounded-full bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[96vw] overflow-x-auto"
+        className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 p-2 rounded-full bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[96vw] overflow-x-auto"
         aria-label="Mobile Navigation"
       >
         {NAV_ITEMS.map((item) => {
