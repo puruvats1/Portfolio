@@ -313,7 +313,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
             setIsHoveredNear(false);
             setHoveredId(null);
           }}
-          className="hidden lg:flex flex-col -space-y-1.5 select-none relative py-4 pr-6"
+          className="hidden lg:flex flex-col -space-y-[7px] select-none relative py-4 pr-8"
           aria-label="Website Navigation"
         >
           {NAV_ITEMS.map((item, index) => {
@@ -334,7 +334,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                   setHoveredId((current) => (current === item.id ? null : current))
                 }
                 onClick={() => scrollTo(item.id)}
-                className="relative flex items-center gap-2.5 cursor-pointer group"
+                className="relative flex items-center gap-3 cursor-pointer group"
               >
                 {/* Tactile Pastel Jelly-Clay Squircle Button:
                     Enlarges smoothly on hover (connected with text hover target).
@@ -346,14 +346,14 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                   }}
                   whileTap={{ scale: 0.94 }}
                   transition={{ type: 'spring', stiffness: 450, damping: 25 }}
-                  className={`w-[62px] h-[48px] rounded-[18px] bg-gradient-to-b ${item.gradient} border ${
+                  className={`w-[72px] h-[56px] rounded-[21px] bg-gradient-to-b ${item.gradient} border ${
                     item.border
                   } ${item.btnShadow} flex items-center justify-center shrink-0 select-none`}
                   aria-label={item.label}
                 >
                   <IconComponent
                     strokeWidth={1.82}
-                    className={`w-[22px] h-[22px] ${item.iconColor} opacity-90 transition-transform duration-200 ${
+                    className={`w-[26px] h-[26px] ${item.iconColor} opacity-90 transition-transform duration-200 ${
                       isItemHovered ? 'scale-110 opacity-100' : ''
                     } pointer-events-none select-none`}
                   />
@@ -364,7 +364,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                     Default: clean gray button text without punctuations.
                     Hover: shifts smoothly to punctuation version (e.g. 'about', :work:, <skills>) ONLY when unselected.
                     Active: displays in the filled pastel clay pill with permanent 3D shading. Does NOT re-add punctuations on hover. */}
-                <div className="relative flex items-center min-w-[112px] h-[48px]">
+                <div className="relative flex items-center min-w-[130px] h-[56px]">
                   <AnimatePresence initial={false}>
                     {isActive ? (
                       /* Active section filled clay pill: in-place transition, permanent clay shading */
@@ -382,10 +382,10 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                           pointerEvents: 'none',
                         }}
                         transition={{ type: 'spring', stiffness: 500, damping: 28 }}
-                        className={`h-[34px] px-3.5 py-[7px] rounded-[13px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center select-none`}
+                        className={`h-[40px] px-4 py-2 rounded-[15px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center select-none`}
                       >
                         <span
-                          className={`font-sans font-bold text-[13.5px] leading-[18px] tracking-[-0.2px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap`}
+                          className={`font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap`}
                         >
                           {item.label}
                         </span>
@@ -409,7 +409,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                         className="select-none px-2 py-1 text-left whitespace-nowrap"
                       >
                         <span
-                          className={`font-sans font-bold text-[13.5px] leading-[18px] tracking-[-0.2px] lowercase transition-colors duration-150 ${
+                          className={`font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase transition-colors duration-150 ${
                             isItemHovered ? 'text-[#2C2C2A]' : 'text-[#888884]'
                           }`}
                         >
@@ -428,7 +428,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
       {/* MOBILE & TABLET FLOATING DOCK */}
       {mode !== 'desktop' && (
         <nav
-          className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 p-1 sm:p-1.5 rounded-[15px] bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[calc(100vw-20px)] overflow-x-auto no-scrollbar"
+          className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 p-1.5 sm:p-2 rounded-[18px] bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[calc(100vw-20px)] overflow-x-auto no-scrollbar"
           aria-label="Mobile Navigation"
         >
           {NAV_ITEMS.map((item) => {
@@ -442,16 +442,16 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                 whileTap={{ scale: 0.94 }}
                 transition={{ type: 'spring', stiffness: 450, damping: 28 }}
                 onClick={() => scrollTo(item.id)}
-                className={`h-[36px] rounded-[13px] border shrink-0 cursor-pointer flex items-center ${
+                className={`h-[42px] rounded-[15px] border shrink-0 cursor-pointer flex items-center ${
                   isActive
-                    ? `px-3.5 py-[6px] gap-[7px] bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow}`
-                    : `w-[36px] justify-center bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85`
+                    ? `px-4 py-[7px] gap-2 bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow}`
+                    : `w-[42px] justify-center bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85`
                 }`}
                 aria-label={item.label}
               >
                 <IconComponent
                   strokeWidth={1.82}
-                  className={`w-[17px] h-[17px] ${item.iconColor} opacity-90 shrink-0 pointer-events-none select-none`}
+                  className={`w-[20px] h-[20px] ${item.iconColor} opacity-90 shrink-0 pointer-events-none select-none`}
                 />
 
                 <AnimatePresence>
@@ -461,7 +461,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                       animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      className={`font-sans font-bold text-[13.5px] leading-[18px] tracking-[-0.2px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-90 whitespace-nowrap overflow-hidden`}
+                      className={`font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-90 whitespace-nowrap overflow-hidden`}
                     >
                       {item.label}
                     </motion.span>
