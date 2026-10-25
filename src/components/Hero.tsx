@@ -244,15 +244,17 @@ export function Hero() {
                     >
                       {queue.map((wordIdx, i) => {
                         const word = WORDS_SEQUENCE[wordIdx];
-                        const isLead = i === 0;
+                        const isSliding = translateX !== 0;
+                        const isBlack = isSliding ? i === 1 : i === 0;
+
                         return (
                           <span
                             key={`${word.id}-${i}-${wordIdx}`}
                             ref={i === 0 ? firstWordRef : i === 1 ? secondWordRef : null}
-                            className={`inline-block whitespace-nowrap text-[26px] sm:text-[29px] lg:text-[32px] font-display leading-none tracking-tight transition-colors duration-200 ${
-                              isLead
-                                ? 'text-neutral-900 font-bold'
-                                : 'text-neutral-400 font-light'
+                            className={`inline-block whitespace-nowrap text-[26px] sm:text-[29px] lg:text-[32px] font-display font-bold leading-none tracking-tight transition-all duration-500 ${
+                              isBlack
+                                ? 'text-ink opacity-100'
+                                : 'text-[#9B9B96] opacity-40'
                             }`}
                           >
                             {word.text}

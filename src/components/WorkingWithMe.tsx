@@ -95,7 +95,7 @@ export function WorkingWithMe() {
               className="w-full max-w-[280px] sm:max-w-[320px] select-none pt-1"
             >
               <img
-                src="/its_in_the_works.png"
+                src="./its_in_the_works.png"
                 alt="It's in the works :P"
                 className="w-full h-auto object-contain select-none pointer-events-none drop-shadow-sm"
                 loading="eager"

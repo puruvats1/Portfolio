@@ -7,9 +7,8 @@ interface ScrollRevealTitleProps {
 }
 
 /**
- * Ensures section headings are strictly hidden while in the lower 400px of the viewport,
- * preventing them from ever being seen coming through or behind the bottom-left menu dock.
- * As soon as the heading clears above the menu dock height, it smoothly reveals.
+ * Ensures section headings smoothly reveal as they enter view, with bottom-of-page
+ * detection to guarantee the final section's title always triggers and displays.
  */
 export function ScrollRevealTitle({ children, className = '' }: ScrollRevealTitleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,14 +20,15 @@ export function ScrollRevealTitle({ children, className = '' }: ScrollRevealTitl
       const rect = containerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // On desktop, the menu buttons occupy the bottom ~360px of the screen.
-      // With generous 430px clearance, headings are strictly hidden (opacity 0)
-      // until they have safely cleared above the top of the menu dock.
-      const menuClearance = window.innerWidth >= 1024 ? 430 : 80;
-      const isAboveMenu = rect.top < (windowHeight - menuClearance);
-      const isBelowTop = rect.bottom > 40;
+      // Bottom-of-page detection: when user is at or near the bottom, always trigger in-view titles
+      const isNearBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 250;
 
-      setIsVisible(isAboveMenu && isBelowTop);
+      const menuClearance = window.innerWidth >= 1024 ? 100 : 50;
+      const isAboveMenu = rect.top < (windowHeight - menuClearance);
+      const isBelowTop = rect.bottom > 20;
+
+      setIsVisible((isAboveMenu && isBelowTop) || (isNearBottom && rect.top < windowHeight));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -48,7 +48,7 @@ export function ScrollRevealTitle({ children, className = '' }: ScrollRevealTitl
         animate={
           isVisible
             ? { opacity: 1, y: 0, filter: 'blur(0px)' }
-            : { opacity: 0, y: 30, filter: 'blur(5px)' }
+            : { opacity: 0, y: 24, filter: 'blur(4px)' }
         }
         transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
       >

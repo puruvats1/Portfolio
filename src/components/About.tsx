@@ -31,7 +31,7 @@ export function About() {
               className="w-full max-w-[330px] sm:max-w-[360px] select-none pt-2"
             >
               <img
-                src="/about_person.png"
+                src="./about_person.png"
                 alt="Puru Vats tipping black cap"
                 className="w-full h-auto object-contain select-none pointer-events-none drop-shadow-sm"
                 loading="eager"
@@ -52,7 +52,7 @@ export function About() {
               className="w-full max-w-[540px] select-none pt-2"
             >
               <img
-                src="/about_hobbies.png"
+                src="./about_hobbies.png"
                 alt="Puru Vats musical taste and hobbies: 90s albums, guitar amp, plant, and keyboard"
                 className="w-full h-auto object-contain select-none pointer-events-none drop-shadow-sm"
                 loading="eager"

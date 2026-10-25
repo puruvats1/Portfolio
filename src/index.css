@@ -28,8 +28,6 @@
 html {
   font-size: 80%; /* Global 20% font size reduction */
   scroll-behavior: smooth;
-  overflow-x: hidden;
-  max-width: 100vw;
 }
 
 body {
@@ -39,27 +37,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-
-/* Responsive side margins: full-width on mobile, comfortable gutters on tablet, exact 10% on desktop */
-@media (min-width: 640px) {
-  body {
-    margin: 0 4%;
-  }
-}
-
-@media (min-width: 768px) {
-  body {
-    margin: 0 6%;
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    margin: 0 10%;
-  }
+  padding: 0;
 }
 
 /* Hide scrollbar for clean horizontal mobile dock while keeping touch scrolling functional */
@@ -135,6 +113,10 @@ body {
               inset 0px -16px 17.5px rgba(255, 255, 255, 0.63),
               inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95);
 }
+
+/* ========================================================
+   Card Shadows: Figma node 58:2955 & 58:2906
+   ======================================================== */
 
 .clay-dialogue-card {
   background-color: #F9F9F9;
