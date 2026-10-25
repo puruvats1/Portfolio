@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export type SectionId = 'hero' | 'work' | 'about' | 'skills' | 'testimonials' | 'contact';
@@ -12,7 +12,6 @@ export type NavIconComponent = React.ComponentType<{
 export interface NavItem {
   id: SectionId;
   label: string;
-  hoverLabel: string;
   icon: NavIconComponent;
   iconColor: string;
   gradient: string;
@@ -129,7 +128,6 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'hero',
     label: 'hello!!',
-    hoverLabel: 'hello!',
     icon: HomeNavIcon,
     iconColor: 'text-[#854D0E]',
     gradient: 'from-[#FFF9CE] to-[#FEEA80]',
@@ -141,7 +139,6 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'work',
     label: 'work',
-    hoverLabel: ':work:',
     icon: BriefcaseNavIcon,
     iconColor: 'text-[#1D4ED8]',
     gradient: 'from-[#E6F1FE] to-[#72BDFF]',
@@ -153,7 +150,6 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'about',
     label: 'about',
-    hoverLabel: "'about'",
     icon: SmileyNavIcon,
     iconColor: 'text-[#C75F34]',
     gradient: 'from-[#FFE9DC] to-[#FED2BE]',
@@ -164,8 +160,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     id: 'skills',
-    label: 'skills',
-    hoverLabel: '<skills>',
+    label: '<skills>',
     icon: HandshakeNavIcon,
     iconColor: 'text-[#638722]',
     gradient: 'from-[#EDFA7E] to-[#D5F24B]',
@@ -177,7 +172,6 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'testimonials',
     label: 't’monials',
-    hoverLabel: "/t'monials",
     icon: QuotesNavIcon,
     iconColor: 'text-[#047857]',
     gradient: 'from-[#D7F8E8] to-[#B2F2D1]',
@@ -189,7 +183,6 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: 'contact',
     label: 'contact',
-    hoverLabel: '#contact',
     icon: MailNavIcon,
     iconColor: 'text-[#BE123C]',
     gradient: 'from-[#FFE3EA] to-[#FFC3D1]',
@@ -209,17 +202,25 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
   const [isHoveredNear, setIsHoveredNear] = useState(false);
   const [hoveredTitleId, setHoveredTitleId] = useState<SectionId | null>(null);
 
-  const isAnyHovered = isHoveredNear || hoveredTitleId !== null;
+  // Manual scroll flag to prevent scroll-spy from rapidly overriding activeSection during programmatic smooth scroll
+  const isManualScroll = useRef(false);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      // If user reaches the very bottom of the page, activate contact
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 120) {
+      // Don't fight programmatic smooth scrolling
+      if (isManualScroll.current) return;
+
+      // If user reaches the bottom of the page, activate contact
+      const isNearBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
+      if (isNearBottom) {
         setActiveSection('contact');
         return;
       }
 
-      const scrollThreshold = window.scrollY + window.innerHeight * 0.35;
+      // Viewport anchor: 35% down from top
+      const viewportAnchor = window.innerHeight * 0.35;
 
       const sectionElements = NAV_ITEMS.map((item) => ({
         id: item.id,
@@ -228,7 +229,8 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
 
       for (let i = sectionElements.length - 1; i >= 0; i--) {
         const { id, el } = sectionElements[i];
-        if (scrollThreshold >= el.offsetTop) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= viewportAnchor) {
           setActiveSection(id);
           return;
         }
@@ -237,17 +239,53 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
       setActiveSection('hero');
     };
 
+    // If the user manually uses the wheel or touches the screen during smooth scroll, release the lock immediately
+    const handleUserInterrupt = () => {
+      if (isManualScroll.current) {
+        isManualScroll.current = false;
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('wheel', handleUserInterrupt, { passive: true });
+    window.addEventListener('touchmove', handleUserInterrupt, { passive: true });
+
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('wheel', handleUserInterrupt);
+      window.removeEventListener('touchmove', handleUserInterrupt);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
   }, []);
 
   const scrollTo = (id: SectionId) => {
     setActiveSection(id);
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+    isManualScroll.current = true;
+
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
     }
+
+    if (id === 'hero') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Release lock after smooth scroll arrives
+    scrollTimeoutRef.current = setTimeout(() => {
+      isManualScroll.current = false;
+    }, 850);
   };
 
   return (
@@ -260,77 +298,84 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
             setIsHoveredNear(false);
             setHoveredTitleId(null);
           }}
-          className="hidden lg:flex flex-col -space-y-2 select-none relative"
+          className="hidden lg:flex flex-col -space-y-2 select-none relative py-3 pr-8"
           aria-label="Website Navigation"
         >
           {NAV_ITEMS.map((item) => {
             const isActive = activeSection === item.id;
+            const isHovered = hoveredTitleId === item.id;
+            const isElevated = isActive || isHovered;
             const IconComponent = item.icon;
 
             return (
               <div
                 key={item.id}
-                className={`relative flex items-center gap-3.5 transition-transform duration-200 ${
-                  isActive ? 'z-20' : 'z-10'
+                className={`relative flex items-center gap-3.5 ${
+                  isElevated ? 'z-20' : 'z-10'
                 }`}
               >
                 {/* Tactile Pastel Jelly-Clay Squircle Button: (w=89, h=69, r=26px) with clean 1px border & 3-tier clay shadow */}
                 <motion.button
-                  whileHover={{ scale: 1.05, y: -1 }}
-                  whileTap={{ scale: 0.95 }}
+                  animate={{ scale: isActive ? 1.05 : 1 }}
+                  whileHover={{ scale: 1.06, y: -2 }}
+                  whileTap={{ scale: 0.94 }}
                   transition={{ type: 'spring', stiffness: 450, damping: 25 }}
                   onMouseEnter={() => setHoveredTitleId(item.id)}
                   onMouseLeave={() => setHoveredTitleId(null)}
                   onClick={() => scrollTo(item.id)}
                   className={`w-[89px] h-[69px] rounded-[26px] bg-gradient-to-b ${item.gradient} border ${
                     item.border
-                  } ${
-                    isActive ? 'scale-105' : 'hover:scale-105'
-                  } ${item.btnShadow} flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200 group`}
+                  } ${item.btnShadow} flex items-center justify-center shrink-0 cursor-pointer group`}
                   aria-label={item.label}
                 >
                   <IconComponent
                     strokeWidth={1.82}
-                    className={`w-[32px] h-[32px] ${item.iconColor} opacity-90 transition-all duration-200 group-hover:opacity-100 group-hover:scale-108 pointer-events-none select-none`}
+                    className={`w-[32px] h-[32px] ${item.iconColor} opacity-90 transition-transform duration-200 group-hover:scale-108 group-hover:opacity-100 pointer-events-none select-none`}
                   />
                 </motion.button>
 
                 {/* Smart Label Popup Area: Contained within the dedicated sticky rail */}
-                <div className="flex items-center min-w-[125px]">
-                  <AnimatePresence mode="wait">
+                <div className="flex items-center min-w-[125px] h-[69px]">
+                  <AnimatePresence>
                     {isActive ? (
-                      /* Active section filled link button: clean text popup without duplicated icon */
+                      /* Active section filled link button: clean text popup with rock-solid key */
                       <motion.button
-                        key={`active-pill-${item.id}-${isAnyHovered}`}
+                        key={`active-pill-${item.id}`}
                         initial={{ scale: 0.88, opacity: 0, x: -6 }}
                         animate={{ scale: 1, opacity: 1, x: 0 }}
                         exit={{ scale: 0.88, opacity: 0, x: -6 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 26 }}
+                        whileHover={{ scale: 1.04 }}
+                        whileTap={{ scale: 0.96 }}
+                        transition={{ type: 'spring', stiffness: 480, damping: 26 }}
                         onMouseEnter={() => setHoveredTitleId(item.id)}
                         onMouseLeave={() => setHoveredTitleId(null)}
                         onClick={() => scrollTo(item.id)}
-                        className={`h-[38px] px-3.5 py-[8px] rounded-[13px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center cursor-pointer select-none transition-all duration-200`}
+                        className={`h-[38px] px-3.5 py-[8px] rounded-[13px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center cursor-pointer select-none`}
                       >
                         <span
-                          className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-85 whitespace-nowrap`}
+                          className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap`}
                         >
-                          {isAnyHovered ? item.hoverLabel : item.label}
+                          {item.label}
                         </span>
                       </motion.button>
-                    ) : isAnyHovered ? (
-                      /* Non-selected section title: soft muted text */
+                    ) : isHoveredNear ? (
+                      /* Non-selected section title: elegant colored text matching signature Figma colors */
                       <motion.button
-                        key={`hover-grey-text-${item.id}`}
-                        initial={{ opacity: 0, x: -10, filter: 'blur(2px)' }}
-                        animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                        exit={{ opacity: 0, x: -8, filter: 'blur(2px)' }}
-                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        key={`nav-text-${item.id}`}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{
+                          opacity: isHovered ? 1 : 0.75,
+                          x: 0,
+                          scale: isHovered ? 1.05 : 1,
+                        }}
+                        exit={{ opacity: 0, x: -6 }}
+                        transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
                         onMouseEnter={() => setHoveredTitleId(item.id)}
                         onMouseLeave={() => setHoveredTitleId(null)}
                         onClick={() => scrollTo(item.id)}
-                        className="font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase text-[#888884] hover:text-[#333330] hover:scale-105 transition-all duration-150 cursor-pointer select-none px-2 py-1 text-left"
+                        className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent cursor-pointer select-none px-2 py-1 text-left whitespace-nowrap origin-left transition-opacity duration-150`}
                       >
-                        {item.hoverLabel}
+                        {item.label}
                       </motion.button>
                     ) : null}
                   </AnimatePresence>
@@ -356,8 +401,9 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                 key={item.id}
                 layout
                 whileTap={{ scale: 0.94 }}
+                transition={{ type: 'spring', stiffness: 450, damping: 28 }}
                 onClick={() => scrollTo(item.id)}
-                className={`h-[43px] rounded-[15px] border transition-all duration-200 shrink-0 cursor-pointer flex items-center ${
+                className={`h-[43px] rounded-[15px] border shrink-0 cursor-pointer flex items-center ${
                   isActive
                     ? `px-3.5 sm:px-4 py-[10px] gap-[10px] bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow}`
                     : `w-[43px] justify-center bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85`
@@ -376,7 +422,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                       animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-80 whitespace-nowrap overflow-hidden`}
+                      className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-90 whitespace-nowrap overflow-hidden`}
                     >
                       {item.label}
                     </motion.span>

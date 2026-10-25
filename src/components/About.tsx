@@ -3,7 +3,7 @@ import { ScrollRevealTitle } from './ScrollRevealTitle';
 
 export function About() {
   return (
-    <section id="about" className="py-16 sm:py-20 lg:py-28 overflow-visible">
+    <section id="about" className="py-16 sm:py-20 lg:py-28 overflow-visible scroll-mt-24">
       <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
         
         {/* Section title: 'bout me! */}
