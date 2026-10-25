@@ -163,39 +163,39 @@ export function Work() {
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="md:col-span-4 flex flex-col gap-3 group cursor-pointer w-full transition-all duration-300 hover:scale-[1.012]"
+                  className="md:col-span-4 flex flex-col gap-3 group cursor-pointer w-full"
                 >
-                  {/* Clean thumbnail container (no gradient, no numbering) */}
-                  <div className="w-full aspect-[16/10] sm:aspect-[4/3] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 transition-all duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] group-hover:-translate-y-1 relative overflow-hidden">
+                  {/* Clean thumbnail container with drop shadow on hover only */}
+                  <div className="w-full aspect-[16/10] sm:aspect-[4/3] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 transition-shadow duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.12)] relative overflow-hidden">
                     <img
                       src={project.thumbnail}
                       alt={project.title}
-                      className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                      className="w-full h-full object-cover object-center"
                       loading="lazy"
                     />
                   </div>
 
                   {/* Clean metadata section: tags placed right below thumbnail, above title */}
                   <div className="flex flex-col gap-2 px-1">
-                    {/* Micro-tags cleanly spaced below thumbnail */}
+                    {/* Micro-tags cleanly spaced below thumbnail: no hover transformation */}
                     <div className="flex flex-wrap items-center gap-1.5">
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2.5 py-0.5 rounded-full bg-[#F3F2EE] text-[10.5px] sm:text-[11px] font-medium text-neutral-600 border border-neutral-200/60 transition-colors group-hover:bg-[#EAE8E2] group-hover:text-neutral-900"
+                          className="px-2.5 py-0.5 rounded-full bg-[#F3F2EE] text-[10.5px] sm:text-[11px] font-medium text-neutral-600 border border-neutral-200/60"
                         >
                           {tag}
                         </span>
                       ))}
                     </div>
 
-                    {/* Title with hover arrow & category */}
+                    {/* Title with hover arrow & category: static text, arrow appears on hover */}
                     <div className="flex flex-col gap-0.5">
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-display text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-snug heading-gradient group-hover:opacity-85 transition-opacity">
+                        <h3 className="font-display text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-snug heading-gradient">
                           {project.title}
                         </h3>
-                        <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100 shrink-0" />
+                        <ArrowUpRight className="w-4 h-4 text-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shrink-0" />
                       </div>
 
                       <div className="flex items-center gap-2 text-xs text-neutral-500 font-medium">
@@ -234,12 +234,12 @@ export function Work() {
                       <img
                         src={project.thumbnail}
                         alt=""
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-full object-cover"
                         loading="lazy"
                       />
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 min-w-0">
-                      <h3 className="font-display text-[15.5px] sm:text-[16.5px] font-semibold heading-gradient group-hover:opacity-85 transition-opacity truncate">
+                      <h3 className="font-display text-[15.5px] sm:text-[16.5px] font-semibold heading-gradient truncate">
                         {project.title}
                       </h3>
                       {/* Non-disruptive Tags */}
@@ -260,7 +260,7 @@ export function Work() {
                     <span className="hidden lg:inline">{project.category}</span>
                     <span className="hidden lg:inline text-neutral-300">·</span>
                     <span>{project.year}</span>
-                    <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                    <ArrowUpRight className="w-4 h-4 text-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                   </div>
                 </a>
               ))}
