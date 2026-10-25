@@ -27,10 +27,10 @@ export function About() {
             {/* Story text */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm sm:text-base text-neutral-700 leading-relaxed font-normal">
               <p>
-                I'm <strong className="font-semibold text-ink">Puru</strong>, an interaction designer graduating from <strong className="font-semibold text-ink">IDC, IIT Bombay</strong>. I'm fascinated by the strange space between human intuition, software architecture, and the mental models we form around tools.
+                I'm a multidisciplinary person, from clay sculpting to zines to oil pastels I have tried multiple things but i keep coming back to <strong className="font-semibold text-ink">Interaction Design</strong>.
               </p>
               <p>
-                I naturally gravitate toward problems that are <span className="font-medium text-ink">dense, ambiguous, or difficult to explain</span>. I enjoy dissecting them, finding the hidden structure beneath the noise, and shaping interfaces that feel deceptively effortless.
+                Inspired by the beauty of everyday life and human behaviour supported by the skills I've gathered along from my visual craft to my sense of humor I try to make digital experiences <span className="font-medium text-ink">more meaningful</span>.
               </p>
             </div>
 
@@ -40,7 +40,7 @@ export function About() {
             </div>
 
             <p className="text-neutral-500 text-sm max-w-xl">
-              Outside of Figma and code terminals, you’ll usually find me composing electronic music, experimenting with creative technology, or building quirky internet tools that make people smile.
+              Other than that I've got the music taste of a divorced dad & I sing my heart out at karaoke, i play the guitar, piano, I killed 2 plants and currently taking care of 3 after learning a lesson.
             </p>
 
             {/* Mobile card spread display */}
