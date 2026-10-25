@@ -9,26 +9,26 @@ import { TopNav } from './components/TopNav';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink">
-      {/* Top navigation with equal-sized branding text on left and Resume & Behance on right */}
+    <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink overflow-x-hidden">
+      {/* Top navigation with branding on left and Resume & Behance on right */}
       <TopNav />
 
-      {/* Fixed bottom-left tactile pastel menu dock with vector cartoon pointer */}
+      {/* Persistent Left Navbar with tactile squircle buttons and active section filled button pop-up */}
       <LeftSidebar />
 
-      {/* Main continuous scroll stream aligned to unified 12-column grid */}
-      <div className="w-full min-h-screen pb-20 lg:pb-0">
+      {/* Main continuous scroll stream with dedicated desktop left offset for the navbar */}
+      <div className="w-full min-h-screen pb-24 lg:pb-0 lg:pl-52 xl:pl-60 2xl:pl-64">
         <main className="flex flex-col">
           {/* 1. Hello / Hero */}
           <Hero />
 
-          {/* 2. My Work (2 cards side by side, 6 rectangular cards) */}
+          {/* 2. My Work */}
           <Work />
 
-          {/* 3. 'bout me! (with card spread in left column) */}
+          {/* 3. 'bout me! */}
           <About />
 
-          {/* 4. Working with me (with card spread and skills & capabilities) */}
+          {/* 4. Working with me */}
           <WorkingWithMe />
 
           {/* 5. About me from others / Testimonials */}
