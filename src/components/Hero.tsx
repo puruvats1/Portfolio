@@ -54,7 +54,7 @@ export function Hero() {
 
   return (
     <section id="hero" className="relative min-h-[80vh] flex flex-col justify-center pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-18 lg:pb-20 overflow-hidden">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 xl:px-14">
+      <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:gap-12 items-center">
           
           {/* CENTER NARRATIVE & DIALOGUE CARD (Cols 1-7 on xl desktop) */}

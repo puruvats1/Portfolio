@@ -90,7 +90,7 @@ export function WorkingWithMe() {
     <section id="working-with-me" className="py-16 sm:py-20 lg:py-28 flex flex-col gap-20 sm:gap-24 lg:gap-28">
       
       {/* PART 1: Working with me */}
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-14">
+      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Columns 1-4: Section title "Working with me" sticky until scrolled past */}
           <div className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-28 self-start">
@@ -137,7 +137,7 @@ export function WorkingWithMe() {
       </div>
 
       {/* PART 2: Skills & capabilities */}
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-14 pt-16 border-t border-neutral-200/50">
+      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 pt-16 border-t border-neutral-200/50">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Columns 1-4: Title "Skills & capabilities" sticky until scrolled past */}
           <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">

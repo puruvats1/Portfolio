@@ -6,7 +6,7 @@ import { AboutFigmaCard } from './AboutFigmaCard';
 export function About() {
   return (
     <section id="about" className="py-16 sm:py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-14">
+      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Columns 1-4: Section title "'bout me!" sticky until scrolled past */}
           <div className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-28 self-start">

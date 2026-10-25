@@ -57,7 +57,7 @@ const PROJECTS: Project[] = [
 export function Work() {
   return (
     <section id="work" className="py-16 sm:py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-14">
+      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
         {/* Section title placed directly above project thumbnails */}
         <div className="mb-6 sm:mb-8 lg:mb-10">
           <ScrollRevealTitle>

@@ -1,19 +1,14 @@
 import { useState, useEffect } from 'react';
-import { motion, useMotionValue, useSpring } from 'motion/react';
+import { motion, useMotionValue } from 'motion/react';
 
 export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isPointerDown, setIsPointerDown] = useState(false);
 
-  // Smooth mouse coordinates with physics spring
+  // Normal hardware speed mouse coordinates (no spring smoothing, 1:1 instantaneous tracking)
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
-
-  // Tight, snappy spring tracking (no perceptible lag, silky smooth)
-  const springConfig = { damping: 32, stiffness: 650, mass: 0.1 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
     // Only enable on desktop pointer devices
@@ -68,28 +63,31 @@ export function CustomCursor() {
     <motion.div
       className="fixed top-0 left-0 z-[9999] pointer-events-none select-none hidden lg:block"
       style={{
-        x: smoothX,
-        y: smoothY,
+        x: mouseX,
+        y: mouseY,
       }}
     >
-      {/* Container aligned so the index fingertip is the exact click hotspot (offset -3px, -7px) */}
+      {/* 
+        Tilted 40 degrees to the right as requested.
+        transformOrigin is locked to the index fingertip (14px, 8px) with matching offset translate
+        so the fingertip is the exact click target.
+      */}
       <div
-        className="relative transition-transform duration-150 ease-out"
+        className="relative pointer-events-none transition-transform duration-100 ease-out"
         style={{
-          transform: `translate(-3px, -7px) scale(${
-            isPointerDown ? 0.88 : isHovering ? 1.08 : 1
-          }) rotate(${isPointerDown ? -6 : isHovering ? -4 : 0}deg)`,
+          transform: `translate(-14px, -8px) rotate(40deg) scale(${
+            isPointerDown ? 0.9 : isHovering ? 1.08 : 1
+          })`,
+          transformOrigin: '14px 8px',
         }}
       >
         {/* Soft Ellipse Blur Shadow matching Figma node 55:2553 */}
         <div
-          className="absolute left-[26px] top-[30px] w-[32px] h-[10px] rounded-full bg-neutral-900/18 blur-[5px] pointer-events-none transition-all duration-150"
+          className="absolute left-[18px] top-[28px] w-[32px] h-[10px] rounded-full bg-neutral-900/18 blur-[5px] pointer-events-none transition-all duration-100"
           style={{
-            transform: isPointerDown
-              ? 'scale(0.8) translateY(-2px)'
-              : isHovering
-              ? 'scale(1.2) translateY(3px)'
-              : 'scale(1)',
+            transform: `rotate(-15deg) scale(${
+              isPointerDown ? 0.8 : isHovering ? 1.15 : 1
+            })`,
             opacity: isPointerDown ? 0.28 : 0.2,
           }}
         />
@@ -98,7 +96,7 @@ export function CustomCursor() {
         <img
           src="./cursor_hand.png"
           alt=""
-          className="w-[62px] h-auto object-contain relative z-10 pointer-events-none select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.06)]"
+          className="w-[60px] h-auto object-contain relative z-10 pointer-events-none select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.06)]"
           draggable={false}
         />
       </div>

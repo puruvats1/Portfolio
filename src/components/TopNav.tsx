@@ -32,7 +32,7 @@ export function TopNav() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 lg:px-7 xl:px-10 2xl:px-14 py-3.5 sm:py-5 transition-all duration-300 pointer-events-none ${
+      className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 md:px-12 lg:px-8 xl:px-12 2xl:px-16 py-3.5 sm:py-5 transition-all duration-300 pointer-events-none ${
         isDark
           ? 'bg-[#111110]/90 backdrop-blur-md text-white border-b border-neutral-800'
           : 'bg-white/80 backdrop-blur-md text-[#111110]'
