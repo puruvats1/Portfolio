@@ -165,8 +165,8 @@ export function Work() {
                   rel="noopener noreferrer"
                   className="md:col-span-4 flex flex-col gap-3 group cursor-pointer w-full"
                 >
-                  {/* Clean thumbnail container with drop shadow on hover only */}
-                  <div className="w-full aspect-[16/10] sm:aspect-[4/3] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 transition-shadow duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.12)] relative overflow-hidden">
+                  {/* Clean thumbnail container with standardized 16:10 ratio & drop shadow on hover only */}
+                  <div className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 transition-shadow duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.12)] relative overflow-hidden">
                     <img
                       src={project.thumbnail}
                       alt={project.title}
@@ -229,8 +229,8 @@ export function Work() {
                     <span className="font-mono text-xs text-neutral-400 font-medium w-6 shrink-0">
                       {project.id}
                     </span>
-                    {/* Mini Thumbnail */}
-                    <div className="w-14 h-10 rounded-lg overflow-hidden shrink-0 border border-neutral-200/70 bg-neutral-100 hidden sm:block">
+                    {/* Mini Thumbnail with matching 16:10 ratio */}
+                    <div className="w-16 h-10 rounded-lg overflow-hidden shrink-0 border border-neutral-200/70 bg-neutral-100 hidden sm:block">
                       <img
                         src={project.thumbnail}
                         alt=""
