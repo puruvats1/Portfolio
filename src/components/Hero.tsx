@@ -53,13 +53,13 @@ export function Hero() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-[85vh] flex flex-col justify-center pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 overflow-hidden">
+    <section id="hero" className="relative min-h-[80vh] flex flex-col justify-center pt-16 sm:pt-20 lg:pt-24 pb-14 sm:pb-18 lg:pb-20 overflow-hidden">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 xl:px-14">
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:gap-12 items-center">
           
           {/* CENTER NARRATIVE & DIALOGUE CARD (Cols 1-7 on xl desktop) */}
           <div className="xl:col-span-7 flex flex-col justify-center">
-            <div className="flex flex-col gap-6 sm:gap-8 max-w-2xl xl:max-w-none">
+            <div className="flex flex-col gap-6 sm:gap-7 max-w-2xl xl:max-w-none">
               
               {/* Clay Dialogue Card (Matching Figma node 58:2972, w=601.26, h=249.65) */}
               <AnimatePresence mode="wait">
@@ -70,25 +70,26 @@ export function Hero() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.92, y: -10 }}
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="clay-dialogue-card border border-[#EDEDED] rounded-[24px] sm:rounded-[30px] p-5 sm:p-7 md:p-9 relative overflow-hidden"
+                    className="clay-dialogue-card border border-[#EDEDED] rounded-[24px] sm:rounded-[30px] px-6 sm:px-8 md:px-9 pt-3 sm:pt-3.5 pb-6 sm:pb-8 relative overflow-hidden"
                   >
-                    {/* Top line with close circle button */}
-                    <div className="flex items-center justify-end pb-3 sm:pb-4 mb-2">
+                    {/* Compact top bar with close circle button */}
+                    <div className="flex items-center justify-end h-7 sm:h-8">
                       <button
                         onClick={() => setIsDialogueOpen(false)}
-                        className="w-7 h-7 rounded-full bg-[#D9D9D9] hover:bg-[#C8C8C8] flex items-center justify-center transition-colors cursor-pointer group shadow-xs"
+                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#D9D9D9] hover:bg-[#C8C8C8] flex items-center justify-center transition-colors cursor-pointer group shadow-xs"
                         aria-label="Close dialog"
                         title="Dismiss card"
                       >
                         <img
                           src="./close_icon.svg"
                           alt="Close"
-                          className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity"
+                          className="w-3 h-3 sm:w-3.5 sm:h-3.5 opacity-70 group-hover:opacity-100 transition-opacity"
                         />
                       </button>
                     </div>
 
-                    <div className="h-[1px] w-full bg-[#EAEAEA] mb-5 sm:mb-6 -mt-2" />
+                    {/* Edge-to-edge subtle hairline divider */}
+                    <div className="h-[1px] -mx-6 sm:-mx-8 md:-mx-9 bg-[#EAEAEA] mt-2 sm:mt-2.5 mb-4 sm:mb-5" />
 
                     {/* Dialogue Main Statement - DM Sans SemiBold 32.29px / 1.2em */}
                     <p className="font-sans text-[20px] sm:text-[24px] md:text-[28px] xl:text-[32.3px] font-semibold leading-[1.25] sm:leading-[1.2] tracking-[-0.015em]">

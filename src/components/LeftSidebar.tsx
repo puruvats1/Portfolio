@@ -10,13 +10,13 @@ export interface NavItem {
   icon: string;
   gradient: string;
   border: string;
-  activeBorder: string;
   textColor: string;
   btnShadow: string;
   pillShadow: string;
 }
 
 // Exactly calibrated to Figma node 58:3013 (Blue button sample) & node 46:1356 (Navbar stacked state)
+// No dark strokes or colored drop shadows
 export const NAV_ITEMS: NavItem[] = [
   {
     id: 'hero',
@@ -24,8 +24,7 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: 'hello!',
     icon: './waving_hand.svg',
     gradient: 'from-[#FFF9CE] to-[#FEEA80]',
-    border: 'border-[#F7DF59]',
-    activeBorder: 'border-[#EAB308]',
+    border: 'border-[#FEEA80]/80',
     textColor: 'text-[#92400E]',
     btnShadow: 'btn-clay-yellow',
     pillShadow: 'pill-clay-yellow',
@@ -36,8 +35,7 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: ':work:',
     icon: './work_icon.svg',
     gradient: 'from-[#E6F1FE] to-[#72BDFF]', // Exact Figma node 58:3013
-    border: 'border-[#93C5FD]',
-    activeBorder: 'border-[#2563EB]',
+    border: 'border-[#93C5FD]/60',
     textColor: 'text-[#1D4ED8]',
     btnShadow: 'btn-clay-blue',
     pillShadow: 'pill-clay-blue',
@@ -48,8 +46,7 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: "'about'",
     icon: './about_icon.svg',
     gradient: 'from-[#FFE9DC] to-[#FED2BE]',
-    border: 'border-[#FDBA74]',
-    activeBorder: 'border-[#EA580C]',
+    border: 'border-[#FED2BE]/80',
     textColor: 'text-[#C2410C]',
     btnShadow: 'btn-clay-peach',
     pillShadow: 'pill-clay-peach',
@@ -60,8 +57,7 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: '<skills>',
     icon: './skills_icon.svg',
     gradient: 'from-[#EDFA7E] to-[#D5F24B]',
-    border: 'border-[#BEF264]',
-    activeBorder: 'border-[#65A30D]',
+    border: 'border-[#D5F24B]/70',
     textColor: 'text-[#4D7C0F]',
     btnShadow: 'btn-clay-lime',
     pillShadow: 'pill-clay-lime',
@@ -72,8 +68,7 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: "/t'monials",
     icon: './testimonials_icon.svg',
     gradient: 'from-[#D7F8E8] to-[#B2F2D1]',
-    border: 'border-[#6EE7B7]',
-    activeBorder: 'border-[#059669]',
+    border: 'border-[#B2F2D1]/80',
     textColor: 'text-[#047857]',
     btnShadow: 'btn-clay-mint',
     pillShadow: 'pill-clay-mint',
@@ -84,8 +79,7 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: '#contact',
     icon: './contact_icon.svg',
     gradient: 'from-[#FFE3EA] to-[#FFC3D1]',
-    border: 'border-[#FDA4AF]',
-    activeBorder: 'border-[#E11D48]',
+    border: 'border-[#FFC3D1]/80',
     textColor: 'text-[#BE123C]',
     btnShadow: 'btn-clay-pink',
     pillShadow: 'pill-clay-pink',
@@ -172,7 +166,9 @@ export function LeftSidebar() {
                 onMouseLeave={() => setHoveredTitleId(null)}
                 onClick={() => scrollTo(item.id)}
                 className={`w-[89px] h-[69px] rounded-[26px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${
-                  isActive ? `${item.activeBorder} scale-105` : item.border
+                  item.border
+                } ${
+                  isActive ? 'scale-105' : 'hover:scale-105'
                 } ${item.btnShadow} flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200`}
                 aria-label={item.label}
               >
