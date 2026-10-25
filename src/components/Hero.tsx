@@ -162,7 +162,7 @@ export function Hero() {
               >
                 {/* 1. TOP-HALF LEFT END ICONS: Design, Code, Research, Art (nodes 58:2960 to 58:2963) */}
                 <div
-                  className="absolute left-3.5 sm:left-4 top-4 flex flex-col gap-2.5 z-20"
+                  className="absolute left-3.5 sm:left-4 top-4 flex flex-col gap-2 z-20"
                   aria-label="Capabilities: Design, Code, Research, Art"
                 >
                   {profileLeftIcons.map((item) => {
@@ -171,9 +171,9 @@ export function Hero() {
                       <div
                         key={item.id}
                         title={item.label}
-                        className="w-[38px] h-[46px] rounded-[20px] bg-[#E8E8E8] shadow-[inset_0px_1.5px_2px_rgba(0,0,0,0.12),0px_2px_4px_rgba(0,0,0,0.04)] border border-neutral-300/40 flex items-center justify-center text-neutral-600 hover:text-neutral-900 transition-colors cursor-default group"
+                        className="w-[36px] h-[40px] flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors cursor-default group"
                       >
-                        <IconComponent className="w-4 h-4 transition-transform group-hover:scale-110" />
+                        <IconComponent className="w-5 h-5 transition-transform group-hover:scale-115" />
                       </div>
                     );
                   })}

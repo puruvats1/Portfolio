@@ -150,7 +150,7 @@ export function LeftSidebar() {
           setIsHoveredNear(false);
           setHoveredTitleId(null);
         }}
-        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-1/2 -translate-y-1/2 z-40 flex-col -space-y-1.5 select-none py-6 pr-24 -mr-24"
+        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-1/2 -translate-y-1/2 z-40 flex-col -space-y-2 select-none py-6 pr-24 -mr-24"
         aria-label="Website Navigation"
       >
         {NAV_ITEMS.map((item) => {
@@ -163,7 +163,7 @@ export function LeftSidebar() {
                 isActive ? 'z-20' : 'z-10'
               }`}
             >
-              {/* Tactile Pastel Jelly-Clay Squircle Button: Tightly stacked (touching/nested) */}
+              {/* Tactile Pastel Jelly-Clay Squircle Button: Exactly matching Figma node 58:2744 (w=89.37, h=68.65, r=25.9) */}
               <motion.button
                 whileHover={{ scale: 1.05, y: -1 }}
                 whileTap={{ scale: 0.95 }}
@@ -171,7 +171,7 @@ export function LeftSidebar() {
                 onMouseEnter={() => setHoveredTitleId(item.id)}
                 onMouseLeave={() => setHoveredTitleId(null)}
                 onClick={() => scrollTo(item.id)}
-                className={`w-[82px] h-[60px] xl:w-[86px] xl:h-[64px] rounded-[24px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${
+                className={`w-[89px] h-[69px] rounded-[26px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${
                   isActive ? `${item.activeBorder} scale-105` : item.border
                 } ${item.btnShadow} flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200`}
                 aria-label={item.label}
@@ -179,7 +179,7 @@ export function LeftSidebar() {
                 <img
                   src={item.icon}
                   alt={item.label}
-                  className="w-[30px] h-[30px] xl:w-[32px] xl:h-[32px] object-contain select-none pointer-events-none opacity-85 transition-transform duration-200 group-hover:scale-110"
+                  className="w-[34px] h-[34px] object-contain select-none pointer-events-none opacity-80 transition-transform duration-200 group-hover:scale-110"
                 />
               </motion.button>
 
@@ -197,7 +197,7 @@ export function LeftSidebar() {
                       onMouseEnter={() => setHoveredTitleId(item.id)}
                       onMouseLeave={() => setHoveredTitleId(null)}
                       onClick={() => scrollTo(item.id)}
-                      className={`px-4 py-2 rounded-[18px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.pillShadow} ${item.textColor} font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] cursor-pointer select-none shadow-xs`}
+                      className={`px-5 py-2.5 rounded-[20px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.pillShadow} ${item.textColor} font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] cursor-pointer select-none shadow-xs`}
                     >
                       {isAnyHovered ? item.hoverLabel : item.label}
                     </motion.button>
