@@ -47,42 +47,68 @@ body {
 }
 
 /* ========================================================
-   Tactile 3D Jelly-Clay Shadows matching Figma node 58:3013
-   Clean neutral drop shadow (NO colored drop shadow) + top specular bevel + bottom diffuse gloss
+   Tactile 3D Jelly-Clay Shadows derived directly from Figma code:
+   box-shadow: 0px 4px 10px <color>, inset 0px -16px 17.5px rgba(255, 255, 255, 0.63), inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95)
    ======================================================== */
 
-.btn-clay-yellow,
-.btn-clay-blue,
-.btn-clay-peach,
-.btn-clay-lime,
-.btn-clay-mint,
-.btn-clay-pink {
-  box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.05),
-              inset 0px 2.59px 0.86px 1.73px rgba(255, 255, 255, 0.95),
-              inset 0px -27.63px 30.22px 0px rgba(255, 255, 255, 0.63);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+.pill-clay-blue,
+.btn-clay-blue {
+  box-shadow: 0px 4px 10px rgba(44, 20, 152, 0.1),
+              inset 0px -16px 17.5px rgba(255, 255, 255, 0.63),
+              inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95);
 }
 
+.pill-clay-yellow,
+.btn-clay-yellow {
+  box-shadow: 0px 4px 10px rgba(180, 83, 9, 0.1),
+              inset 0px -16px 17.5px rgba(255, 255, 255, 0.63),
+              inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95);
+}
+
+.pill-clay-peach,
+.btn-clay-peach {
+  box-shadow: 0px 4px 10px rgba(194, 65, 12, 0.1),
+              inset 0px -16px 17.5px rgba(255, 255, 255, 0.63),
+              inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95);
+}
+
+.pill-clay-lime,
+.btn-clay-lime {
+  box-shadow: 0px 4px 10px rgba(77, 124, 15, 0.12),
+              inset 0px -16px 17.5px rgba(255, 255, 255, 0.63),
+              inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95);
+}
+
+.pill-clay-mint,
+.btn-clay-mint {
+  box-shadow: 0px 4px 10px rgba(4, 120, 87, 0.1),
+              inset 0px -16px 17.5px rgba(255, 255, 255, 0.63),
+              inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95);
+}
+
+.pill-clay-pink,
+.btn-clay-pink {
+  box-shadow: 0px 4px 10px rgba(190, 18, 60, 0.1),
+              inset 0px -16px 17.5px rgba(255, 255, 255, 0.63),
+              inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95);
+}
+
+/* Hover state: clean elevation without colored drop shadow on hover */
 .btn-clay-yellow:hover,
 .btn-clay-blue:hover,
 .btn-clay-peach:hover,
 .btn-clay-lime:hover,
 .btn-clay-mint:hover,
-.btn-clay-pink:hover {
-  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.07),
-              inset 0px 2.59px 0.86px 1.73px rgba(255, 255, 255, 0.95),
-              inset 0px -27.63px 30.22px 0px rgba(255, 255, 255, 0.63);
-}
-
-/* Supporting text popup pill shadows: Neutral drop shadow + crisp white inner gloss */
-.pill-clay-yellow,
-.pill-clay-blue,
-.pill-clay-peach,
-.pill-clay-lime,
-.pill-clay-mint,
-.pill-clay-pink {
-  box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.05),
-              inset 0px 2px 0.8px 1.2px rgba(255, 255, 255, 0.95),
+.btn-clay-pink:hover,
+.pill-clay-yellow:hover,
+.pill-clay-blue:hover,
+.pill-clay-peach:hover,
+.pill-clay-lime:hover,
+.pill-clay-mint:hover,
+.pill-clay-pink:hover {
+  box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.08),
+              inset 0px -16px 17.5px rgba(255, 255, 255, 0.63),
+              inset 0px 1.5px 0.5px 1px rgba(255, 255, 255, 0.95);
 }
 
 .clay-dialogue-card {

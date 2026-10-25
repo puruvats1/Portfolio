@@ -10,13 +10,12 @@ export interface NavItem {
   icon: string;
   gradient: string;
   border: string;
-  textColor: string;
+  textGradient: string;
   btnShadow: string;
   pillShadow: string;
 }
 
-// Exactly calibrated to Figma node 58:3013 (Blue button sample) & node 46:1356 (Navbar stacked state)
-// No dark strokes or colored drop shadows
+// Exactly derived from the user's Figma button code (w=99.16, h=43, p=10px 16px, gap=10px, r=15px, border=1px solid)
 export const NAV_ITEMS: NavItem[] = [
   {
     id: 'hero',
@@ -24,8 +23,8 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: 'hello!',
     icon: './waving_hand.svg',
     gradient: 'from-[#FFF9CE] to-[#FEEA80]',
-    border: 'border-[#FEEA80]/80',
-    textColor: 'text-[#92400E]',
+    border: 'border-[#F7DF59]',
+    textGradient: 'from-[#92400E] to-[#713F12]',
     btnShadow: 'btn-clay-yellow',
     pillShadow: 'pill-clay-yellow',
   },
@@ -34,9 +33,9 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'work',
     hoverLabel: ':work:',
     icon: './work_icon.svg',
-    gradient: 'from-[#E6F1FE] to-[#72BDFF]', // Exact Figma node 58:3013
-    border: 'border-[#93C5FD]/60',
-    textColor: 'text-[#1D4ED8]',
+    gradient: 'from-[#E6F1FE] to-[#72BDFF]', // Exact: linear-gradient(180deg, #E6F1FE 0%, #72BDFF 100%)
+    border: 'border-[#B7D9FF]',             // Exact: 1px solid #B7D9FF
+    textGradient: 'from-[#1D4ED8] to-[#1E3A8A]', // Exact: linear-gradient(180deg, #1D4ED8 0%, #1E3A8A 100%)
     btnShadow: 'btn-clay-blue',
     pillShadow: 'pill-clay-blue',
   },
@@ -46,8 +45,8 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: "'about'",
     icon: './about_icon.svg',
     gradient: 'from-[#FFE9DC] to-[#FED2BE]',
-    border: 'border-[#FED2BE]/80',
-    textColor: 'text-[#C2410C]',
+    border: 'border-[#FDBA74]',
+    textGradient: 'from-[#C2410C] to-[#9A3412]',
     btnShadow: 'btn-clay-peach',
     pillShadow: 'pill-clay-peach',
   },
@@ -57,8 +56,8 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: '<skills>',
     icon: './skills_icon.svg',
     gradient: 'from-[#EDFA7E] to-[#D5F24B]',
-    border: 'border-[#D5F24B]/70',
-    textColor: 'text-[#4D7C0F]',
+    border: 'border-[#BEF264]',
+    textGradient: 'from-[#3F6212] to-[#294109]',
     btnShadow: 'btn-clay-lime',
     pillShadow: 'pill-clay-lime',
   },
@@ -68,8 +67,8 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: "/t'monials",
     icon: './testimonials_icon.svg',
     gradient: 'from-[#D7F8E8] to-[#B2F2D1]',
-    border: 'border-[#B2F2D1]/80',
-    textColor: 'text-[#047857]',
+    border: 'border-[#6EE7B7]',
+    textGradient: 'from-[#047857] to-[#064E3B]',
     btnShadow: 'btn-clay-mint',
     pillShadow: 'pill-clay-mint',
   },
@@ -79,8 +78,8 @@ export const NAV_ITEMS: NavItem[] = [
     hoverLabel: '#contact',
     icon: './contact_icon.svg',
     gradient: 'from-[#FFE3EA] to-[#FFC3D1]',
-    border: 'border-[#FFC3D1]/80',
-    textColor: 'text-[#BE123C]',
+    border: 'border-[#FDA4AF]',
+    textGradient: 'from-[#BE123C] to-[#881337]',
     btnShadow: 'btn-clay-pink',
     pillShadow: 'pill-clay-pink',
   },
@@ -157,7 +156,7 @@ export function LeftSidebar() {
                 isActive ? 'z-20' : 'z-10'
               }`}
             >
-              {/* Tactile Pastel Jelly-Clay Squircle Button: Exactly matching Figma node 58:2744 (w=89.37, h=68.65, r=25.9) */}
+              {/* Tactile Pastel Jelly-Clay Squircle Button: (w=89, h=69, r=26px) with clean 1px border & 3-tier clay shadow */}
               <motion.button
                 whileHover={{ scale: 1.05, y: -1 }}
                 whileTap={{ scale: 0.95 }}
@@ -165,7 +164,7 @@ export function LeftSidebar() {
                 onMouseEnter={() => setHoveredTitleId(item.id)}
                 onMouseLeave={() => setHoveredTitleId(null)}
                 onClick={() => scrollTo(item.id)}
-                className={`w-[89px] h-[69px] rounded-[26px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${
+                className={`w-[89px] h-[69px] rounded-[26px] bg-gradient-to-b ${item.gradient} border ${
                   item.border
                 } ${
                   isActive ? 'scale-105' : 'hover:scale-105'
@@ -180,10 +179,15 @@ export function LeftSidebar() {
               </motion.button>
 
               {/* Smart Label Popup Area */}
-              <div className="flex items-center min-w-[120px]">
+              <div className="flex items-center min-w-[130px]">
                 <AnimatePresence mode="wait">
                   {isActive ? (
-                    /* Active section filled supporting button: ALWAYS visible (shows hoverLabel when any title hovered) */
+                    /* Active section filled link button: Directly derived from Figma node 58:2744 / user inspect code:
+                       display: flex; flex-direction: row; align-items: center; padding: 10px 16px; gap: 10px;
+                       height: 43px; border-radius: 15px; border: 1px solid;
+                       SVG: 18px x 18px, opacity 0.8;
+                       Text: DM Sans Bold 16px / 24px, letter-spacing -0.4px, lowercase, gradient text fill, opacity 0.8
+                    */
                     <motion.button
                       key={`active-pill-${item.id}-${isAnyHovered}`}
                       initial={{ scale: 0.88, opacity: 0, x: -6 }}
@@ -193,9 +197,18 @@ export function LeftSidebar() {
                       onMouseEnter={() => setHoveredTitleId(item.id)}
                       onMouseLeave={() => setHoveredTitleId(null)}
                       onClick={() => scrollTo(item.id)}
-                      className={`px-5 py-2.5 rounded-[20px] bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.pillShadow} ${item.textColor} font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] cursor-pointer select-none shadow-xs`}
+                      className={`h-[43px] px-4 py-[10px] rounded-[15px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center gap-[10px] cursor-pointer select-none transition-all duration-200`}
                     >
-                      {isAnyHovered ? item.hoverLabel : item.label}
+                      <img
+                        src={item.icon}
+                        alt=""
+                        className="w-[18px] h-[18px] object-contain select-none pointer-events-none opacity-80 shrink-0"
+                      />
+                      <span
+                        className={`font-sans font-bold text-[16px] leading-[24px] tracking-[-0.4px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-80 whitespace-nowrap`}
+                      >
+                        {isAnyHovered ? item.hoverLabel : item.label}
+                      </span>
                     </motion.button>
                   ) : isAnyHovered ? (
                     /* Non-selected section grey title: Appears when hovered near / over any title */
@@ -208,7 +221,7 @@ export function LeftSidebar() {
                       onMouseEnter={() => setHoveredTitleId(item.id)}
                       onMouseLeave={() => setHoveredTitleId(null)}
                       onClick={() => scrollTo(item.id)}
-                      className="font-display font-bold text-[20px] leading-[24px] tracking-[-0.02em] text-[#A3A3A3] hover:text-[#111110] hover:scale-105 transition-all duration-150 cursor-pointer select-none px-2 py-1 text-left"
+                      className="font-sans font-bold text-[16px] leading-[24px] tracking-[-0.4px] lowercase text-[#A3A3A3] opacity-80 hover:opacity-100 hover:text-[#111110] hover:scale-105 transition-all duration-150 cursor-pointer select-none px-2 py-1 text-left"
                     >
                       {item.hoverLabel}
                     </motion.button>
@@ -222,7 +235,7 @@ export function LeftSidebar() {
 
       {/* MOBILE & TABLET FLOATING DOCK */}
       <nav
-        className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 p-1.5 sm:p-2 rounded-full bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[calc(100vw-20px)] overflow-x-auto no-scrollbar"
+        className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 p-1.5 sm:p-2 rounded-[20px] bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[calc(100vw-20px)] overflow-x-auto no-scrollbar"
         aria-label="Mobile Navigation"
       >
         {NAV_ITEMS.map((item) => {
@@ -232,19 +245,19 @@ export function LeftSidebar() {
             <motion.button
               key={item.id}
               layout
-              whileTap={{ scale: 0.92 }}
+              whileTap={{ scale: 0.94 }}
               onClick={() => scrollTo(item.id)}
-              className={`flex items-center gap-1.5 py-1.5 px-3 rounded-[18px] transition-all duration-200 shrink-0 cursor-pointer ${
+              className={`h-[43px] rounded-[15px] border transition-all duration-200 shrink-0 cursor-pointer flex items-center ${
                 isActive
-                  ? `bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.pillShadow}`
-                  : `bg-gradient-to-b ${item.gradient} border-[1.73px] ${item.border} ${item.btnShadow} opacity-85`
+                  ? `px-3.5 sm:px-4 py-[10px] gap-[10px] bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow}`
+                  : `w-[43px] justify-center bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85`
               }`}
               aria-label={item.label}
             >
               <img
                 src={item.icon}
                 alt={item.label}
-                className="w-5 h-5 object-contain select-none pointer-events-none opacity-85"
+                className="w-[18px] h-[18px] object-contain select-none pointer-events-none opacity-80 shrink-0"
               />
 
               <AnimatePresence>
@@ -254,7 +267,7 @@ export function LeftSidebar() {
                     animate={{ opacity: 1, width: 'auto' }}
                     exit={{ opacity: 0, width: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    className={`font-display font-bold text-[14px] tracking-tight lowercase whitespace-nowrap overflow-hidden ${item.textColor}`}
+                    className={`font-sans font-bold text-[16px] leading-[24px] tracking-[-0.4px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-80 whitespace-nowrap overflow-hidden`}
                   >
                     {item.label}
                   </motion.span>
