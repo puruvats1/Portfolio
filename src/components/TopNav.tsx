@@ -22,14 +22,6 @@ export function TopNav() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToContact = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const el = document.getElementById('contact');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 py-3.5 sm:py-5 transition-all duration-300 pointer-events-none ${
@@ -81,8 +73,9 @@ export function TopNav() {
 
           {/* Resume Button: mild black/grey pill */}
           <a
-            href="#contact"
-            onClick={scrollToContact}
+            href="/Puru_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className={`group inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-[13px] font-display text-[12px] leading-[17px] font-medium transition-all duration-200 cursor-pointer shadow-xs active:scale-95 ${
               isDark
                 ? 'bg-white text-[#2C2C2A] hover:bg-neutral-200'

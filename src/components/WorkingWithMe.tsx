@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import {
   PenTool,
   Code2,
@@ -14,11 +15,10 @@ import {
   Play,
   Palette,
 } from 'lucide-react';
-import { CardSpread } from './CardSpread';
 import { ScrollRevealTitle } from './ScrollRevealTitle';
+import { GreyWords } from './ui/GreyWords';
 
 export function WorkingWithMe() {
-  // Retaining the two most essential core principles (2 paragraphs removed as requested)
   const principles = [
     {
       num: '01',
@@ -78,9 +78,9 @@ export function WorkingWithMe() {
     <section className="py-16 sm:py-20 lg:py-28 flex flex-col gap-20 sm:gap-24 lg:gap-28 overflow-visible">
       
       {/* PART 1: Working with me (counted as part of About) */}
-      <div id="working-with-me" className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 overflow-visible">
+      <div id="working-with-me" className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 overflow-visible scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
-          {/* Columns 1-3: Section title "Working with me" sticky until scrolled past */}
+          {/* Columns 1-3: Section title "Working with me" and "it's in the works" illustration */}
           <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
               <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
@@ -88,38 +88,52 @@ export function WorkingWithMe() {
               </h2>
             </ScrollRevealTitle>
 
-            <div className="hidden lg:block pt-1 -ml-1">
-              <CardSpread label="Studio artifacts" />
-            </div>
+            {/* "it's in the works" illustration replacing the previous image */}
+            <motion.div
+              whileHover={{ y: -3, scale: 1.02 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+              className="w-full max-w-[280px] sm:max-w-[320px] select-none pt-1"
+            >
+              <img
+                src="/its_in_the_works.png"
+                alt="It's in the works :P"
+                className="w-full h-auto object-contain select-none pointer-events-none drop-shadow-sm"
+                loading="eager"
+              />
+            </motion.div>
           </div>
 
-          {/* Columns 4-8: Principles editorial (5 of 8 columns, 2 focused paragraphs) */}
+          {/* Columns 4-8: Principles with rectangular grey shapes instead of words (5 of 8 columns) */}
           <div className="lg:col-span-5 max-w-3xl space-y-12 sm:space-y-16">
             {principles.map((p) => (
-              <article key={p.num} className="flex flex-col gap-3">
+              <article key={p.num} className="flex flex-col gap-3.5">
                 <div className="flex items-baseline gap-3">
                   <span className="text-xs font-semibold text-neutral-400">
                     {p.num}
                   </span>
-                  <h3 className="font-display text-xl font-semibold heading-gradient">
-                    {p.title}
-                  </h3>
+                  <GreyWords
+                    text={p.title}
+                    height="h-5"
+                    roundness="rounded-[4px]"
+                    color="bg-neutral-300"
+                  />
                 </div>
 
-                <p className="text-sm font-medium text-neutral-800">
-                  {p.lead}
-                </p>
+                <GreyWords
+                  text={p.lead}
+                  height="h-4"
+                  roundness="rounded-[3px]"
+                  color="bg-neutral-300/80"
+                />
 
-                <p className="text-base text-neutral-600 leading-relaxed font-normal">
-                  {p.text}
-                </p>
+                <GreyWords
+                  text={p.text}
+                  height="h-3.5"
+                  roundness="rounded-[3px]"
+                  color="bg-neutral-200/90"
+                />
               </article>
             ))}
-
-            {/* Mobile card spread display */}
-            <div className="lg:hidden mt-8">
-              <CardSpread label="Studio artifacts" />
-            </div>
           </div>
         </div>
       </div>

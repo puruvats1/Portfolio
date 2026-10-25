@@ -4,16 +4,16 @@ import { ScrollRevealTitle } from './ScrollRevealTitle';
 
 export function Contact() {
   return (
-    <section
+    <footer
       id="contact"
-      className="relative pt-20 pb-32 sm:pb-36 lg:pt-28 lg:pb-32 bg-ink text-canvas rounded-t-[2.5rem] mt-20 sm:mt-24 border-t border-white/10 will-change-transform"
+      className="relative pt-16 pb-28 sm:pb-32 lg:pt-20 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] mt-20 sm:mt-24 border-t border-white/10 will-change-transform scroll-mt-24"
     >
       <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start"
         >
           {/* Columns 1-3: Section title "Work with me" sticky until scrolled past */}
@@ -25,33 +25,25 @@ export function Contact() {
             </ScrollRevealTitle>
           </div>
 
-          {/* Columns 4-8: Contact details and footer (5 of 8 columns) */}
-          <div className="lg:col-span-5 flex flex-col gap-12">
-            <div className="flex flex-col gap-2">
-              <p className="font-display text-2xl sm:text-3xl font-semibold leading-tight tracking-tight">
-                <span className="heading-gradient-light">
-                  Got something complicated?
-                </span>
-              </p>
-              <p className="font-display text-lg sm:text-xl font-normal text-neutral-400">
-                Let's figure it out together.
-              </p>
+          {/* Columns 4-8: Minimal Contact details and footer links (paragraphs removed) */}
+          <div className="lg:col-span-5 flex flex-col gap-10">
+            <div>
+              <h3 className="font-display text-2xl sm:text-3xl font-semibold leading-tight tracking-tight heading-gradient-light">
+                Got something complicated?
+              </h3>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-10 items-end">
-              <div className="flex flex-col gap-1.5">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="flex flex-col gap-1">
                 <span className="font-display text-xl font-semibold heading-gradient-light">Puru.</span>
                 <span className="text-neutral-400 text-sm font-normal">Interaction & Product Designer · IDC, IIT Bombay</span>
-                <p className="text-neutral-400 text-sm max-w-sm mt-3 leading-relaxed font-normal">
-                  Always eager to discuss complex interaction models, human-computer interfaces, or new design initiatives.
-                </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 md:justify-end">
                 <motion.a 
                   whileHover={{ y: -2 }}
                   href="mailto:puruvats@iitb.ac.in" 
-                  className="flex items-center justify-between gap-3 px-5 py-3.5 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
+                  className="flex items-center justify-between gap-3 px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
                 >
                   <div className="flex items-center gap-2">
                     <Mail size={15} />
@@ -65,7 +57,7 @@ export function Contact() {
                   href="https://www.linkedin.com" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 px-5 py-3.5 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
+                  className="flex items-center justify-between gap-3 px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
                 >
                   <div className="flex items-center gap-2">
                     <ExternalLink size={15} />
@@ -76,7 +68,7 @@ export function Contact() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400 font-normal">
+            <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400 font-normal">
               <span>© 2026 Puru. Crafted with tactile care.</span>
               <div className="flex items-center gap-4">
                 <a 
@@ -108,6 +100,6 @@ export function Contact() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </footer>
   );
 }

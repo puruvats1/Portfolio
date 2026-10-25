@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Quote } from 'lucide-react';
-import { motion } from 'motion/react';
 import { ScrollRevealTitle } from './ScrollRevealTitle';
+import { GreyWords } from './ui/GreyWords';
 
 interface Testimonial {
   id: string;
@@ -78,89 +78,77 @@ const TESTIMONIALS: Testimonial[] = [
       />
     ),
   },
-  {
-    id: '5',
-    name: 'Maya Kulkarni',
-    initials: 'MK',
-    role: 'Design Peer & Researcher',
-    company: 'IDC, IIT Bombay',
-    quote:
-      'Whenever our cohort gets stuck on interaction loops, Puru is the person we brainstorm with. He builds functional interactive demos overnight that turn circular arguments into concrete decisions.',
-    renderLogo: () => (
-      <span className="text-xs font-semibold text-neutral-800 tracking-tight">
-        IDC, IIT Bombay
-      </span>
-    ),
-  },
 ];
 
 export function Testimonials() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   return (
-    <section id="testimonials" className="py-16 sm:py-20 lg:py-28 overflow-visible">
+    <section id="testimonials" className="py-16 sm:py-20 lg:py-28 overflow-visible scroll-mt-24">
       <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
-          {/* Columns 1-3: Section title "About me from others" sticky until scrolled past */}
-          <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">
-            <ScrollRevealTitle>
-              <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight heading-gradient">
-                About me from others
-              </h2>
-            </ScrollRevealTitle>
-          </div>
+        
+        {/* Title shifted to top, no longer column-divided */}
+        <div className="mb-8 sm:mb-10 lg:mb-12">
+          <ScrollRevealTitle>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight heading-gradient">
+              About me from others
+            </h2>
+          </ScrollRevealTitle>
+        </div>
 
-          {/* Columns 4-8: Testimonial cards (5 of 8 columns) */}
-          <div className="lg:col-span-5 overflow-visible">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-              {TESTIMONIALS.map((t) => {
-                const isHovered = hoveredCard === t.id;
-                return (
-                  <div
-                    key={t.id}
-                    onMouseEnter={() => setHoveredCard(t.id)}
-                    onMouseLeave={() => setHoveredCard(null)}
-                    className={`
-                      flex flex-col justify-between p-5 sm:p-7 rounded-[20px] sm:rounded-2xl border border-neutral-200/80 transition-shadow duration-300
-                      bg-[#FDFDFD]
-                      ${isHovered ? 'shadow-[0_12px_28px_rgba(0,0,0,0.08)]' : 'shadow-[0_2px_8px_rgba(0,0,0,0.02)]'}
-                    `}
-                  >
-                    <div className="flex flex-col gap-4">
-                      <Quote size={20} className="text-neutral-400" />
-                      <p className="text-sm text-neutral-700 leading-relaxed font-normal">
-                        "{t.quote}"
-                      </p>
+        {/* 4 Testimonial cards shifted below title, taking full horizontal width */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7">
+          {TESTIMONIALS.map((t) => {
+            const isHovered = hoveredCard === t.id;
+            return (
+              <div
+                key={t.id}
+                onMouseEnter={() => setHoveredCard(t.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+                className={`
+                  flex flex-col justify-between p-6 sm:p-8 rounded-[20px] sm:rounded-2xl border border-neutral-200/80 transition-shadow duration-300
+                  bg-[#FDFDFD]
+                  ${isHovered ? 'shadow-[0_12px_28px_rgba(0,0,0,0.08)]' : 'shadow-[0_2px_8px_rgba(0,0,0,0.02)]'}
+                `}
+              >
+                {/* Content replaced with rectangular grey shapes instead of words */}
+                <div className="flex flex-col gap-4">
+                  <Quote size={20} className="text-neutral-400 shrink-0" />
+                  <GreyWords
+                    text={t.quote}
+                    height="h-3.5"
+                    roundness="rounded-[3px]"
+                    color="bg-neutral-200/90"
+                  />
+                </div>
+
+                <div className="mt-8 pt-5 border-t border-neutral-100 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    {/* Name initial profile icon */}
+                    <div className="w-9 h-9 rounded-full bg-[#EAEAE6] border border-neutral-300/80 flex items-center justify-center font-display font-bold text-xs text-ink shrink-0">
+                      {t.initials}
                     </div>
 
-                    <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-neutral-100 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        {/* Name initial profile icon */}
-                        <div className="w-9 h-9 rounded-full bg-[#EAEAE6] border border-neutral-300/80 flex items-center justify-center font-display font-bold text-xs text-ink shrink-0">
-                          {t.initials}
-                        </div>
-
-                        <div className="flex flex-col">
-                          <span className="font-display font-semibold text-sm text-ink">
-                            {t.name}
-                          </span>
-                          <span className="text-xs text-neutral-500 font-normal">
-                            {t.role}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Company logo inside testimonial card */}
-                      <div className="flex items-center justify-end shrink-0 max-w-[120px]">
-                        {t.renderLogo()}
-                      </div>
+                    <div className="flex flex-col">
+                      <span className="font-display font-semibold text-sm text-ink">
+                        {t.name}
+                      </span>
+                      <span className="text-xs text-neutral-500 font-normal">
+                        {t.role}
+                      </span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </div>
+
+                  {/* Company logo inside testimonial card */}
+                  <div className="flex items-center justify-end shrink-0 max-w-[120px]">
+                    {t.renderLogo()}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
+
       </div>
     </section>
   );

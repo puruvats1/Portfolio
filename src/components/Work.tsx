@@ -10,6 +10,7 @@ interface Project {
   year: string;
   domain: string;
   tags: string[];
+  link: string;
 }
 
 const PROJECTS: Project[] = [
@@ -20,6 +21,7 @@ const PROJECTS: Project[] = [
     year: '2026',
     domain: 'Spatial systems',
     tags: ['UX Design', 'Spatial', 'Prototype'],
+    link: 'https://www.behance.net/gallery/235732005/Ek-time-Timetable-Managment-System-UX',
   },
   {
     id: '02',
@@ -28,6 +30,7 @@ const PROJECTS: Project[] = [
     year: '2026',
     domain: 'Enterprise finance',
     tags: ['UX Design', 'App', 'Fintech'],
+    link: 'https://www.behance.net/puruvats',
   },
   {
     id: '03',
@@ -36,6 +39,7 @@ const PROJECTS: Project[] = [
     year: '2025',
     domain: 'Gamification',
     tags: ['UX Design', 'Prototype', 'AI/ML'],
+    link: 'https://www.behance.net/puruvats',
   },
   {
     id: '04',
@@ -44,6 +48,7 @@ const PROJECTS: Project[] = [
     year: '2025',
     domain: 'Human factors',
     tags: ['UX Design', 'App', 'Systems'],
+    link: 'https://www.behance.net/gallery/235828073/Strava-Ergonomic-Evaluation-Redesign',
   },
   {
     id: '05',
@@ -52,6 +57,7 @@ const PROJECTS: Project[] = [
     year: '2025',
     domain: 'Creative tools',
     tags: ['UX Design', 'App', 'Prototype'],
+    link: 'https://www.behance.net/gallery/235067237/Tring-Tring-Cycle-Sharing-Platform',
   },
   {
     id: '06',
@@ -60,6 +66,7 @@ const PROJECTS: Project[] = [
     year: '2024',
     domain: 'Product ecosystems',
     tags: ['UX Design', 'App', 'Web3'],
+    link: 'https://www.behance.net/gallery/227225375/Leafpit-Website-and-Identity',
   },
 ];
 
@@ -144,8 +151,11 @@ export function Work() {
               className="grid grid-cols-1 md:grid-cols-8 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 w-full overflow-visible"
             >
               {PROJECTS.map((project) => (
-                <div
+                <a
                   key={project.id}
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="md:col-span-4 flex flex-col gap-3 group cursor-pointer w-full transition-all duration-300 hover:scale-[1.015]"
                 >
                   {/* Spacious light rectangular placeholder with non-disruptive tags placed inside top-left */}
@@ -179,7 +189,7 @@ export function Work() {
                       <span>{project.year}</span>
                     </div>
                   </div>
-                </div>
+                </a>
               ))}
             </motion.div>
           ) : (
@@ -192,8 +202,11 @@ export function Work() {
               className="flex flex-col divide-y divide-neutral-200/60 border-y border-neutral-200/60 w-full"
             >
               {PROJECTS.map((project) => (
-                <div
+                <a
                   key={project.id}
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="py-4 sm:py-5 flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-6 group cursor-pointer hover:bg-neutral-50/80 px-2 sm:px-4 rounded-xl transition-all duration-150"
                 >
                   <div className="flex items-center gap-4 sm:gap-6 min-w-0">
@@ -224,7 +237,7 @@ export function Work() {
                     <span>{project.year}</span>
                     <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                   </div>
-                </div>
+                </a>
               ))}
             </motion.div>
           )}
