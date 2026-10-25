@@ -74,7 +74,7 @@ export function Work() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   return (
-    <section id="work" className="py-16 sm:py-20 lg:py-28">
+    <section id="work" className="py-16 sm:py-20 lg:py-28 scroll-mt-24">
       <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
         
         {/* Section title & View Mode Toggle (Grid / List) in the Blue Nav Clay style */}
