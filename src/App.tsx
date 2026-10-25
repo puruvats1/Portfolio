@@ -10,37 +10,45 @@ import { CustomCursor } from './components/CustomCursor';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink overflow-x-hidden">
+    <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink">
       {/* 3D Cartoon White Glove Custom Cursor matching Figma node 55:2552 */}
       <CustomCursor />
 
       {/* Top navigation with branding on left and Resume & Behance on right */}
       <TopNav />
 
-      {/* Persistent Left Navbar with exact Figma node 58:3013 button styling and supporting filled popup pills */}
-      <LeftSidebar />
+      {/* Mobile Floating Dock (visible on < lg) */}
+      <LeftSidebar mode="mobile" />
 
-      {/* Main continuous scroll stream with 1400px max-width equivalent to the body */}
-      <div className="w-full max-w-[1400px] mx-auto min-h-screen pb-0 lg:pl-[120px] xl:pl-[130px] lg:pr-4 xl:pr-8">
-        <main className="flex flex-col">
-          {/* 1. Hello / Hero */}
-          <Hero />
+      {/* 1400px Max-Width Grid Container: Accounts for sticky nav rail and scrolling content */}
+      <div className="w-full max-w-[1400px] mx-auto min-h-screen relative flex">
+        {/* Dedicated Sticky Left Rail for Nav Menu & Text Popups */}
+        <div className="hidden lg:flex w-[240px] xl:w-[250px] shrink-0 sticky top-0 h-screen items-center z-40 pl-3 xl:pl-4">
+          <LeftSidebar mode="desktop" />
+        </div>
 
-          {/* 2. My Work */}
-          <Work />
+        {/* Main continuous scroll stream: positioned beside nav rail so content never slides under popups */}
+        <div className="flex-1 min-w-0 w-full pb-0 pr-4 sm:pr-6 lg:pr-6 xl:pr-10">
+          <main className="flex flex-col">
+            {/* 1. Hello / Hero */}
+            <Hero />
 
-          {/* 3. 'bout me! */}
-          <About />
+            {/* 2. My Work */}
+            <Work />
 
-          {/* 4. Working with me */}
-          <WorkingWithMe />
+            {/* 3. 'bout me! */}
+            <About />
 
-          {/* 5. About me from others / Testimonials */}
-          <Testimonials />
-        </main>
+            {/* 4. Working with me */}
+            <WorkingWithMe />
 
-        {/* 6. Work with me / Contact */}
-        <Contact />
+            {/* 5. About me from others / Testimonials */}
+            <Testimonials />
+          </main>
+
+          {/* 6. Work with me / Contact */}
+          <Contact />
+        </div>
       </div>
     </div>
   );
