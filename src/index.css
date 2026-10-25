@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --color-canvas: #F7F7F5;
+  --color-ink: #111110;
+  
+  --color-pastel-blue: #D9E8F5;
+  --color-powder-blue: #B5D0F5;
+  --color-butter: #FDF1C2;
+  --color-soft-green: #D1F2D1;
+  --color-coral: #FFD1C9;
+  --color-lavender: #E8DFF5;
+  --color-pink: #FAD2E1;
+  --color-warm-grey: #E5E5E5;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle grey gradient per line/letter - uniform across lines, never pure flat black */
+.heading-gradient {
+  display: inline;
+  background-image: linear-gradient(180deg, #18181B 0%, #242428 50%, #3E3E46 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  color: transparent !important;
+}
+
+.heading-gradient-light {
+  display: inline;
+  background-image: linear-gradient(180deg, #FFFFFF 0%, #F4F4F6 50%, #D4D4D8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  color: transparent !important;
+}
+
+/* Ensure nested strong or span tags inside heading-gradient inherit transparent fill */
+.heading-gradient strong,
+.heading-gradient span,
+.heading-gradient-light strong,
+.heading-gradient-light span {
+  color: inherit;
+  -webkit-text-fill-color: inherit;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

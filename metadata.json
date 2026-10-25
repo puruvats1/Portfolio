@@ -1,0 +1,8 @@
+{
+  "name": "Remix Puru Vats | Interaction Designer",
+  "description": "Portfolio of Puru Vats, an Interaction Designer resolving conflict between humans and computers so they can be best friends.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
