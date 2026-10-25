@@ -54,7 +54,7 @@ export function Hero() {
 
   return (
     <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center pt-24 sm:pt-28 pb-16 sm:pb-20 overflow-hidden sm:overflow-visible">
-      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 my-auto flex flex-col justify-center">
+      <div className="w-full my-auto flex flex-col justify-center">
         <div className="flex flex-col xl:flex-row items-center xl:items-start justify-between gap-10 xl:gap-12 2xl:gap-16 w-full overflow-visible">
           
           {/* CENTER NARRATIVE & DIALOGUE CARD */}

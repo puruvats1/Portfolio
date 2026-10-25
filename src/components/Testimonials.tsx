@@ -51,7 +51,7 @@ export function Testimonials() {
 
   return (
     <section id="testimonials" className="py-16 sm:py-20 lg:py-28 overflow-visible scroll-mt-24">
-      <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
+      <div className="w-full">
         
         {/* Title shifted to top, no longer column-divided */}
         <div className="mb-8 sm:mb-10 lg:mb-12">

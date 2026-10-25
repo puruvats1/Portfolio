@@ -31,7 +31,7 @@ html {
 }
 
 /* ========================================================
-   Responsive Global Side Margins (Percentage-based, responsive to screen size)
+   Responsive Global Side Margins (Percentage-based, max 6% cascaded)
    ======================================================== */
 :root {
   --global-margin: 2%;
@@ -39,31 +39,31 @@ html {
 
 @media (min-width: 640px) {
   :root {
-    --global-margin: 4%;
+    --global-margin: 3%;
   }
 }
 
 @media (min-width: 768px) {
   :root {
-    --global-margin: 6%;
+    --global-margin: 4%;
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --global-margin: 8%;
+    --global-margin: 5%;
   }
 }
 
 @media (min-width: 1280px) {
   :root {
-    --global-margin: 9%;
+    --global-margin: 5.5%;
   }
 }
 
 @media (min-width: 1536px) {
   :root {
-    --global-margin: 10%;
+    --global-margin: 6%;
   }
 }
 

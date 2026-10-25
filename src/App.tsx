@@ -27,8 +27,8 @@ export default function App() {
           <LeftSidebar mode="desktop" />
         </div>
 
-        {/* Main continuous scroll stream: positioned beside nav rail so content never slides under popups */}
-        <div className="flex-1 min-w-0 w-full pb-0 pr-4 sm:pr-6 lg:pr-6 xl:pr-10">
+        {/* Main continuous scroll stream: positioned beside nav rail so content fills equal width as top bar */}
+        <div className="flex-1 min-w-0 w-full pb-0">
           <main className="flex flex-col">
             {/* 1. Hello / Hero */}
             <Hero />
