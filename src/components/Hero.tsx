@@ -1,25 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PenTool, Code2, Compass, Music, Palette } from 'lucide-react';
 
-// Sequence of tokens for the bottom animating strip in refined grey tones
+// Sequence of tokens for the bottom animating strip in pure greyscale
 const WORDS_SEQUENCE = [
-  { id: 'design', text: '<Design>', color: 'text-[#555555] font-semibold' },
-  { id: 'code', text: '{code}', color: 'text-[#666666] font-medium' },
-  { id: 'research', text: '(research)', color: 'text-[#777777] font-normal' },
-  { id: 'music', text: '^Music^', color: 'text-[#468FFD] font-bold' },
-  { id: 'art', text: '[Art]', color: 'text-[#666666] font-semibold' },
+  { id: 'design', text: '<Design>' },
+  { id: 'code', text: '{code}' },
+  { id: 'research', text: '(research)' },
+  { id: 'music', text: '^Music^' },
+  { id: 'art', text: '[Art]' },
 ];
 
 export function Hero() {
   const [isDialogueOpen, setIsDialogueOpen] = useState(true);
-  const [wordIndex, setWordIndex] = useState(0);
+  const [queue, setQueue] = useState([0, 1, 2, 3, 4, 0, 1, 2, 3, 4]);
+  const [translateX, setTranslateX] = useState(0);
+  const firstWordRef = useRef<HTMLSpanElement>(null);
+  const secondWordRef = useRef<HTMLSpanElement>(null);
 
-  // Snappy sequential switching where each word sticks to the left end
+  // Snappy continuous sliding transition without any opacity drop or disappearing words
   useEffect(() => {
     const timer = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % WORDS_SEQUENCE.length);
-    }, 2200);
+      setTranslateX((current) => {
+        if (current === 0) {
+          const shift =
+            secondWordRef.current && firstWordRef.current
+              ? secondWordRef.current.offsetLeft - firstWordRef.current.offsetLeft
+              : 140;
+          return -shift;
+        }
+        return current;
+      });
+    }, 2400);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -168,16 +181,14 @@ export function Hero() {
                 >
                   {profileLeftIcons.map((item) => {
                     const IconComponent = item.icon;
-                    const isCurrent = WORDS_SEQUENCE[wordIndex].id === item.id;
+                    const isCurrent = WORDS_SEQUENCE[queue[0]].id === item.id;
                     return (
                       <div
                         key={item.id}
                         title={item.label}
                         className={`w-[34px] h-[34px] flex items-center justify-center transition-all duration-300 cursor-default group ${
                           isCurrent
-                            ? item.id === 'music'
-                              ? 'text-[#468FFD] scale-115'
-                              : 'text-neutral-900 scale-110'
+                            ? 'text-neutral-900 scale-110'
                             : 'text-neutral-400/80 hover:text-neutral-900'
                         }`}
                       >
@@ -205,32 +216,45 @@ export function Hero() {
                   </div>
                 </div>
 
-                {/* 3. BOTTOM ANIMATING STRIP: Snappy switching where words stick to left end in grey tones */}
-                <div className="w-full overflow-hidden whitespace-nowrap py-2.5 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto pl-4 sm:pl-5 pr-2">
+                {/* 3. BOTTOM ANIMATING STRIP: Continuous horizontal sliding track (Greyscale, active bold, others light) */}
+                <div className="w-full overflow-hidden whitespace-nowrap py-2.5 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto">
                   <div className="h-[48px] flex items-center overflow-hidden">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={wordIndex}
-                        initial={{ x: 38, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -38, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 28, mass: 0.75 }}
-                        className="flex items-center gap-3.5 text-[34px] sm:text-[38px] lg:text-[44px] leading-[1.2] font-display tracking-tight select-none whitespace-nowrap"
-                      >
-                        {/* Active word sticking cleanly to the left end (in grey tones, not black) */}
-                        <span className={WORDS_SEQUENCE[wordIndex].color}>
-                          {WORDS_SEQUENCE[wordIndex].text}
-                        </span>
-
-                        {/* Trailing upcoming words in soft, subtle grey */}
-                        <span className="text-neutral-400/60 font-medium text-[32px] sm:text-[36px] lg:text-[42px]">
-                          {WORDS_SEQUENCE[(wordIndex + 1) % WORDS_SEQUENCE.length].text}
-                        </span>
-                        <span className="text-neutral-300/40 font-normal text-[30px] sm:text-[34px] lg:text-[40px]">
-                          {WORDS_SEQUENCE[(wordIndex + 2) % WORDS_SEQUENCE.length].text}
-                        </span>
-                      </motion.div>
-                    </AnimatePresence>
+                    <motion.div
+                      animate={{ x: translateX }}
+                      transition={
+                        translateX === 0
+                          ? { duration: 0 }
+                          : { duration: 0.58, ease: [0.16, 1, 0.3, 1] }
+                      }
+                      onAnimationComplete={() => {
+                        if (translateX !== 0) {
+                          setQueue((prev) => [
+                            ...prev.slice(1),
+                            (prev[prev.length - 1] + 1) % WORDS_SEQUENCE.length,
+                          ]);
+                          setTranslateX(0);
+                        }
+                      }}
+                      className="flex items-center gap-4 sm:gap-5 whitespace-nowrap pl-4 sm:pl-5 select-none"
+                    >
+                      {queue.map((wordIdx, i) => {
+                        const word = WORDS_SEQUENCE[wordIdx];
+                        const isLead = i === 0;
+                        return (
+                          <span
+                            key={`${word.id}-${i}-${wordIdx}`}
+                            ref={i === 0 ? firstWordRef : i === 1 ? secondWordRef : null}
+                            className={`inline-block whitespace-nowrap text-[32px] sm:text-[36px] lg:text-[40px] font-display leading-none tracking-tight transition-colors duration-200 ${
+                              isLead
+                                ? 'text-neutral-900 font-bold'
+                                : 'text-neutral-400 font-light'
+                            }`}
+                          >
+                            {word.text}
+                          </span>
+                        );
+                      })}
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
