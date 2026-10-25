@@ -31,39 +31,39 @@ html {
 }
 
 /* ========================================================
-   2x Responsive Global Side Margins (Percentage-based, responsive to screen size)
+   Responsive Global Side Margins (Percentage-based, responsive to screen size)
    ======================================================== */
 :root {
-  --global-margin: 4%;
+  --global-margin: 2%;
 }
 
 @media (min-width: 640px) {
   :root {
-    --global-margin: 8%;
+    --global-margin: 4%;
   }
 }
 
 @media (min-width: 768px) {
   :root {
-    --global-margin: 12%;
+    --global-margin: 6%;
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --global-margin: 14%;
+    --global-margin: 8%;
   }
 }
 
 @media (min-width: 1280px) {
   :root {
-    --global-margin: 18%;
+    --global-margin: 9%;
   }
 }
 
 @media (min-width: 1536px) {
   :root {
-    --global-margin: 20%;
+    --global-margin: 10%;
   }
 }
 
