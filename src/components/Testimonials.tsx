@@ -99,7 +99,7 @@ export function Testimonials() {
 
   return (
     <section id="testimonials" className="py-16 sm:py-20 lg:py-28 overflow-visible">
-      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
+      <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
           {/* Columns 1-3: Section title "About me from others" sticky until scrolled past */}
           <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">

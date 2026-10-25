@@ -20,8 +20,8 @@ export default function App() {
       {/* Persistent Left Navbar with exact Figma node 58:3013 button styling and supporting filled popup pills */}
       <LeftSidebar />
 
-      {/* Main continuous scroll stream with balanced side margins on desktop */}
-      <div className="w-full min-h-screen pb-0 lg:pl-[280px] xl:pl-[340px] 2xl:pl-[390px] lg:pr-8 xl:pr-14 2xl:pr-24">
+      {/* Main continuous scroll stream with 1400px max-width equivalent to the body */}
+      <div className="w-full max-w-[1400px] mx-auto min-h-screen pb-0 lg:pl-[120px] xl:pl-[130px] lg:pr-4 xl:pr-8">
         <main className="flex flex-col">
           {/* 1. Hello / Hero */}
           <Hero />

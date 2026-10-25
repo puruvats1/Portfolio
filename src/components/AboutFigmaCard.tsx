@@ -129,11 +129,11 @@ export function AboutFigmaCard() {
         >
           <span
             style={{
-              background: 'linear-gradient(180deg, #181817 0%, #40403E 100%)',
+              background: 'linear-gradient(180deg, #30302D 0%, #353532 50%, #3B3B38 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
+            className="font-display font-semibold text-[9px] sm:text-[14.5px] md:text-[17.5px] lg:text-[22.5px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -158,7 +158,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
+            className="font-display font-semibold text-[9px] sm:text-[14.5px] md:text-[17.5px] lg:text-[22.5px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -183,7 +183,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
+            className="font-display font-semibold text-[9px] sm:text-[14.5px] md:text-[17.5px] lg:text-[22.5px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -204,11 +204,11 @@ export function AboutFigmaCard() {
         >
           <span
             style={{
-              background: 'linear-gradient(180deg, #181817 0%, #40403E 100%)',
+              background: 'linear-gradient(180deg, #30302D 0%, #353532 50%, #3B3B38 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
+            className="font-display font-semibold text-[9px] sm:text-[14.5px] md:text-[17.5px] lg:text-[22.5px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -233,7 +233,7 @@ export function AboutFigmaCard() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
+            className="font-display font-semibold text-[9px] sm:text-[14.5px] md:text-[17.5px] lg:text-[22.5px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>
@@ -254,11 +254,11 @@ export function AboutFigmaCard() {
         >
           <span
             style={{
-              background: 'linear-gradient(180deg, #181817 0%, #40403E 100%)',
+              background: 'linear-gradient(180deg, #30302D 0%, #353532 50%, #3B3B38 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
-            className="font-display font-semibold text-[11px] sm:text-[18px] md:text-[22px] lg:text-[28px] tracking-[-0.03em] leading-none"
+            className="font-display font-semibold text-[9px] sm:text-[14.5px] md:text-[17.5px] lg:text-[22.5px] tracking-[-0.03em] leading-none"
           >
             Hello
           </span>

@@ -32,32 +32,32 @@ export function TopNav() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 md:px-12 lg:px-8 xl:px-12 2xl:px-16 py-3.5 sm:py-5 transition-all duration-300 pointer-events-none ${
+      className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 py-3.5 sm:py-5 transition-all duration-300 pointer-events-none ${
         isDark
           ? 'bg-[#111110]/90 backdrop-blur-md text-white border-b border-neutral-800'
           : 'bg-white/80 backdrop-blur-md text-[#111110]'
       }`}
     >
-      <div className="w-full flex items-center justify-between">
+      <div className="w-full max-w-[1400px] mx-auto flex items-center justify-between">
         {/* Left: Brand Identifier (Matching Figma node 58:2937) */}
         <div className="pointer-events-auto flex items-center gap-3 sm:gap-4">
           <button
             onClick={scrollToTop}
             className="text-left cursor-pointer group flex items-baseline gap-2.5 sm:gap-3 transition-opacity hover:opacity-85"
           >
-            {/* puru. - Urbanist Bold 29.54px */}
+            {/* puru. - Urbanist Bold, mild grey gradient when in light mode */}
             <span
-              className={`font-display text-[26px] sm:text-[29.5px] font-bold tracking-[-0.02em] leading-none ${
-                isDark ? 'text-white' : 'text-[#111110]'
+              className={`font-display text-[21px] sm:text-[24px] font-bold tracking-[-0.02em] leading-none ${
+                isDark ? 'text-white' : 'heading-gradient'
               }`}
             >
               puru.
             </span>
 
-            {/* Interaction Design Student @ IDC IIT Bombay - DM Sans Regular 16px / 19.69px */}
+            {/* Interaction Design Student @ IDC IIT Bombay - DM Sans Regular */}
             <span
-              className={`font-sans text-[13px] sm:text-[16px] leading-[19.7px] font-normal tracking-normal hidden sm:inline ${
-                isDark ? 'text-neutral-400' : 'text-[#A3A3A3]'
+              className={`font-sans text-[11px] sm:text-[13px] leading-[17px] font-normal tracking-normal hidden sm:inline ${
+                isDark ? 'text-neutral-400' : 'text-[#8E8E89]'
               }`}
             >
               Interaction Design Student @ IDC IIT Bombay
@@ -65,28 +65,28 @@ export function TopNav() {
           </button>
         </div>
 
-        {/* Right: Actions (Matching Figma node 58:2940) */}
+        {/* Right: Actions */}
         <div className="pointer-events-auto flex items-center gap-4 sm:gap-6">
-          {/* Behance Link - Urbanist Medium 14.77px / 19.69px */}
+          {/* Behance Link */}
           <a
             href="https://www.behance.net/puruvats"
             target="_blank"
             rel="noopener noreferrer"
-            className={`font-display text-[14.8px] leading-[19.7px] font-medium transition-colors cursor-pointer ${
-              isDark ? 'text-neutral-300 hover:text-white' : 'text-[#525252] hover:text-[#111110]'
+            className={`font-display text-[12px] leading-[17px] font-medium transition-colors cursor-pointer ${
+              isDark ? 'text-neutral-300 hover:text-white' : 'text-[#5A5A55] hover:text-[#2C2C2A]'
             }`}
           >
             Behance
           </a>
 
-          {/* Resume Button: Primary solid black - Urbanist Medium 14.77px / 19.69px, radius 14.77px */}
+          {/* Resume Button: mild black/grey pill */}
           <a
             href="#contact"
             onClick={scrollToContact}
-            className={`group inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-[15px] font-display text-[14.8px] leading-[19.7px] font-medium transition-all duration-200 cursor-pointer shadow-xs active:scale-95 ${
+            className={`group inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-[13px] font-display text-[12px] leading-[17px] font-medium transition-all duration-200 cursor-pointer shadow-xs active:scale-95 ${
               isDark
-                ? 'bg-white text-[#111110] hover:bg-neutral-200'
-                : 'bg-[#111110] text-white hover:bg-neutral-800'
+                ? 'bg-white text-[#2C2C2A] hover:bg-neutral-200'
+                : 'bg-[#2E2E2C] text-white hover:bg-[#3E3E3B]'
             }`}
           >
             <span>Resume</span>

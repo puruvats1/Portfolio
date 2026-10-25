@@ -1,13 +1,26 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import {
+  Briefcase,
+  Handshake,
+  Quote,
+  Mail,
+} from 'lucide-react';
 
-export type SectionId = 'hero' | 'work' | 'about' | 'working-with-me' | 'testimonials' | 'contact';
+export type SectionId = 'hero' | 'work' | 'about' | 'skills' | 'testimonials' | 'contact';
+
+export type NavIconComponent = React.ComponentType<{
+  className?: string;
+  strokeWidth?: number;
+  size?: number | string;
+}>;
 
 export interface NavItem {
   id: SectionId;
   label: string;
   hoverLabel: string;
-  icon: string;
+  icon: NavIconComponent;
+  iconColor: string;
   gradient: string;
   border: string;
   textGradient: string;
@@ -15,16 +28,66 @@ export interface NavItem {
   pillShadow: string;
 }
 
-// Exactly derived from the user's Figma button code (w=99.16, h=43, p=10px 16px, gap=10px, r=15px, border=1px solid)
+// Friendly, soft, tilted waving hand icon with light stroke and motion ripples
+function WavingHandIcon({ className, strokeWidth = 1.4 }: { className?: string; strokeWidth?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <g transform="rotate(-28 12 12)">
+        {/* Wave motion ripple arcs around fingertips */}
+        <path d="M4.5 5.5a5 5 0 0 1 3-3" strokeWidth={Math.max(1, strokeWidth * 0.9)} opacity={0.75} />
+        <path d="M16.5 2.5a5 5 0 0 1 3 3" strokeWidth={Math.max(1, strokeWidth * 0.9)} opacity={0.75} />
+        {/* Waving open hand with 4 rounded fingers and thumb */}
+        <path d="M9 12V6.5a1.2 1.2 0 0 1 2.4 0v4.5" />
+        <path d="M11.4 11V4.8a1.2 1.2 0 0 1 2.4 0v5.7" />
+        <path d="M13.8 11V5.5a1.2 1.2 0 0 1 2.4 0v5.5" />
+        <path d="M16.2 11.5V7.2a1.2 1.2 0 0 1 2.4 0v6.8c0 3.8-3 6.8-6.8 6.8-2.6 0-4.8-1.4-6-3.4l-1.8-2.6a1.2 1.2 0 0 1 2-1.4l1.6 1.8" />
+      </g>
+    </svg>
+  );
+}
+
+// Smiley icon with soft eyes and a round, short smile
+function SmileyIcon({ className, strokeWidth = 1.4 }: { className?: string; strokeWidth?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {/* Outer circle */}
+      <circle cx="12" cy="12" r="9.5" />
+      {/* Soft rounded eye dots */}
+      <circle cx="9" cy="9.5" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="9.5" r="1.1" fill="currentColor" stroke="none" />
+      {/* Round and short smile: narrow span from 9.8 to 14.2, deep circular curve */}
+      <path d="M9.8 13.8C10.3 15.3 11.1 16.1 12 16.1C12.9 16.1 13.7 15.3 14.2 13.8" />
+    </svg>
+  );
+}
+
+// Exactly derived from the user's Figma button specifications with soft, premium icons (toned down, not too bright)
 export const NAV_ITEMS: NavItem[] = [
   {
     id: 'hero',
     label: 'hello!!',
     hoverLabel: 'hello!',
-    icon: './waving_hand.svg',
+    icon: WavingHandIcon,
+    iconColor: 'text-[#8B5E2B]',
     gradient: 'from-[#FFF9CE] to-[#FEEA80]',
-    border: 'border-[#F7DF59]',
-    textGradient: 'from-[#92400E] to-[#713F12]',
+    border: 'border-[#F7DF59]/75',
+    textGradient: 'from-[#8B5E2B] to-[#713F12]',
     btnShadow: 'btn-clay-yellow',
     pillShadow: 'pill-clay-yellow',
   },
@@ -32,10 +95,11 @@ export const NAV_ITEMS: NavItem[] = [
     id: 'work',
     label: 'work',
     hoverLabel: ':work:',
-    icon: './work_icon.svg',
-    gradient: 'from-[#E6F1FE] to-[#72BDFF]', // Exact: linear-gradient(180deg, #E6F1FE 0%, #72BDFF 100%)
-    border: 'border-[#B7D9FF]',             // Exact: 1px solid #B7D9FF
-    textGradient: 'from-[#1D4ED8] to-[#1E3A8A]', // Exact: linear-gradient(180deg, #1D4ED8 0%, #1E3A8A 100%)
+    icon: Briefcase,
+    iconColor: 'text-[#3B72C2]',
+    gradient: 'from-[#E6F1FE] to-[#72BDFF]',
+    border: 'border-[#B7D9FF]/75',
+    textGradient: 'from-[#1D4ED8] to-[#1E3A8A]',
     btnShadow: 'btn-clay-blue',
     pillShadow: 'pill-clay-blue',
   },
@@ -43,20 +107,22 @@ export const NAV_ITEMS: NavItem[] = [
     id: 'about',
     label: 'about',
     hoverLabel: "'about'",
-    icon: './about_icon.svg',
+    icon: SmileyIcon,
+    iconColor: 'text-[#BA5D38]',
     gradient: 'from-[#FFE9DC] to-[#FED2BE]',
-    border: 'border-[#FDBA74]',
+    border: 'border-[#FDBA74]/75',
     textGradient: 'from-[#C2410C] to-[#9A3412]',
     btnShadow: 'btn-clay-peach',
     pillShadow: 'pill-clay-peach',
   },
   {
-    id: 'working-with-me',
+    id: 'skills',
     label: 'skills',
     hoverLabel: '<skills>',
-    icon: './skills_icon.svg',
+    icon: Handshake,
+    iconColor: 'text-[#527318]',
     gradient: 'from-[#EDFA7E] to-[#D5F24B]',
-    border: 'border-[#BEF264]',
+    border: 'border-[#BEF264]/75',
     textGradient: 'from-[#3F6212] to-[#294109]',
     btnShadow: 'btn-clay-lime',
     pillShadow: 'pill-clay-lime',
@@ -65,9 +131,10 @@ export const NAV_ITEMS: NavItem[] = [
     id: 'testimonials',
     label: 't’monials',
     hoverLabel: "/t'monials",
-    icon: './testimonials_icon.svg',
+    icon: Quote,
+    iconColor: 'text-[#1B7E63]',
     gradient: 'from-[#D7F8E8] to-[#B2F2D1]',
-    border: 'border-[#6EE7B7]',
+    border: 'border-[#6EE7B7]/75',
     textGradient: 'from-[#047857] to-[#064E3B]',
     btnShadow: 'btn-clay-mint',
     pillShadow: 'pill-clay-mint',
@@ -76,9 +143,10 @@ export const NAV_ITEMS: NavItem[] = [
     id: 'contact',
     label: 'contact',
     hoverLabel: '#contact',
-    icon: './contact_icon.svg',
+    icon: Mail,
+    iconColor: 'text-[#A83854]',
     gradient: 'from-[#FFE3EA] to-[#FFC3D1]',
-    border: 'border-[#FDA4AF]',
+    border: 'border-[#FDA4AF]/75',
     textGradient: 'from-[#BE123C] to-[#881337]',
     btnShadow: 'btn-clay-pink',
     pillShadow: 'pill-clay-pink',
@@ -133,21 +201,20 @@ export function LeftSidebar() {
 
   return (
     <>
-      {/* DESKTOP SMART NAVBAR: Tightly stacked tactile buttons matching Figma node 46:1356.
-          - When cursor is away: ONLY the active section's filled supporting popup is visible; grey titles are hidden.
-          - When hovered near / any title hovered: Grey titles smoothly appear displaying their playful hover forms:
-            hello!, :work:, 'about', <skills>, /t'monials, #contact */}
+      {/* DESKTOP SMART NAVBAR: Vertically centered to viewport, aligned with 1400px boundary */}
       <aside
         onMouseEnter={() => setIsHoveredNear(true)}
         onMouseLeave={() => {
           setIsHoveredNear(false);
           setHoveredTitleId(null);
         }}
-        className="hidden lg:flex fixed left-5 xl:left-8 2xl:left-14 top-[104px] xl:top-[108px] z-40 flex-col -space-y-2 select-none pr-16 -mr-16"
+        style={{ left: 'max(16px, calc((100vw - 1400px) / 2 + 16px))' }}
+        className="hidden lg:flex fixed top-1/2 -translate-y-1/2 z-40 flex-col -space-y-2 select-none pr-16 -mr-16"
         aria-label="Website Navigation"
       >
         {NAV_ITEMS.map((item) => {
           const isActive = activeSection === item.id;
+          const IconComponent = item.icon;
 
           return (
             <div
@@ -168,13 +235,12 @@ export function LeftSidebar() {
                   item.border
                 } ${
                   isActive ? 'scale-105' : 'hover:scale-105'
-                } ${item.btnShadow} flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200`}
+                } ${item.btnShadow} flex items-center justify-center shrink-0 cursor-pointer transition-all duration-200 group`}
                 aria-label={item.label}
               >
-                <img
-                  src={item.icon}
-                  alt={item.label}
-                  className="w-[34px] h-[34px] object-contain select-none pointer-events-none opacity-80 transition-transform duration-200 group-hover:scale-110"
+                <IconComponent
+                  strokeWidth={1.4}
+                  className={`w-[32px] h-[32px] ${item.iconColor} opacity-80 transition-all duration-200 group-hover:opacity-100 group-hover:scale-108 pointer-events-none select-none`}
                 />
               </motion.button>
 
@@ -182,12 +248,7 @@ export function LeftSidebar() {
               <div className="flex items-center min-w-[130px]">
                 <AnimatePresence mode="wait">
                   {isActive ? (
-                    /* Active section filled link button: Directly derived from Figma node 58:2744 / user inspect code:
-                       display: flex; flex-direction: row; align-items: center; padding: 10px 16px; gap: 10px;
-                       height: 43px; border-radius: 15px; border: 1px solid;
-                       SVG: 18px x 18px, opacity 0.8;
-                       Text: DM Sans Bold 16px / 24px, letter-spacing -0.4px, lowercase, gradient text fill, opacity 0.8
-                    */
+                    /* Active section filled link button: clean text popup without duplicated icon */
                     <motion.button
                       key={`active-pill-${item.id}-${isAnyHovered}`}
                       initial={{ scale: 0.88, opacity: 0, x: -6 }}
@@ -197,21 +258,16 @@ export function LeftSidebar() {
                       onMouseEnter={() => setHoveredTitleId(item.id)}
                       onMouseLeave={() => setHoveredTitleId(null)}
                       onClick={() => scrollTo(item.id)}
-                      className={`h-[43px] px-4 py-[10px] rounded-[15px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center gap-[10px] cursor-pointer select-none transition-all duration-200`}
+                      className={`h-[38px] px-3.5 py-[8px] rounded-[13px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center cursor-pointer select-none transition-all duration-200`}
                     >
-                      <img
-                        src={item.icon}
-                        alt=""
-                        className="w-[18px] h-[18px] object-contain select-none pointer-events-none opacity-80 shrink-0"
-                      />
                       <span
-                        className={`font-sans font-bold text-[16px] leading-[24px] tracking-[-0.4px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-80 whitespace-nowrap`}
+                        className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-85 whitespace-nowrap`}
                       >
                         {isAnyHovered ? item.hoverLabel : item.label}
                       </span>
                     </motion.button>
                   ) : isAnyHovered ? (
-                    /* Non-selected section grey title: Appears when hovered near / over any title */
+                    /* Non-selected section title: soft muted text */
                     <motion.button
                       key={`hover-grey-text-${item.id}`}
                       initial={{ opacity: 0, x: -10, filter: 'blur(2px)' }}
@@ -221,7 +277,7 @@ export function LeftSidebar() {
                       onMouseEnter={() => setHoveredTitleId(item.id)}
                       onMouseLeave={() => setHoveredTitleId(null)}
                       onClick={() => scrollTo(item.id)}
-                      className="font-sans font-bold text-[16px] leading-[24px] tracking-[-0.4px] lowercase text-[#A3A3A3] opacity-80 hover:opacity-100 hover:text-[#111110] hover:scale-105 transition-all duration-150 cursor-pointer select-none px-2 py-1 text-left"
+                      className="font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase text-[#888884] hover:text-[#333330] hover:scale-105 transition-all duration-150 cursor-pointer select-none px-2 py-1 text-left"
                     >
                       {item.hoverLabel}
                     </motion.button>
@@ -240,6 +296,7 @@ export function LeftSidebar() {
       >
         {NAV_ITEMS.map((item) => {
           const isActive = activeSection === item.id;
+          const IconComponent = item.icon;
 
           return (
             <motion.button
@@ -254,10 +311,9 @@ export function LeftSidebar() {
               }`}
               aria-label={item.label}
             >
-              <img
-                src={item.icon}
-                alt={item.label}
-                className="w-[18px] h-[18px] object-contain select-none pointer-events-none opacity-80 shrink-0"
+              <IconComponent
+                strokeWidth={1.4}
+                className={`w-[18px] h-[18px] ${item.iconColor} opacity-80 shrink-0 pointer-events-none select-none`}
               />
 
               <AnimatePresence>
@@ -267,7 +323,7 @@ export function LeftSidebar() {
                     animate={{ opacity: 1, width: 'auto' }}
                     exit={{ opacity: 0, width: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    className={`font-sans font-bold text-[16px] leading-[24px] tracking-[-0.4px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-80 whitespace-nowrap overflow-hidden`}
+                    className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-80 whitespace-nowrap overflow-hidden`}
                   >
                     {item.label}
                   </motion.span>

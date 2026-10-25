@@ -14,11 +14,11 @@ import {
   Play,
   Palette,
 } from 'lucide-react';
-import { motion } from 'motion/react';
 import { CardSpread } from './CardSpread';
 import { ScrollRevealTitle } from './ScrollRevealTitle';
 
 export function WorkingWithMe() {
+  // Retaining the two most essential core principles (2 paragraphs removed as requested)
   const principles = [
     {
       num: '01',
@@ -31,18 +31,6 @@ export function WorkingWithMe() {
       title: 'Code-informed prototyping.',
       lead: 'Bridging the chasm between static mockups and working code.',
       text: 'Static screens hide the tactile reality that only surfaces when humans touch an interface. Because I build functional prototypes in code, engineering remains aligned from day one. We eliminate guesswork around motion curves, state transitions, and asynchronous latency before reaching production.',
-    },
-    {
-      num: '03',
-      title: 'Complexity is a playground.',
-      lead: 'Finding the hidden structure inside dense domains.',
-      text: 'I naturally thrive in dense spaces like finance terminals, spatial tools, and developer platforms. I enjoy taking dozens of competing variables and structuring them into clear hierarchy, ensuring power users keep their operational speed without overwhelming newcomers.',
-    },
-    {
-      num: '04',
-      title: 'Radical clarity, zero preciousness.',
-      lead: 'Design as an ongoing, transparent team dialogue.',
-      text: 'Great work requires honest communication and zero ego. I communicate design rationale clearly, document systems thoroughly, and discard my own ideas without hesitation when a better solution emerges from team critique.',
     },
   ];
 
@@ -87,10 +75,10 @@ export function WorkingWithMe() {
   ];
 
   return (
-    <section id="working-with-me" className="py-16 sm:py-20 lg:py-28 flex flex-col gap-20 sm:gap-24 lg:gap-28 overflow-visible">
+    <section className="py-16 sm:py-20 lg:py-28 flex flex-col gap-20 sm:gap-24 lg:gap-28 overflow-visible">
       
-      {/* PART 1: Working with me */}
-      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 overflow-visible">
+      {/* PART 1: Working with me (counted as part of About) */}
+      <div id="working-with-me" className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 overflow-visible">
         <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
           {/* Columns 1-3: Section title "Working with me" sticky until scrolled past */}
           <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-28 self-start">
@@ -105,7 +93,7 @@ export function WorkingWithMe() {
             </div>
           </div>
 
-          {/* Columns 4-8: Principles editorial (5 of 8 columns) */}
+          {/* Columns 4-8: Principles editorial (5 of 8 columns, 2 focused paragraphs) */}
           <div className="lg:col-span-5 max-w-3xl space-y-12 sm:space-y-16">
             {principles.map((p) => (
               <article key={p.num} className="flex flex-col gap-3">
@@ -136,8 +124,8 @@ export function WorkingWithMe() {
         </div>
       </div>
 
-      {/* PART 2: Skills & capabilities */}
-      <div className="max-w-[1240px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 pt-16 border-t border-neutral-200/50 overflow-visible">
+      {/* PART 2: Skills & capabilities (The dedicated Skills section) */}
+      <div id="skills" className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 pt-16 border-t border-neutral-200/50 overflow-visible scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
           {/* Columns 1-3: Title "Skills & capabilities" sticky until scrolled past */}
           <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { PenTool, Code2, Compass, Music, Palette } from 'lucide-react';
+import { PenTool, Code2, Compass, Music, Palette, X } from 'lucide-react';
 
 // Sequence of tokens for the bottom animating strip in pure greyscale
 const WORDS_SEQUENCE = [
@@ -53,15 +53,15 @@ export function Hero() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-[85vh] flex flex-col justify-start pt-20 sm:pt-24 lg:pt-[104px] xl:pt-[108px] pb-14 sm:pb-18 lg:pb-24 overflow-visible">
-      <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center py-12 lg:py-0 overflow-visible">
+      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 my-auto flex flex-col justify-center">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10 xl:gap-14 2xl:gap-16 w-full overflow-visible">
           
-          {/* CENTER NARRATIVE & DIALOGUE CARD (Cols 1-5 on 8-column grid, top edge aligned with Nav Menu) */}
-          <div className="lg:col-span-5 flex flex-col justify-start">
-            <div className="flex flex-col gap-6 sm:gap-7 max-w-2xl xl:max-w-none">
+          {/* CENTER NARRATIVE & DIALOGUE CARD */}
+          <div className="flex-1 min-w-0 max-w-2xl xl:max-w-none w-full flex flex-col justify-start">
+            <div className="flex flex-col gap-5 sm:gap-6 max-w-2xl xl:max-w-none">
               
-              {/* Clay Dialogue Card (Matching Figma node 58:2972, w=601.26, h=249.65) */}
+              {/* Clay Dialogue Card (Matching reference image) */}
               <AnimatePresence mode="wait">
                 {isDialogueOpen ? (
                   <motion.div
@@ -70,33 +70,22 @@ export function Hero() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.92, y: -10 }}
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="clay-dialogue-card border border-[#EDEDED] rounded-[24px] sm:rounded-[30px] px-6 sm:px-8 md:px-9 pt-3 sm:pt-3.5 pb-6 sm:pb-8 relative overflow-hidden"
+                    className="clay-dialogue-card border border-[#EBEBE8] rounded-[28px] sm:rounded-[36px] p-6 sm:p-9 md:p-10 lg:p-11 relative overflow-hidden"
                   >
-                    {/* Compact top bar with close circle button */}
-                    <div className="flex items-center justify-end h-7 sm:h-8">
-                      <button
-                        onClick={() => setIsDialogueOpen(false)}
-                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#D9D9D9] hover:bg-[#C8C8C8] flex items-center justify-center transition-colors cursor-pointer group shadow-xs"
-                        aria-label="Close dialog"
-                        title="Dismiss card"
-                      >
-                        <img
-                          src="./close_icon.svg"
-                          alt="Close"
-                          className="w-3 h-3 sm:w-3.5 sm:h-3.5 opacity-70 group-hover:opacity-100 transition-opacity"
-                        />
-                      </button>
-                    </div>
+                    {/* Top-right circular close button matching reference image */}
+                    <button
+                      onClick={() => setIsDialogueOpen(false)}
+                      className="absolute top-4 right-4 sm:top-5 sm:right-5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#D9D9D9] hover:bg-[#CCCCCC] flex items-center justify-center transition-colors cursor-pointer group shadow-2xs z-10"
+                      aria-label="Close dialogue"
+                      title="Dismiss card"
+                    >
+                      <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#555555] group-hover:text-[#222222] transition-colors" strokeWidth={2.4} />
+                    </button>
 
-                    {/* Edge-to-edge subtle hairline divider */}
-                    <div className="h-[1px] -mx-6 sm:-mx-8 md:-mx-9 bg-[#EAEAEA] mt-2 sm:mt-2.5 mb-4 sm:mb-5" />
-
-                    {/* Dialogue Main Statement - DM Sans SemiBold 32.29px / 1.2em */}
-                    <p className="font-sans text-[20px] sm:text-[24px] md:text-[28px] xl:text-[32.3px] font-semibold leading-[1.25] sm:leading-[1.2] tracking-[-0.015em]">
-                      <span className="bg-gradient-to-b from-[#42423E] via-[#60605A] to-[#80807A] bg-clip-text text-transparent [-webkit-text-fill-color:transparent] inline">
-                        I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
-                      </span>
-                      <span className="text-[#468FFD] [-webkit-text-fill-color:#468FFD] font-bold inline">best friends.</span>
+                    {/* Dialogue Main Statement - clean typography and layout matching reference image */}
+                    <p className="font-sans text-[20px] sm:text-[23px] md:text-[27px] xl:text-[30px] font-medium leading-[1.3] tracking-[-0.015em] text-[#60605D] max-w-[95%] pr-6 sm:pr-8 pt-1 sm:pt-2">
+                      I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
+                      <span className="text-[#2B7FFF] font-bold inline">best friends.</span>
                     </p>
                   </motion.div>
                 ) : (
@@ -118,44 +107,44 @@ export function Hero() {
               </AnimatePresence>
 
               {/* Narrative Subtitle & Previous Experience */}
-              <div className="flex flex-col gap-6 pl-1 sm:pl-2">
-                {/* DM Sans Regular 16.15px / 26.24px (#525252) */}
-                <p className="font-sans text-[15px] sm:text-[16.15px] text-[#525252] leading-[26.24px] max-w-xl font-normal">
+              <div className="flex flex-col gap-5 pl-1 sm:pl-2">
+                {/* DM Sans Regular, 20% font reduction */}
+                <p className="font-sans text-[13px] sm:text-[13.5px] text-[#555552] leading-[22px] max-w-xl font-normal">
                   B.Des '27 student at IDC, IIT Bombay. I’m drawn to challenging challenges ;) Always growing as an individual and as a professional.
                 </p>
 
                 {/* Previously At Logos */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 pt-1">
-                  {/* Previously at - DM Sans Medium 12.11px / 16.15px (#A3A3A3) */}
-                  <span className="font-sans text-[12.11px] leading-[16.15px] font-medium text-[#A3A3A3] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-5 pt-1">
+                  {/* Previously at - DM Sans Medium */}
+                  <span className="font-sans text-[10.5px] leading-[14px] font-medium text-[#A3A3A3] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
                     Previously at
                   </span>
 
-                  <div className="flex flex-wrap items-center gap-6 sm:gap-7">
+                  <div className="flex flex-wrap items-center gap-5 sm:gap-6">
                     {/* D. E. Shaw Logo */}
-                    <div className="h-6 flex items-center hover:opacity-100 opacity-85 transition-opacity" title="D. E. Shaw & Co.">
+                    <div className="h-5 flex items-center hover:opacity-100 opacity-85 transition-opacity" title="D. E. Shaw & Co.">
                       <img
                         src="./deshaw_logo.svg"
                         alt="D. E. Shaw & Co."
-                        className="h-4 sm:h-4.5 w-auto object-contain"
+                        className="h-3.5 sm:h-4 w-auto object-contain"
                       />
                     </div>
 
-                    {/* GE3S Sustainability Logo - Cropped exact 400x171 aspect ratio matching Figma 56x24 */}
-                    <div className="h-6 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
+                    {/* GE3S Sustainability Logo */}
+                    <div className="h-5 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
                       <img
                         src="./ge3s_logo.png"
                         alt="GE3S"
-                        className="h-[21px] sm:h-[23px] w-auto object-contain"
+                        className="h-[18px] sm:h-[20px] w-auto object-contain"
                       />
                     </div>
 
                     {/* Akai Space Logo */}
-                    <div className="h-6 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
+                    <div className="h-5 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
                       <img
                         src="./logo2.png"
                         alt="AKAISPACE"
-                        className="h-3.5 sm:h-4 w-auto object-contain"
+                        className="h-3 sm:h-3.5 w-auto object-contain"
                       />
                     </div>
                   </div>
@@ -165,9 +154,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: The 3D Profile Card (Cols 6-8 on 8-column grid with 20% liberty to go out of the grid) */}
-          <div className="lg:col-span-3 flex flex-col items-center lg:items-end justify-start pt-2 sm:pt-4 lg:pt-0 relative overflow-visible">
-            <div className="flex flex-col items-center lg:items-end gap-3.5 w-full sm:w-auto lg:-mr-4 xl:-mr-8 2xl:-mr-12">
+          {/* RIGHT COLUMN: The 3D Profile Card (Guaranteed distance from dialogue card) */}
+          <div className="shrink-0 w-full max-w-[312px] sm:w-[316px] xl:w-[326px] flex flex-col items-center lg:items-end justify-start pt-2 sm:pt-4 lg:pt-0 relative overflow-visible">
+            <div className="flex flex-col items-center lg:items-end gap-3.5 w-full sm:w-auto">
               
               {/* Profile Card (matching Figma node 58:2955, w=312.13, h=390.63, radius=27.5px) */}
               <motion.div
@@ -201,9 +190,24 @@ export function Hero() {
 
                 {/* 2. AVATAR AREA: Yellow organic blob backdrop and 3D curly avatar bust */}
                 <div className="relative w-full flex-1 flex items-center justify-center pt-2 pl-8 overflow-hidden">
-                  {/* Yellow Organic Blob Background (#FEEE94) */}
-                  <div className="absolute top-2 right-2 w-[220px] h-[220px] rounded-full bg-[#FEEE94] opacity-95 blur-[0.5px] pointer-events-none" />
-                  <div className="absolute top-12 right-6 w-[170px] h-[150px] rounded-[40px] bg-[#FEF3A8] opacity-80 pointer-events-none" />
+                  {/* Yellow Organic Blob Background (#FEEE94) directly from user SVG */}
+                  <svg
+                    width="231"
+                    height="251"
+                    viewBox="0 0 231 251"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute -top-1.5 -right-1 pointer-events-none select-none w-[215px] sm:w-[231px] h-auto"
+                  >
+                    <path
+                      d="M144.299 160.209C65.155 153.315 4.10114 112.083 7.93096 68.1144C11.7608 24.1457 79.024 -5.90948 158.168 0.9842C237.311 7.87788 298.365 49.11 294.535 93.0786C290.706 137.047 223.442 167.103 144.299 160.209Z"
+                      fill="#FEEE94"
+                    />
+                    <path
+                      d="M136.538 249.373C57.3948 242.479 -3.65906 201.247 0.170766 157.279C4.00059 113.31 71.2638 83.2548 150.407 90.1485C229.551 97.0421 290.605 138.274 286.775 182.243C282.945 226.212 215.682 256.267 136.538 249.373Z"
+                      fill="#FEEE94"
+                    />
+                  </svg>
 
                   {/* 3D Clay Curly-Haired Avatar Bust (Flipped horizontally to face inwards towards content) */}
                   <div className="-scale-x-100 relative z-10 flex items-center justify-center translate-x-1 sm:translate-x-2">
@@ -245,7 +249,7 @@ export function Hero() {
                           <span
                             key={`${word.id}-${i}-${wordIdx}`}
                             ref={i === 0 ? firstWordRef : i === 1 ? secondWordRef : null}
-                            className={`inline-block whitespace-nowrap text-[32px] sm:text-[36px] lg:text-[40px] font-display leading-none tracking-tight transition-colors duration-200 ${
+                            className={`inline-block whitespace-nowrap text-[26px] sm:text-[29px] lg:text-[32px] font-display leading-none tracking-tight transition-colors duration-200 ${
                               isLead
                                 ? 'text-neutral-900 font-bold'
                                 : 'text-neutral-400 font-light'
@@ -260,10 +264,10 @@ export function Hero() {
                 </div>
               </motion.div>
 
-              {/* know me through my work ↓ CTA - DM Sans SemiBold 12.11px / 16.15px (#747373) (node 58:2965) */}
+              {/* know me through my work ↓ CTA */}
               <button
                 onClick={scrollToWork}
-                className="inline-flex items-center gap-2 font-sans text-[12.11px] leading-[16.15px] font-semibold text-[#747373] hover:text-[#111110] transition-colors cursor-pointer group mt-1"
+                className="inline-flex items-center gap-2 font-sans text-[10.5px] leading-[14px] font-semibold text-[#747373] hover:text-[#111110] transition-colors cursor-pointer group mt-1"
               >
                 <span>know me through my work</span>
                 <img

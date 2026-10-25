@@ -13,7 +13,7 @@
 
   --color-canvas: #FFFFFF;
   --color-canvas-subtle: #F9F9F9;
-  --color-ink: #111110;
+  --color-ink: #30302E;
   
   --color-pastel-blue: #D9E8F5;
   --color-powder-blue: #B5D0F5;
@@ -26,6 +26,7 @@
 }
 
 html {
+  font-size: 80%; /* Global 20% font size reduction */
   scroll-behavior: smooth;
 }
 
@@ -35,6 +36,9 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Hide scrollbar for clean horizontal mobile dock while keeping touch scrolling functional */
@@ -123,10 +127,10 @@ body {
               0px 20px 40px -15px rgba(0, 0, 0, 0.07);
 }
 
-/* Subtle grey gradient per line/letter - uniform across lines, never pure flat black */
+/* Subtle deep dark gradient for headings - lighter end darkened so gradient is quiet and not overly obvious */
 .heading-gradient {
   display: inline;
-  background-image: linear-gradient(180deg, #18181B 0%, #242428 50%, #3E3E46 100%);
+  background-image: linear-gradient(180deg, #30302D 0%, #353532 50%, #3B3B38 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-box-decoration-break: clone;
