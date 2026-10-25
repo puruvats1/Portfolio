@@ -58,8 +58,8 @@ export function Hero() {
         <div className="flex flex-col xl:flex-row items-center xl:items-start justify-between gap-10 xl:gap-12 2xl:gap-16 w-full overflow-visible">
           
           {/* CENTER NARRATIVE & DIALOGUE CARD */}
-          <div className="flex-1 min-w-0 sm:min-w-[420px] lg:min-w-[460px] xl:min-w-[500px] max-w-2xl xl:max-w-none w-full flex flex-col justify-start">
-            <div className="flex flex-col gap-5 sm:gap-6 max-w-2xl xl:max-w-none">
+          <div className="flex-1 min-w-0 sm:min-w-[400px] lg:min-w-[440px] max-w-[620px] w-full flex flex-col justify-start">
+            <div className="flex flex-col gap-5 sm:gap-6 max-w-[620px]">
               
               {/* Clay Dialogue Card (Matching reference image) */}
               <AnimatePresence mode="wait">
@@ -70,7 +70,7 @@ export function Hero() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.92, y: -10 }}
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="clay-dialogue-card border border-[#EBEBE8] rounded-[28px] sm:rounded-[36px] p-6 sm:p-9 md:p-10 lg:p-11 relative overflow-hidden w-full min-w-0 sm:min-w-[420px] lg:min-w-[460px] xl:min-w-[500px]"
+                    className="clay-dialogue-card border border-[#EBEBE8] rounded-[28px] sm:rounded-[36px] p-6 sm:p-9 md:p-10 lg:p-11 relative overflow-hidden w-full max-w-[620px]"
                   >
                     {/* Top-right circular close button matching reference image */}
                     <button
@@ -108,8 +108,8 @@ export function Hero() {
 
               {/* Narrative Subtitle & Previous Experience */}
               <div className="flex flex-col gap-5 pl-1 sm:pl-2">
-                {/* DM Sans Regular, 20% font reduction */}
-                <p className="font-sans text-[13px] sm:text-[13.5px] text-[#555552] leading-[22px] max-w-xl font-normal">
+                {/* DM Sans Regular, body text increased by 20% */}
+                <p className="font-sans text-[15.5px] sm:text-[16.5px] text-[#555552] leading-[26px] max-w-xl font-normal">
                   B.Des '27 student at IDC, IIT Bombay. I’m drawn to challenging challenges ;) Always growing as an individual and as a professional.
                 </p>
 
@@ -221,8 +221,8 @@ export function Hero() {
                   </div>
                 </div>
 
-                {/* 3. BOTTOM ANIMATING STRIP: Continuous horizontal sliding track (Greyscale, active bold, others light) */}
-                <div className="w-full max-w-full overflow-hidden whitespace-nowrap py-2.5 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto [contain:paint]">
+                {/* 3. BOTTOM ANIMATING STRIP: Transparent background, no stroke, shifted slightly up from card bottom */}
+                <div className="w-full max-w-full overflow-hidden whitespace-nowrap py-1 bg-transparent relative z-20 mt-auto mb-3 sm:mb-4 select-none [contain:paint]">
                   <div className="h-[48px] w-full max-w-full flex items-center overflow-hidden [contain:paint]">
                     <motion.div
                       animate={{ x: translateX }}

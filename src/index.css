@@ -30,13 +30,50 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ========================================================
+   2x Responsive Global Side Margins (Percentage-based, responsive to screen size)
+   ======================================================== */
+:root {
+  --global-margin: 4%;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --global-margin: 8%;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --global-margin: 12%;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --global-margin: 14%;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --global-margin: 18%;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --global-margin: 20%;
+  }
+}
+
 body {
   background-color: var(--color-canvas);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin: 0;
+  margin: 0 var(--global-margin);
   padding: 0;
 }
 
