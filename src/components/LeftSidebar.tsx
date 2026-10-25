@@ -363,45 +363,53 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                     Connected to the button as ONE hover target.
                     Default: clean gray button text without punctuations.
                     Hover: shifts smoothly to punctuation version (e.g. 'about', :work:, <skills>).
-                    Active: displays in the filled pastel clay pill. */}
-                <div className="flex items-center min-w-[125px] h-[69px]">
-                  <AnimatePresence>
+                    Active: displays in the filled pastel clay pill with prominent 3D shading at all times. */}
+                <div className="relative flex items-center min-w-[140px] h-[69px]">
+                  <AnimatePresence initial={false}>
                     {isActive ? (
-                      /* Active section filled clay pill */
+                      /* Active section filled clay pill: 20% larger text, prominent clay shading at rest and hover, no sideways jump */
                       <motion.div
                         key={`active-pill-${item.id}`}
-                        initial={{ scale: 0.9, opacity: 0, x: -8 }}
+                        initial={{ opacity: 0, scale: 0.94 }}
                         animate={{
-                          scale: isItemHovered ? 1.05 : 1,
                           opacity: 1,
-                          x: 0,
+                          scale: isItemHovered ? 1.05 : 1,
                         }}
-                        exit={{ scale: 0.9, opacity: 0, x: -6 }}
-                        transition={{ type: 'spring', stiffness: 480, damping: 26 }}
-                        className={`h-[38px] px-3.5 py-[8px] rounded-[13px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center select-none shadow-xs`}
+                        exit={{
+                          opacity: 0,
+                          scale: 0.94,
+                          position: 'absolute',
+                          pointerEvents: 'none',
+                        }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 28 }}
+                        className={`h-[42px] px-4 py-[9px] rounded-[15px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center select-none`}
                       >
                         <span
-                          className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap`}
+                          className={`font-sans font-bold text-[16px] leading-[22px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap`}
                         >
                           {isItemHovered ? item.hoverLabel : item.label}
                         </span>
                       </motion.div>
                     ) : isHoveredNear ? (
-                      /* Non-selected section title: soft gray by default, highlights and reveals punctuations on hover */
+                      /* Non-selected section title: soft gray by default, highlights and reveals punctuations on hover, no sideways jump */
                       <motion.div
                         key={`text-${item.id}`}
-                        initial={{ opacity: 0, x: -8 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
                         animate={{
                           opacity: isItemHovered ? 1 : 0.75,
-                          x: 0,
-                          scale: isItemHovered ? 1.06 : 1,
+                          scale: isItemHovered ? 1.05 : 1,
                         }}
-                        exit={{ opacity: 0, x: -6 }}
+                        exit={{
+                          opacity: 0,
+                          scale: 0.95,
+                          position: 'absolute',
+                          pointerEvents: 'none',
+                        }}
                         transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                        className="select-none px-2 py-1 text-left whitespace-nowrap origin-left"
+                        className="select-none px-2 py-1 text-left whitespace-nowrap"
                       >
                         <span
-                          className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase transition-colors duration-150 ${
+                          className={`font-sans font-bold text-[16px] leading-[22px] tracking-[-0.3px] lowercase transition-colors duration-150 ${
                             isItemHovered ? 'text-[#2C2C2A]' : 'text-[#888884]'
                           }`}
                         >
@@ -434,16 +442,16 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                 whileTap={{ scale: 0.94 }}
                 transition={{ type: 'spring', stiffness: 450, damping: 28 }}
                 onClick={() => scrollTo(item.id)}
-                className={`h-[43px] rounded-[15px] border shrink-0 cursor-pointer flex items-center ${
+                className={`h-[46px] rounded-[16px] border shrink-0 cursor-pointer flex items-center ${
                   isActive
-                    ? `px-3.5 sm:px-4 py-[10px] gap-[10px] bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow}`
-                    : `w-[43px] justify-center bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85`
+                    ? `px-4 py-[10px] gap-[10px] bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow}`
+                    : `w-[46px] justify-center bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85`
                 }`}
                 aria-label={item.label}
               >
                 <IconComponent
                   strokeWidth={1.82}
-                  className={`w-[20px] h-[20px] ${item.iconColor} opacity-90 shrink-0 pointer-events-none select-none`}
+                  className={`w-[22px] h-[22px] ${item.iconColor} opacity-90 shrink-0 pointer-events-none select-none`}
                 />
 
                 <AnimatePresence>
@@ -453,7 +461,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                       animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      className={`font-sans font-bold text-[13.5px] leading-[20px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-90 whitespace-nowrap overflow-hidden`}
+                      className={`font-sans font-bold text-[16px] leading-[22px] tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-90 whitespace-nowrap overflow-hidden`}
                     >
                       {item.label}
                     </motion.span>
