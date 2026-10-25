@@ -28,6 +28,8 @@
 html {
   font-size: 80%; /* Global 20% font size reduction */
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -36,7 +38,28 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin: 0 10%;
+  margin: 0;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Responsive side margins: full-width on mobile, comfortable gutters on tablet, exact 10% on desktop */
+@media (min-width: 640px) {
+  body {
+    margin: 0 4%;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    margin: 0 6%;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    margin: 0 10%;
+  }
 }
 
 /* Hide scrollbar for clean horizontal mobile dock while keeping touch scrolling functional */

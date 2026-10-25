@@ -53,12 +53,12 @@ export function Hero() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center py-12 lg:py-0 overflow-visible">
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center pt-24 sm:pt-28 pb-16 sm:pb-20 overflow-hidden sm:overflow-visible">
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10 my-auto flex flex-col justify-center">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10 xl:gap-14 2xl:gap-16 w-full overflow-visible">
+        <div className="flex flex-col xl:flex-row items-center xl:items-start justify-between gap-10 xl:gap-12 2xl:gap-16 w-full overflow-visible">
           
           {/* CENTER NARRATIVE & DIALOGUE CARD */}
-          <div className="flex-1 min-w-0 max-w-2xl xl:max-w-none w-full flex flex-col justify-start">
+          <div className="flex-1 min-w-0 sm:min-w-[420px] lg:min-w-[460px] xl:min-w-[500px] max-w-2xl xl:max-w-none w-full flex flex-col justify-start">
             <div className="flex flex-col gap-5 sm:gap-6 max-w-2xl xl:max-w-none">
               
               {/* Clay Dialogue Card (Matching reference image) */}
@@ -70,7 +70,7 @@ export function Hero() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.92, y: -10 }}
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="clay-dialogue-card border border-[#EBEBE8] rounded-[28px] sm:rounded-[36px] p-6 sm:p-9 md:p-10 lg:p-11 relative overflow-hidden"
+                    className="clay-dialogue-card border border-[#EBEBE8] rounded-[28px] sm:rounded-[36px] p-6 sm:p-9 md:p-10 lg:p-11 relative overflow-hidden w-full min-w-0 sm:min-w-[420px] lg:min-w-[460px] xl:min-w-[500px]"
                   >
                     {/* Top-right circular close button matching reference image */}
                     <button
@@ -155,8 +155,8 @@ export function Hero() {
           </div>
 
           {/* RIGHT COLUMN: The 3D Profile Card (Guaranteed distance from dialogue card) */}
-          <div className="shrink-0 w-full max-w-[312px] sm:w-[316px] xl:w-[326px] flex flex-col items-center lg:items-end justify-start pt-2 sm:pt-4 lg:pt-0 relative overflow-visible">
-            <div className="flex flex-col items-center lg:items-end gap-3.5 w-full sm:w-auto">
+          <div className="shrink-0 w-full max-w-[312px] sm:w-[316px] xl:w-[326px] flex flex-col items-center xl:items-end justify-start pt-2 sm:pt-4 xl:pt-0 relative overflow-visible">
+            <div className="flex flex-col items-center xl:items-end gap-3.5 w-full sm:w-auto">
               
               {/* Profile Card (matching Figma node 58:2955, w=312.13, h=390.63, radius=27.5px) */}
               <motion.div
@@ -222,8 +222,8 @@ export function Hero() {
                 </div>
 
                 {/* 3. BOTTOM ANIMATING STRIP: Continuous horizontal sliding track (Greyscale, active bold, others light) */}
-                <div className="w-full overflow-hidden whitespace-nowrap py-2.5 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto">
-                  <div className="h-[48px] flex items-center overflow-hidden">
+                <div className="w-full max-w-full overflow-hidden whitespace-nowrap py-2.5 bg-[#F4F4F4]/90 backdrop-blur-xs border-t border-[#EAEAEA] relative z-20 mt-auto [contain:paint]">
+                  <div className="h-[48px] w-full max-w-full flex items-center overflow-hidden [contain:paint]">
                     <motion.div
                       animate={{ x: translateX }}
                       transition={

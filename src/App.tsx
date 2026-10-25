@@ -10,7 +10,7 @@ import { CustomCursor } from './components/CustomCursor';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink">
+    <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink overflow-x-clip">
       {/* 3D Cartoon White Glove Custom Cursor matching Figma node 55:2552 */}
       <CustomCursor />
 
