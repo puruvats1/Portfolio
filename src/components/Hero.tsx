@@ -107,44 +107,44 @@ export function Hero() {
               </AnimatePresence>
 
               {/* Narrative Subtitle & Previous Experience */}
-              <div className="flex flex-col gap-5 pl-1 sm:pl-2">
-                {/* DM Sans Regular, balanced body text with room for negative space */}
-                <p className="font-sans text-[14px] sm:text-[15px] text-[#555552] leading-[24px] max-w-xl font-normal">
+              <div className="flex flex-col gap-6 pl-1 sm:pl-2">
+                {/* DM Sans Regular, prominent and legible supporting text */}
+                <p className="font-sans text-[16px] sm:text-[17.5px] md:text-[18.5px] text-[#555552] leading-[27px] sm:leading-[30px] max-w-xl font-normal">
                   B.Des '27 student at IDC, IIT Bombay. I’m drawn to challenging challenges ;) Always growing as an individual and as a professional.
                 </p>
 
                 {/* Previously At Logos */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-5 pt-1">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 pt-1">
                   {/* Previously at - DM Sans Medium */}
-                  <span className="font-sans text-[10.5px] leading-[14px] font-medium text-[#A3A3A3] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
+                  <span className="font-sans text-[13px] sm:text-[14px] md:text-[14.5px] leading-[18px] font-medium text-[#888884] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
                     Previously at
                   </span>
 
-                  <div className="flex flex-wrap items-center gap-5 sm:gap-6">
+                  <div className="flex flex-wrap items-center gap-6 sm:gap-8">
                     {/* D. E. Shaw Logo */}
-                    <div className="h-5 flex items-center hover:opacity-100 opacity-85 transition-opacity" title="D. E. Shaw & Co.">
+                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="D. E. Shaw & Co.">
                       <img
                         src="./deshaw_logo.svg"
                         alt="D. E. Shaw & Co."
-                        className="h-3.5 sm:h-4 w-auto object-contain"
+                        className="h-5 sm:h-6 md:h-7 w-auto object-contain"
                       />
                     </div>
 
                     {/* GE3S Sustainability Logo */}
-                    <div className="h-5 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
+                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
                       <img
                         src="./ge3s_logo.png"
                         alt="GE3S"
-                        className="h-[18px] sm:h-[20px] w-auto object-contain"
+                        className="h-7 sm:h-8 md:h-9 w-auto object-contain"
                       />
                     </div>
 
                     {/* Akai Space Logo */}
-                    <div className="h-5 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
+                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
                       <img
                         src="./logo2.png"
                         alt="AKAISPACE"
-                        className="h-3 sm:h-3.5 w-auto object-contain"
+                        className="h-5 sm:h-5.5 md:h-6 w-auto object-contain"
                       />
                     </div>
                   </div>
@@ -269,13 +269,13 @@ export function Hero() {
               {/* know me through my work ↓ CTA */}
               <button
                 onClick={scrollToWork}
-                className="inline-flex items-center gap-2 font-sans text-[10.5px] leading-[14px] font-semibold text-[#747373] hover:text-[#111110] transition-colors cursor-pointer group mt-1"
+                className="inline-flex items-center gap-2.5 font-sans text-[13px] sm:text-[14px] leading-[18px] font-semibold text-[#666663] hover:text-[#111110] transition-colors cursor-pointer group mt-2"
               >
                 <span>know me through my work</span>
                 <img
                   src="./cta_arrow.svg"
                   alt=""
-                  className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-1"
+                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-y-1"
                 />
               </button>
 
