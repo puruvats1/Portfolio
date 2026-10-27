@@ -1,8 +1,12 @@
-import { ArrowUpRight, Mail, ExternalLink, FileText } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowUpRight, Mail, ExternalLink, FileText, MessageSquareQuote } from 'lucide-react';
 import { motion } from 'motion/react';
 import { ScrollRevealTitle } from './ScrollRevealTitle';
+import { FeedbackModal } from './FeedbackModal';
 
 export function Contact() {
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
   return (
     <footer
       id="contact"
@@ -25,7 +29,7 @@ export function Contact() {
             </ScrollRevealTitle>
           </div>
 
-          {/* Columns 4-8: Minimal Contact details and footer links (paragraphs removed) */}
+          {/* Columns 4-8: Minimal Contact details, feedback and footer links */}
           <div className="lg:col-span-5 flex flex-col gap-10">
             <div>
               <h3 className="font-display text-xl sm:text-2xl font-semibold leading-tight tracking-tight heading-gradient-light">
@@ -39,11 +43,12 @@ export function Contact() {
                 <span className="text-neutral-400 text-sm font-normal">Interaction & Product Designer · IDC, IIT Bombay</span>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 md:justify-end">
+              <div className="flex flex-wrap sm:flex-nowrap gap-2.5 sm:gap-3 md:justify-end">
+                {/* Email Link */}
                 <motion.a 
                   whileHover={{ y: -2 }}
-                  href="mailto:puruvats@iitb.ac.in" 
-                  className="flex items-center justify-between gap-3 px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
+                  href="mailto:hello.puruvats@gmail.com" 
+                  className="flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
                 >
                   <div className="flex items-center gap-2">
                     <Mail size={15} />
@@ -52,12 +57,13 @@ export function Contact() {
                   <ArrowUpRight size={15} />
                 </motion.a>
 
+                {/* LinkedIn Link */}
                 <motion.a 
                   whileHover={{ y: -2 }}
-                  href="https://www.linkedin.com" 
+                  href="https://www.linkedin.com/in/puruvats" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
+                  className="flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
                 >
                   <div className="flex items-center gap-2">
                     <ExternalLink size={15} />
@@ -65,12 +71,32 @@ export function Contact() {
                   </div>
                   <ArrowUpRight size={15} />
                 </motion.a>
+
+                {/* Quick Feedback Button in Actions */}
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  onClick={() => setIsFeedbackOpen(true)}
+                  className="flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white cursor-pointer"
+                  title="Share quick feedback"
+                >
+                  <div className="flex items-center gap-2">
+                    <MessageSquareQuote size={15} />
+                    <span>Feedback</span>
+                  </div>
+                </motion.button>
               </div>
             </div>
 
             <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400 font-normal">
               <span>© 2026 Puru. Crafted with tactile care.</span>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+                <button
+                  onClick={() => setIsFeedbackOpen(true)}
+                  className="hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1.5 text-neutral-300 hover:underline"
+                >
+                  <span>💬 Give feedback</span>
+                </button>
+                <span>·</span>
                 <a 
                   href="#hero" 
                   className="hover:text-white transition-colors cursor-pointer"
@@ -79,7 +105,7 @@ export function Contact() {
                 </a>
                 <span>·</span>
                 <a 
-                  href="https://www.behance.net" 
+                  href="https://www.behance.net/puruvats" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
@@ -88,7 +114,9 @@ export function Contact() {
                 </a>
                 <span>·</span>
                 <a 
-                  href="#"
+                  href="/Puru_Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 hover:text-white transition-colors"
                 >
                   <FileText size={12} />
@@ -100,6 +128,12 @@ export function Contact() {
           </div>
         </motion.div>
       </div>
+
+      {/* Interactive Feedback Modal */}
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
     </footer>
   );
 }

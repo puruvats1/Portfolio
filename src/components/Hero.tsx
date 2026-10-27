@@ -121,30 +121,30 @@ export function Hero() {
                   </span>
 
                   <div className="flex flex-wrap items-center gap-6 sm:gap-8">
-                    {/* D. E. Shaw Logo */}
-                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="D. E. Shaw & Co.">
+                    {/* D. E. Shaw Logo (optical height increased to compensate for svg viewBox padding) */}
+                    <div className="h-9 sm:h-11 md:h-12 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="D. E. Shaw & Co.">
                       <img
                         src="./deshaw_logo.svg"
                         alt="D. E. Shaw & Co."
-                        className="h-5 sm:h-6 md:h-7 w-auto object-contain"
+                        className="h-[36px] sm:h-[44px] md:h-[48px] w-auto object-contain"
                       />
                     </div>
 
                     {/* GE3S Sustainability Logo */}
-                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
+                    <div className="h-9 sm:h-11 md:h-12 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
                       <img
                         src="./ge3s_logo.png"
                         alt="GE3S"
-                        className="h-7 sm:h-8 md:h-9 w-auto object-contain"
+                        className="h-[26px] sm:h-[30px] md:h-[32px] w-auto object-contain"
                       />
                     </div>
 
                     {/* Akai Space Logo */}
-                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
+                    <div className="h-9 sm:h-11 md:h-12 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
                       <img
                         src="./logo2.png"
                         alt="AKAISPACE"
-                        className="h-5 sm:h-5.5 md:h-6 w-auto object-contain"
+                        className="h-5 sm:h-[22px] md:h-[24px] w-auto object-contain"
                       />
                     </div>
                   </div>
