@@ -114,33 +114,33 @@ export function Hero() {
                 </p>
 
                 {/* Previously At Logos */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 pt-1">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-4 lg:gap-5 pt-1">
                   {/* Previously at - DM Sans Medium */}
-                  <span className="font-sans text-[13px] sm:text-[14px] md:text-[14.5px] leading-[18px] font-medium text-[#888884] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
+                  <span className="font-sans text-[12.5px] sm:text-[13.5px] md:text-[14px] leading-[18px] font-medium text-[#888884] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
                     Previously at
                   </span>
 
-                  <div className="flex flex-wrap items-center gap-6 sm:gap-8">
-                    {/* D. E. Shaw Logo (optical height increased to compensate for svg viewBox padding) */}
-                    <div className="h-9 sm:h-11 md:h-12 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="D. E. Shaw & Co.">
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-5 lg:gap-6">
+                    {/* D. E. Shaw Logo */}
+                    <div className="h-10 sm:h-11 md:h-12 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="D. E. Shaw & Co.">
                       <img
                         src="./deshaw_logo.svg"
                         alt="D. E. Shaw & Co."
-                        className="h-[36px] sm:h-[44px] md:h-[48px] w-auto object-contain"
+                        className="h-9 sm:h-10 md:h-[44px] w-auto object-contain"
                       />
                     </div>
 
                     {/* GE3S Sustainability Logo */}
-                    <div className="h-9 sm:h-11 md:h-12 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
+                    <div className="h-8 sm:h-9 md:h-10 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
                       <img
                         src="./ge3s_logo.png"
                         alt="GE3S"
-                        className="h-[26px] sm:h-[30px] md:h-[32px] w-auto object-contain"
+                        className="h-6 sm:h-[26px] md:h-7 w-auto object-contain"
                       />
                     </div>
 
                     {/* Akai Space Logo */}
-                    <div className="h-9 sm:h-11 md:h-12 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
+                    <div className="h-8 sm:h-9 md:h-10 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
                       <img
                         src="./logo2.png"
                         alt="AKAISPACE"
