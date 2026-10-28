@@ -31,27 +31,27 @@ html {
 }
 
 /* ========================================================
-   Responsive Global Side Margins (Percentage-based, max 6% cascaded)
+   Responsive Global Side Margins (Percentage-based, phone/tablet balanced)
    ======================================================== */
 :root {
-  --global-margin: 2%;
+  --global-margin: 5.5%; /* Phone viewport: ~21.5px on 390px, ~23.5px on 430px */
 }
 
 @media (min-width: 640px) {
   :root {
-    --global-margin: 3%;
+    --global-margin: 6%; /* Small Tablet: ~38px on 640px */
   }
 }
 
 @media (min-width: 768px) {
   :root {
-    --global-margin: 4%;
+    --global-margin: 6.5%; /* Tablet (iPad / iPad Air): ~50px-54px */
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --global-margin: 5%;
+    --global-margin: 5%; /* Desktop (dedicated sticky sidebar rail + content) */
   }
 }
 

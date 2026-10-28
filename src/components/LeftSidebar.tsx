@@ -378,11 +378,9 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                         exit={{
                           opacity: 0,
                           scale: 0.94,
-                          position: 'absolute',
-                          pointerEvents: 'none',
                         }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 28 }}
-                        className={`h-[40px] px-4 py-2 rounded-[15px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center select-none`}
+                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        className={`absolute left-0 top-1/2 -translate-y-1/2 h-[40px] px-4 py-2 rounded-[15px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center select-none`}
                       >
                         <span
                           className={`font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap`}
@@ -402,11 +400,9 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                         exit={{
                           opacity: 0,
                           scale: 0.95,
-                          position: 'absolute',
-                          pointerEvents: 'none',
                         }}
                         transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                        className="select-none px-2 py-1 text-left whitespace-nowrap"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 select-none px-2 py-1 text-left whitespace-nowrap"
                       >
                         <span
                           className={`font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase transition-colors duration-150 ${
@@ -425,10 +421,18 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
         </aside>
       )}
 
-      {/* MOBILE & TABLET FLOATING DOCK */}
+      {/* Subtle blue gradient at screen bottom to guarantee floating button visibility & contrast */}
+      {mode !== 'desktop' && (
+        <div
+          className="lg:hidden fixed bottom-0 left-0 right-0 h-28 sm:h-32 pointer-events-none z-40 bg-gradient-to-t from-[#D9E8F5]/95 via-[#D9E8F5]/45 to-transparent backdrop-blur-[2px]"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* MOBILE & TABLET FLOATING DOCK (White container removed, buttons float directly over bottom blue gradient) */}
       {mode !== 'desktop' && (
         <nav
-          className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 p-1.5 sm:p-2 rounded-[18px] bg-white/92 backdrop-blur-xl border border-neutral-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.14)] max-w-[calc(100vw-20px)] overflow-x-auto no-scrollbar"
+          className="lg:hidden fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 sm:gap-2 max-w-[calc(100vw-24px)] overflow-x-auto no-scrollbar select-none py-1 px-1.5"
           aria-label="Mobile Navigation"
         >
           {NAV_ITEMS.map((item) => {
@@ -438,14 +442,12 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
             return (
               <motion.button
                 key={item.id}
-                layout
                 whileTap={{ scale: 0.94 }}
-                transition={{ type: 'spring', stiffness: 450, damping: 28 }}
                 onClick={() => scrollTo(item.id)}
-                className={`h-[42px] rounded-[15px] border shrink-0 cursor-pointer flex items-center ${
+                className={`h-[42px] rounded-[15px] border shrink-0 cursor-pointer flex items-center transition-[padding,gap,background-color,border-color,opacity,box-shadow] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isActive
-                    ? `px-4 py-[7px] gap-2 bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow}`
-                    : `w-[42px] justify-center bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85`
+                    ? `px-3.5 sm:px-4 py-[7px] gap-2 bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow} opacity-100 shadow-[0_4px_14px_rgba(0,0,0,0.12)]`
+                    : `w-[42px] justify-center px-0 gap-0 bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85 hover:opacity-100 shadow-[0_2px_8px_rgba(0,0,0,0.08)]`
                 }`}
                 aria-label={item.label}
               >
@@ -454,14 +456,14 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                   className={`w-[20px] h-[20px] ${item.iconColor} opacity-90 shrink-0 pointer-events-none select-none`}
                 />
 
-                <AnimatePresence>
+                <AnimatePresence initial={false}>
                   {isActive && (
                     <motion.span
                       initial={{ opacity: 0, width: 0 }}
                       animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      className={`font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-90 whitespace-nowrap overflow-hidden`}
+                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                      className={`font-sans font-bold text-[14.5px] leading-none tracking-[-0.25px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap overflow-hidden block`}
                     >
                       {item.label}
                     </motion.span>

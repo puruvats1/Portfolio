@@ -28,7 +28,7 @@ export default function App() {
         </div>
 
         {/* Main continuous scroll stream: positioned beside nav rail so content fills equal width as top bar */}
-        <div className="flex-1 min-w-0 w-full pb-0">
+        <div className="flex-1 min-w-0 w-full pb-28 lg:pb-0">
           <main className="flex flex-col">
             {/* 1. Hello / Hero */}
             <Hero />
