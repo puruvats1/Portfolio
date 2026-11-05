@@ -66,6 +66,23 @@ export function ProjectViewer({ project, onBack }: Props) {
     setViewing((cur) => (cur === null ? cur : Math.min(project.panelCount, Math.max(1, cur + dir))));
   };
 
+  // Swipe left / right on the image to go to the next / previous panel
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStart.current = e.touches.length === 1 ? { x: t.clientX, y: t.clientY } : null; // ignore pinch
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    // a deliberate, mostly horizontal swipe (so vertical scrolling of a zoomed panel is left alone)
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+  };
+
   // Overlay: keyboard controls + lock page scroll while open
   useEffect(() => {
     if (viewing === null) return;
@@ -93,19 +110,25 @@ export function ProjectViewer({ project, onBack }: Props) {
   const showMarkers = milestones.length > 0;
 
   // Matches the hero side-nav label pill: 40px, 15px radius, blue clay gradient, bold gradient text
-  const backButton = (
+  // `compact` (phone / tablet): icon only, a square 40px button with the arrow centred
+  const renderBackButton = (compact: boolean) => (
     <motion.button
       type="button"
       onClick={onBack}
+      aria-label="Back"
       whileHover={{ scale: 1.06 }}
       whileTap={{ scale: 0.94 }}
       transition={{ type: 'spring', stiffness: 450, damping: 25 }}
-      className="h-[40px] pl-3.5 pr-4 rounded-[15px] bg-gradient-to-b from-[#E6F1FE] to-[#72BDFF] border border-[#B7D9FF]/75 pill-clay-blue inline-flex items-center gap-1.5 cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF]"
+      className={`h-[40px] rounded-[15px] bg-gradient-to-b from-[#E6F1FE] to-[#72BDFF] border border-[#B7D9FF]/75 pill-clay-blue inline-flex items-center justify-center cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF] ${
+        compact ? 'w-[40px]' : 'pl-3.5 pr-4 gap-1.5'
+      }`}
     >
       <ArrowLeft className="w-4 h-4 stroke-[2.4] text-[#3F74E3]" />
-      <span className="font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b from-[#1D4ED8] to-[#1E3A8A] bg-clip-text text-transparent">
-        back
-      </span>
+      {!compact && (
+        <span className="font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b from-[#1D4ED8] to-[#1E3A8A] bg-clip-text text-transparent">
+          back
+        </span>
+      )}
     </motion.button>
   );
 
@@ -116,12 +139,25 @@ export function ProjectViewer({ project, onBack }: Props) {
       transition={{ duration: 0.2, ease: 'easeOut' }}
       className="w-full max-w-[1400px] mx-auto pt-24 sm:pt-28 pb-28 sm:pb-32 lg:pb-24"
     >
+      {/* Phone / tablet: soft blur fading in from the top and bottom edges (same recipe as the home dock),
+          so content scrolls away gently behind the back button and the stage stepper */}
+      <div
+        aria-hidden="true"
+        className="lg:hidden fixed top-0 left-0 right-0 h-[calc(6.5rem+env(safe-area-inset-top))] pointer-events-none z-[25] backdrop-blur-lg [mask-image:linear-gradient(to_bottom,black_45%,transparent)]"
+      />
+      {showMarkers && (
+        <div
+          aria-hidden="true"
+          className="lg:hidden fixed bottom-0 left-0 right-0 h-[calc(9.5rem+env(safe-area-inset-bottom))] pointer-events-none z-[25] backdrop-blur-lg [mask-image:linear-gradient(to_top,black_45%,transparent)]"
+        />
+      )}
+
       {/* Phone / tablet: back button sits top-right; the stage stepper lives at the bottom */}
       <div
         className="lg:hidden fixed right-[var(--global-margin)] z-40 transition-[top] duration-300 ease-out"
         style={{ top: scrolledPast ? 'max(12px, env(safe-area-inset-top))' : 'max(76px, calc(env(safe-area-inset-top) + 68px))' }}
       >
-        {backButton}
+        {renderBackButton(true)}
       </div>
 
       {/* Phone / tablet: stage stepper, floating at the bottom with the same even edge gap as the home dock */}
@@ -172,7 +208,7 @@ export function ProjectViewer({ project, onBack }: Props) {
         {showMarkers && (
           <aside className="hidden lg:block lg:col-start-1 lg:row-start-1 lg:row-span-3 self-stretch pl-3 xl:pl-4 pr-6">
             {/* Back: level with the top of the scroll and pinned there while the page scrolls */}
-            <div className="sticky top-[178px] z-40 w-max">{backButton}</div>
+            <div className="sticky top-[178px] z-40 w-max">{renderBackButton(false)}</div>
 
             {/* Stage markers: pinned at the vertical middle of the screen */}
             <div className="sticky top-[max(50vh,300px)] -translate-y-1/2">
@@ -287,7 +323,9 @@ export function ProjectViewer({ project, onBack }: Props) {
           >
             {/* Image area: fits the screen; click the image to zoom to full width and scroll */}
             <div
-              className="absolute inset-0 overflow-auto flex px-4 sm:px-16 py-16"
+              onTouchStart={onTouchStart}
+              onTouchEnd={onTouchEnd}
+              className="absolute inset-0 overflow-auto flex px-4 sm:px-16 pt-16 pb-28"
             >
               <img
                 key={viewing}
@@ -318,35 +356,33 @@ export function ProjectViewer({ project, onBack }: Props) {
               <X className="w-5 h-5" />
             </button>
 
-            {viewing > 1 && (
+            {/* Navigation lives under the image so wide panels can never hide it */}
+            <div
+              className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3"
+              style={{ bottom: 'max(20px, env(safe-area-inset-bottom))' }}
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  step(-1);
-                }}
+                onClick={() => step(-1)}
+                disabled={viewing <= 1}
                 aria-label="Previous panel"
-                className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-white/80 hover:text-white bg-white/10 hover:bg-white/20 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                className="w-11 h-11 rounded-full flex items-center justify-center text-white/90 bg-white/12 hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-            )}
-            {viewing < project.panelCount && (
+              <div className="min-w-[72px] text-center font-sans text-[14px] font-medium text-white/80 tabular-nums select-none">
+                {viewing} / {project.panelCount}
+              </div>
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  step(1);
-                }}
+                onClick={() => step(1)}
+                disabled={viewing >= project.panelCount}
                 aria-label="Next panel"
-                className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-white/80 hover:text-white bg-white/10 hover:bg-white/20 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                className="w-11 h-11 rounded-full flex items-center justify-center text-white/90 bg-white/12 hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
                 <ArrowRight className="w-5 h-5" />
               </button>
-            )}
-
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 font-sans text-[13px] font-medium text-white/70 pointer-events-none">
-              {viewing} / {project.panelCount}
             </div>
           </motion.div>
         )}
