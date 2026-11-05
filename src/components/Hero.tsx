@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { PenTool, Code2, Compass, Music, Palette } from 'lucide-react';
 import { HeroCardDeck } from './HeroCardDeck';
@@ -29,6 +29,18 @@ function LogoTip({ tip, children }: { tip: string; children: React.ReactNode }) 
 }
 
 // Sequence of tokens for the bottom animating strip in pure greyscale
+/** Side by side: at this row width (and above) everything is full size. */
+const HERO_ROW_FULL = 900;
+/** …and at this width (the narrowest desktop) the profile card has shrunk the most to keep the speech card's text large. */
+const HERO_ROW_MIN = 700;
+const MIN_CARD_SCALE = 0.62;
+/** Side by side: the speech card's design width (hugging text card, longest copy). */
+const DECK_DESIGN_WIDTH = 520;
+/** Below this viewport width (phones + tablets) the hero stacks: profile card on top, then the rest. */
+const STACK_BELOW = 1024;
+/** Stacked: width the speech card needs at full size; narrower screens scale it down smoothly. */
+const DECK_FULL_WIDTH = 600;
+
 const WORDS_SEQUENCE = [
   { id: 'design', text: '<Design>' },
   { id: 'code', text: '{code}' },
@@ -38,6 +50,41 @@ const WORDS_SEQUENCE = [
 ];
 
 export function Hero() {
+  // Fluid layout. ≥1024px: side by side, the whole row shrinks smoothly (zoom) when space gets tight.
+  // <1024px (phones + tablets): one column with the profile card on top; the speech card and the
+  // profile card scale smoothly with the width, the intro text and logos keep their normal size.
+  const fitRef = useRef<HTMLDivElement>(null);
+  const [stacked, setStacked] = useState(() => typeof window !== 'undefined' && window.innerWidth < STACK_BELOW);
+  const [rowGap, setRowGap] = useState(56);
+  const [deckScale, setDeckScale] = useState(1);
+  const [cardScale, setCardScale] = useState(1);
+  useLayoutEffect(() => {
+    const el = fitRef.current;
+    if (!el) return;
+    const update = () => {
+      const w = el.clientWidth;
+      const stack = window.innerWidth < STACK_BELOW;
+      setStacked(stack);
+      if (stack) {
+        setDeckScale(Math.min(1, Math.max(0.55, w / DECK_FULL_WIDTH)));
+        setCardScale(Math.min(0.85, Math.max(0.7, w / 800)));
+        return;
+      }
+      // Side by side: as space gets tight the profile card gives up size first; the speech card
+      // takes what's left, so its text stays as large as possible.
+      const t = Math.min(1, Math.max(0, (w - HERO_ROW_MIN) / (HERO_ROW_FULL - HERO_ROW_MIN)));
+      const card = MIN_CARD_SCALE + (1 - MIN_CARD_SCALE) * t;
+      const gap = window.innerWidth >= 1536 ? 80 : 36 + 20 * t;
+      setCardScale(card);
+      setRowGap(gap);
+      setDeckScale(Math.min(1, Math.max(0.6, (w - gap - 326 * card) / DECK_DESIGN_WIDTH)));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const [cardIndex, setCardIndex] = useState(0);
   const [bubbleKey, setBubbleKey] = useState<number | null>(null);
 
@@ -111,19 +158,21 @@ export function Hero() {
 
   return (
     <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center pt-24 sm:pt-28 pb-16 sm:pb-20 overflow-hidden sm:overflow-visible">
-      <div className="w-full my-auto flex flex-col justify-center items-center">
-        <div className="flex flex-col xl:flex-row items-center justify-center gap-10 xl:gap-14 2xl:gap-20 w-full max-w-6xl mx-auto overflow-visible">
+      <div ref={fitRef} className="w-full my-auto flex flex-col justify-center items-center">
+        <div className={`flex ${stacked ? 'flex-col gap-8' : 'flex-row'} items-center justify-center w-full max-w-6xl mx-auto overflow-visible`} style={stacked ? undefined : { gap: rowGap }}>
           
           {/* CENTER NARRATIVE & DIALOGUE CARD */}
-          <div className="flex-1 min-w-0 sm:min-w-[400px] lg:min-w-[440px] max-w-[620px] w-full flex flex-col items-center xl:items-start justify-center">
+          <div className="flex-1 min-w-0 max-w-[620px] w-full flex flex-col items-center justify-center">
             <div className="flex flex-col gap-5 sm:gap-6 w-full max-w-[620px]">
               
               {/* Clay Dialogue Card deck (copy lives in src/data/heroCards.ts) */}
-              <HeroCardDeck
-                index={cardIndex}
-                onIndexChange={setCardIndex}
-                onLoop={() => setBubbleKey(Date.now())}
-              />
+              <div style={{ zoom: deckScale }}>
+                <HeroCardDeck
+                  index={cardIndex}
+                  onIndexChange={setCardIndex}
+                  onLoop={() => setBubbleKey(Date.now())}
+                />
+              </div>
 
               {/* Narrative Subtitle & Previous Experience */}
               <div className="flex flex-col gap-6 pl-1 sm:pl-2">
@@ -133,7 +182,7 @@ export function Hero() {
                 </p>
 
                 {/* Previously At Logos */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 pt-1">
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-1">
                   {/* Previously at - DM Sans Medium */}
                   <span className="font-sans text-[13px] sm:text-[14px] md:text-[14.5px] leading-[18px] font-medium text-[#888884] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
                     Previously at
@@ -174,18 +223,19 @@ export function Hero() {
           </div>
 
           {/* RIGHT COLUMN: The 3D Profile Card */}
-          <div className="shrink-0 w-full max-w-[312px] sm:w-[316px] xl:w-[326px] flex flex-col items-center justify-start pt-2 sm:pt-4 xl:pt-0 relative overflow-visible">
-            <div className="flex flex-col items-center gap-3.5 w-full sm:w-auto">
+          <div className={`shrink-0 flex flex-col items-center justify-start relative overflow-visible ${stacked ? 'order-first' : ''}`}>
+            <div className="flex flex-col items-center gap-3.5">
               
               {/* Profile Card (matching Figma node 58:2955, w=312.13, h=390.63, radius=27.5px) */}
+              <div style={{ zoom: cardScale }}>
               <motion.div
                 whileHover={{ rotate: 0, y: -4 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="w-full max-w-[312px] sm:w-[316px] xl:w-[326px] h-[395px] sm:h-[405px] clay-binder-card border border-[#EBEBEB] rounded-[26px] sm:rounded-[30px] relative overflow-hidden flex flex-col justify-between rotate-0 sm:-rotate-[2deg] hover:rotate-0 transition-transform duration-300 mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
+                className="w-[326px] h-[405px] clay-binder-card border border-[#EBEBEB] rounded-[30px] relative overflow-hidden flex flex-col justify-between -rotate-[2deg] hover:rotate-0 transition-transform duration-300 mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
               >
                 {/* 1. TOP-HALF LEFT END ICONS: Design, Code, Research, Music, Art */}
                 <div
-                  className="absolute left-3.5 sm:left-4 top-3.5 flex flex-col gap-1.5 z-20"
+                  className="absolute left-4 top-3.5 flex flex-col gap-1.5 z-20"
                   aria-label="Capabilities: Design, Code, Research, Music, Art"
                 >
                   {profileLeftIcons.map((item) => {
@@ -216,7 +266,7 @@ export function Hero() {
                     viewBox="0 0 231 251"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="absolute -top-1.5 -right-1 pointer-events-none select-none w-[215px] sm:w-[231px] h-auto"
+                    className="absolute -top-1.5 -right-1 pointer-events-none select-none w-[231px] h-auto"
                   >
                     <path
                       d="M144.299 160.209C65.155 153.315 4.10114 112.083 7.93096 68.1144C11.7608 24.1457 79.024 -5.90948 158.168 0.9842C237.311 7.87788 298.365 49.11 294.535 93.0786C290.706 137.047 223.442 167.103 144.299 160.209Z"
@@ -230,7 +280,7 @@ export function Hero() {
 
                   {/* 3D Clay Curly-Haired Avatar Bust (Flipped horizontally to face inwards towards content) */}
                   {/* The wrapper bobs and is the positioning box for the sweatdrop (% of image). */}
-                  <div className="relative z-10 flex items-center justify-center translate-x-1 sm:translate-x-2">
+                  <div className="relative z-10 flex items-center justify-center translate-x-2">
                     <motion.div
                       animate={{ y: [0, -6, 0] }}
                       transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
@@ -244,7 +294,7 @@ export function Hero() {
                         <img
                           src="./avatar_bust.png"
                           alt="Puru Vats 3D Avatar"
-                          className="block -scale-x-100 w-[168px] xl:w-[182px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
+                          className="block -scale-x-100 w-[182px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
                         />
                         {/* Drops per card: heroCards.ts. Placement: Sweatdrop.tsx. Bubble placement: HeadBubble.tsx */}
                         <Sweatdrop count={Math.max(SWEAT_DROPS_PER_CARD[cardIndex] ?? 0, tapDrops)} />
@@ -256,7 +306,7 @@ export function Hero() {
                 </div>
 
                 {/* 3. BOTTOM ANIMATING STRIP: Transparent background, no stroke, shifted slightly up from card bottom */}
-                <div className="w-full max-w-full overflow-hidden whitespace-nowrap py-1 bg-transparent relative z-20 mt-auto mb-3 sm:mb-4 select-none [contain:paint]">
+                <div className="w-full max-w-full overflow-hidden whitespace-nowrap py-1 bg-transparent relative z-20 mt-auto mb-4 select-none [contain:paint]">
                   <div className="h-[48px] w-full max-w-full flex items-center overflow-hidden [contain:paint]">
                     <motion.div
                       animate={{ x: translateX }}
@@ -274,7 +324,7 @@ export function Hero() {
                           setTranslateX(0);
                         }
                       }}
-                      className="flex items-center gap-4 sm:gap-5 whitespace-nowrap pl-4 sm:pl-5 select-none"
+                      className="flex items-center gap-5 whitespace-nowrap pl-5 select-none"
                     >
                       {queue.map((wordIdx, i) => {
                         const word = WORDS_SEQUENCE[wordIdx];
@@ -285,7 +335,7 @@ export function Hero() {
                           <span
                             key={`${word.id}-${i}-${wordIdx}`}
                             ref={i === 0 ? firstWordRef : i === 1 ? secondWordRef : null}
-                            className={`inline-block whitespace-nowrap text-[22px] sm:text-[25px] lg:text-[27px] font-display font-bold leading-none tracking-tight transition-all duration-500 ${
+                            className={`inline-block whitespace-nowrap text-[27px] font-display font-bold leading-none tracking-tight transition-all duration-500 ${
                               isBlack
                                 ? 'text-ink opacity-100'
                                 : 'text-[#9B9B96] opacity-40'
@@ -299,6 +349,7 @@ export function Hero() {
                   </div>
                 </div>
               </motion.div>
+              </div>
 
               {/* know me through my work ↓ CTA */}
               <button

@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#262624" />
-      <stop offset="100%" stop-color="#141413" />
-    </linearGradient>
-    <linearGradient id="pGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#FFFFFF" />
       <stop offset="100%" stop-color="#EDEDEB" />
+    </linearGradient>
+    <linearGradient id="pGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#262624" />
+      <stop offset="100%" stop-color="#141413" />
     </linearGradient>
     <linearGradient id="dotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#FCD34D" />
@@ -18,8 +18,8 @@
   </defs>
 
   <!-- Tactile squircle tile -->
-  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="#383834" stroke-width="1.5" />
-  <rect x="3" y="3" width="58" height="58" rx="15" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="#D6D6D2" stroke-width="1.5" />
+  <rect x="3" y="3" width="58" height="58" rx="15" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1" />
 
   <!-- Monogram 'p.' -->
   <g transform="translate(16.5, 14.5) scale(1.48)">

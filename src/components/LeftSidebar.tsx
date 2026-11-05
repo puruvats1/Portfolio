@@ -465,7 +465,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
       {/* Subtle blue gradient at screen bottom to guarantee floating button visibility & contrast */}
       {mode !== 'desktop' && (
         <div
-          className="lg:hidden fixed bottom-0 left-0 right-0 h-28 sm:h-32 pointer-events-none z-40 bg-gradient-to-t from-[#D9E8F5]/95 via-[#D9E8F5]/45 to-transparent backdrop-blur-[2px]"
+          className="lg:hidden fixed bottom-0 left-0 right-0 h-28 sm:h-32 pointer-events-none z-40 backdrop-blur-lg [mask-image:linear-gradient(to_top,black_45%,transparent)]"
           aria-hidden="true"
         />
       )}

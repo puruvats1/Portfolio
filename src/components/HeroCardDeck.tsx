@@ -1,15 +1,150 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useIsPresent, useReducedMotion } from 'motion/react';
 import { X } from 'lucide-react';
 import { HERO_CARDS } from '../data/heroCards';
 
 const WOBBLE_AFTER_MS = 6000;
+/** Every card's text is fitted to exactly this many lines. */
+const TEXT_LINES = 3;
 
-// Same classes the original static card used — visuals are unchanged.
+// Uniform padding on every side. From tablet up the card hugs its text (width is set by FitText);
+// on phones it stays full width.
 const CARD_CLASS =
-  'clay-dialogue-card border border-[#EBEBE8] rounded-[28px] sm:rounded-[36px] p-6 sm:p-9 md:p-10 lg:p-11 relative overflow-hidden w-full max-w-[620px]';
+  'clay-dialogue-card border border-[#EBEBE8] rounded-[36px] p-9 relative overflow-hidden flex items-start gap-4 w-fit max-w-[620px] justify-self-start self-start';
 const TEXT_CLASS =
-  'font-sans text-[19px] sm:text-[21px] md:text-[24px] xl:text-[26px] font-medium leading-[1.38] tracking-[-0.015em] text-[#60605D] max-w-[95%] pr-6 sm:pr-8 pt-1 sm:pt-2';
+  'font-sans text-[29px] lg:text-[26px] font-medium leading-[1.38] tracking-[-0.015em] text-[#60605D] [text-wrap:balance] flex-none';
+// keeps the layout box of the × button (used by the hidden sizers)
+// × button: pinned near the card's top-right corner (tighter than the text padding)
+const CLOSE_BOX = 'absolute top-5 right-5 w-[2.6rem] h-[2.6rem]';
+// invisible spacer in the row: keeps the text clear of the × and lets the card hug the text
+const CLOSE_SPACER = 'shrink-0 w-[22px] h-0';
+
+/** Size of the default (first) card's text box. Every other card is fitted into the same box. */
+interface BaseSize {
+  w: number; // text column width (px, before any zoom)
+  h: number; // text block height
+  fs: number; // font size
+}
+
+/** How much larger than the default a shorter card's text may get while still fitting the box. */
+const MAX_GROW = 1.15;
+
+/**
+ * Card text. The FIRST card sets the default size: its text hugs its copy and wraps to exactly
+ * TEXT_LINES lines. All other cards use that exact box (same width and height), so the container
+ * never changes between cards; their font size is adjusted to fit inside it instead.
+ */
+function FitText({
+  children,
+  className = '',
+  copyIndex,
+  measure = false,
+  base,
+  onBase,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  copyIndex: number;
+  /** true for the single instance that measures the default size */
+  measure?: boolean;
+  base: BaseSize | null;
+  onBase?: (b: BaseSize) => void;
+}) {
+  const ref = useRef<HTMLParagraphElement>(null);
+
+  useLayoutEffect(() => {
+    const p = ref.current;
+    const card = p?.parentElement;
+    const deck = card?.parentElement;
+    if (!p || !card || !deck) return;
+
+    const lineCount = () => Math.round(p.offsetHeight / parseFloat(getComputedStyle(p).lineHeight));
+    const widthFor = (w: number) => {
+      p.style.width = w + 'px';
+      return lineCount();
+    };
+    const reset = () => {
+      p.style.fontSize = '';
+      p.style.width = '';
+      p.style.height = '';
+      p.style.paddingTop = '';
+    };
+
+    // default card: hug the text, exactly TEXT_LINES lines
+    const measureDefault = () => {
+      reset();
+      // space the text may use = deck width minus the card's padding, border, gap and × spacer
+      p.style.width = '100px';
+      const avail = Math.max(140, deck.clientWidth - (card.offsetWidth - 100));
+
+      // too long for TEXT_LINES: shrink the font a little
+      let size = parseFloat(getComputedStyle(p).fontSize);
+      while (widthFor(avail) > TEXT_LINES && size > 13) {
+        size -= 0.5;
+        p.style.fontSize = size + 'px';
+      }
+      // narrowest column that still fits → the card hugs the text
+      let lo = 100;
+      let hi = avail;
+      while (hi - lo > 1) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (widthFor(mid) <= TEXT_LINES) hi = mid;
+        else lo = mid;
+      }
+      p.style.width = hi + 'px';
+      return { w: hi, h: p.offsetHeight, fs: parseFloat(getComputedStyle(p).fontSize) };
+    };
+
+    // other cards: same box as the default, font adjusted to fit inside it
+    const fitIntoBase = (b: BaseSize) => {
+      reset();
+      p.style.width = b.w + 'px';
+      if (copyIndex === 0) {
+        p.style.fontSize = b.fs + 'px'; // the default copy itself: exactly the default
+      } else {
+        for (let size = b.fs * MAX_GROW; size >= 13; size -= 0.5) {
+          p.style.fontSize = size + 'px';
+          if (p.offsetHeight <= b.h + 0.5 && lineCount() <= TEXT_LINES) break;
+        }
+      }
+      // keep the box height identical: centre the (possibly shorter) text vertically
+      p.style.height = 'auto';
+      const natural = p.offsetHeight;
+      p.style.paddingTop = Math.max(0, (b.h - natural) / 2) + 'px';
+      p.style.height = b.h + 'px';
+    };
+
+    const fit = () => {
+      if (measure) {
+        const b = measureDefault();
+        onBase?.(b);
+      } else if (base) {
+        fitIntoBase(base);
+      } else {
+        measureDefault(); // default size not known yet: temporary hug, refits once it arrives
+      }
+    };
+
+    fit();
+    let lastWidth = deck.clientWidth;
+    const ro = new ResizeObserver(() => {
+      if (deck.clientWidth !== lastWidth) {
+        lastWidth = deck.clientWidth;
+        fit();
+      }
+    });
+    ro.observe(deck);
+    document.fonts?.ready.then(fit);
+    return () => ro.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [base?.w, base?.h, base?.fs]);
+
+  return (
+    <p ref={ref} className={`${TEXT_CLASS} ${className}`}>
+      {children}
+    </p>
+  );
+}
 
 /** "plain **highlight** plain" → text with blue highlighted spans. */
 function renderCopy(copy: string) {
@@ -26,6 +161,8 @@ function renderCopy(copy: string) {
 
 interface DeckCardProps {
   copy: string;
+  copyIndex: number;
+  base: BaseSize | null;
   closeLabel: string;
   focusOnMount: boolean;
   wobble: boolean;
@@ -33,7 +170,7 @@ interface DeckCardProps {
   onClose: () => void;
 }
 
-function DeckCard({ copy, closeLabel, focusOnMount, wobble, reduceMotion, onClose }: DeckCardProps) {
+function DeckCard({ copy, copyIndex, base, closeLabel, focusOnMount, wobble, reduceMotion, onClose }: DeckCardProps) {
   const isPresent = useIsPresent();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -82,17 +219,18 @@ function DeckCard({ copy, closeLabel, focusOnMount, wobble, reduceMotion, onClos
         animate={wobble && !reduceMotion ? { rotate: [0, 10, -10, 7, -7, 0] } : { rotate: 0 }}
         transition={{ duration: wobble ? 0.4 : 0 }}
         // before: grows the hit area to ≥44×44px without changing the visual circle
-        className="absolute top-4 right-4 sm:top-5 sm:right-5 w-[2.275rem] h-[2.275rem] sm:w-[2.6rem] sm:h-[2.6rem] rounded-full flex items-center justify-center transition-colors cursor-pointer group z-10 before:absolute before:-inset-[11px] outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F9F9]"
+        className={`${CLOSE_BOX} rounded-full flex items-center justify-center transition-colors cursor-pointer group z-10 before:absolute before:-inset-[18px] outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F9F9]`}
         aria-label={closeLabel}
         title={closeLabel}
       >
         <X
-          className="w-[1.1375rem] h-[1.1375rem] sm:w-[1.3rem] sm:h-[1.3rem] text-[#555555] group-hover:text-[#222222] transition-colors"
+          className="w-[1.3rem] h-[1.3rem] text-[#555555] group-hover:text-[#222222] transition-colors"
           strokeWidth={2.4}
         />
       </motion.button>
 
-      <p className={TEXT_CLASS}>{renderCopy(copy)}</p>
+      <FitText copyIndex={copyIndex} base={base}>{renderCopy(copy)}</FitText>
+      <span aria-hidden className={CLOSE_SPACER} />
     </motion.div>
   );
 }
@@ -110,6 +248,10 @@ interface HeroCardDeckProps {
  */
 export function HeroCardDeck({ index, onIndexChange, onLoop }: HeroCardDeckProps) {
   const reduceMotion = !!useReducedMotion();
+  const [base, setBaseState] = useState<BaseSize | null>(null);
+  const setBase = useCallback((b: BaseSize) => {
+    setBaseState((prev) => (prev && prev.w === b.w && prev.h === b.h && prev.fs === b.fs ? prev : b));
+  }, []);
   const lastIndex = HERO_CARDS.length - 1;
 
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -158,7 +300,8 @@ export function HeroCardDeck({ index, onIndexChange, onLoop }: HeroCardDeckProps
           className={`${CARD_CLASS} invisible pointer-events-none`}
           style={{ gridArea: '1 / 1' }}
         >
-          <p className={TEXT_CLASS}>{renderCopy(copy)}</p>
+          <FitText copyIndex={i} measure={i === 0} base={base} onBase={i === 0 ? setBase : undefined}>{renderCopy(copy)}</FitText>
+          <span className={CLOSE_SPACER} />
         </div>
       ))}
 
@@ -174,12 +317,18 @@ export function HeroCardDeck({ index, onIndexChange, onLoop }: HeroCardDeckProps
           y: 12, // …so this leaves ~7px of edge showing below the active card
         }}
         transition={{ duration: reduceMotion ? 0.15 : 0.3, ease: 'easeOut' }}
-      />
+      >
+        {/* invisible copy of the active card so the edge has the same width */}
+        <FitText key={index} copyIndex={index} base={base} className="invisible">{renderCopy(HERO_CARDS[index])}</FitText>
+        <span className={CLOSE_SPACER} />
+      </motion.div>
 
       <AnimatePresence initial={false}>
         <DeckCard
           key={index}
           copy={HERO_CARDS[index]}
+          copyIndex={index}
+          base={base}
           closeLabel={closeLabel}
           focusOnMount={hasInteracted}
           wobble={wobble && index === 0}
