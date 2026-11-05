@@ -40,6 +40,9 @@ const DECK_DESIGN_WIDTH = 520;
 const STACK_BELOW = 1024;
 /** Stacked: width the speech card needs at full size; narrower screens scale it down smoothly. */
 const DECK_FULL_WIDTH = 600;
+/** Stacked layout only: speech card grows 10%, profile card shrinks 10%. */
+const STACK_DECK_BOOST = 1.1;
+const STACK_CARD_SHRINK = 0.9;
 
 const WORDS_SEQUENCE = [
   { id: 'design', text: '<Design>' },
@@ -66,10 +69,11 @@ export function Hero() {
       const stack = window.innerWidth < STACK_BELOW;
       setStacked(stack);
       if (stack) {
-        setDeckScale(Math.min(1, Math.max(0.55, w / DECK_FULL_WIDTH)));
+        // Stacked layout: speech card +10%, profile card -10% (vs. the earlier stacked sizes)
+        setDeckScale(Math.min(1, Math.max(0.55, w / DECK_FULL_WIDTH)) * STACK_DECK_BOOST);
         // 30% smaller than the original stacked size; on phones it grows back by up to 44% (eases in below 768px)
         const phoneBoost = 1 + 0.44 * Math.min(1, Math.max(0, (768 - window.innerWidth) / 168));
-        setCardScale(Math.min(0.85, Math.max(0.7, w / 800)) * 0.7 * phoneBoost);
+        setCardScale(Math.min(0.85, Math.max(0.7, w / 800)) * 0.7 * phoneBoost * STACK_CARD_SHRINK);
         return;
       }
       // Side by side: as space gets tight the profile card gives up size first; the speech card
@@ -312,7 +316,8 @@ export function Hero() {
                 <div className="w-full max-w-full overflow-hidden whitespace-nowrap py-1 bg-transparent relative z-20 mt-auto mb-4 select-none [contain:paint]">
                   <div className="h-[48px] w-full max-w-full flex items-center overflow-hidden [contain:paint]">
                     <motion.div
-                      animate={{ x: translateX }}
+                      // slides with `left`, not a transform: no GPU layer, so the text is never resampled (no blur)
+                      animate={{ left: translateX }}
                       transition={
                         translateX === 0
                           ? { duration: 0 }
@@ -327,7 +332,7 @@ export function Hero() {
                           setTranslateX(0);
                         }
                       }}
-                      className="flex items-center gap-5 whitespace-nowrap pl-5 select-none"
+                      className="relative flex items-center gap-5 whitespace-nowrap pl-5 select-none"
                     >
                       {queue.map((wordIdx, i) => {
                         const word = WORDS_SEQUENCE[wordIdx];
@@ -338,10 +343,10 @@ export function Hero() {
                           <span
                             key={`${word.id}-${i}-${wordIdx}`}
                             ref={i === 0 ? firstWordRef : i === 1 ? secondWordRef : null}
-                            className={`inline-block whitespace-nowrap text-[27px] font-display font-bold leading-none tracking-tight transition-all duration-500 ${
+                            className={`inline-block whitespace-nowrap text-[27px] font-display font-bold leading-none tracking-tight transition-colors duration-500 ${
                               isBlack
-                                ? 'text-ink opacity-100'
-                                : 'text-[#9B9B96] opacity-40'
+                                ? 'text-ink'
+                                : 'text-[#9B9B96]/40'
                             }`}
                           >
                             {word.text}

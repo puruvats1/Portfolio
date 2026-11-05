@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { SHOW_WORKING_WITH_ME } from '../config';
 
@@ -219,27 +220,126 @@ interface LeftSidebarProps {
   mode?: 'desktop' | 'mobile' | 'both';
 }
 
-/** Width of the enlarged dock with its longest label open (px); narrower screens scale it down to fit. */
-const DOCK_FULL_WIDTH = 410;
+/**
+ * Easter egg: tapping the nav button that is ALREADY selected over and over makes it burst
+ * into confetti and then pop back in.
+ */
+const BURST_TAPS = 6; // taps ...
+const BURST_WINDOW_MS = 2200; // ... inside this window
+const BURST_COLORS: Record<SectionId, string[]> = {
+  hero: ['#F5C518', '#F59E0B', '#FFD84D', '#D98E04'],
+  work: ['#4DA6FF', '#3F74E3', '#72BDFF', '#2563EB'],
+  about: ['#F59E78', '#D8693B', '#FDBA74', '#EA7C4A'],
+  skills: ['#A3CF1A', '#84CC16', '#D5F24B', '#65A30D'],
+  testimonials: ['#34D399', '#1C9A72', '#6EE7B7', '#10B981'],
+  contact: ['#FB7185', '#E11D48', '#F9A8D4', '#F43F5E'],
+};
+
+type BurstPhase = 'idle' | 'pop' | 'gone' | 'back';
+
+/** What the burst does to the button itself, per phase (used as its animate prop). */
+const BURST_ANIMATE = {
+  pop: { scale: 1.4, opacity: 0, transition: { duration: 0.18, ease: 'easeOut' as const } },
+  gone: { scale: 0, opacity: 0, transition: { duration: 0 } },
+  back: { scale: 1, opacity: 1, transition: { type: 'spring' as const, stiffness: 420, damping: 11 } },
+};
+
+/** Confetti flying out from (x, y) in viewport coordinates. Rendered in a portal so no overflow clips it. */
+function BurstParticles({ x, y, colors }: { x: number; y: number; colors: string[] }) {
+  const bits = React.useMemo(
+    () =>
+      Array.from({ length: 16 }, (_, i) => {
+        const angle = (i / 16) * Math.PI * 2 + Math.random() * 0.4;
+        const dist = 46 + Math.random() * 54;
+        return {
+          dx: Math.cos(angle) * dist,
+          dy: Math.sin(angle) * dist,
+          size: 6 + Math.random() * 6,
+          color: colors[i % colors.length],
+          round: i % 3 !== 0,
+          spin: (Math.random() - 0.5) * 240,
+          delay: Math.random() * 0.05,
+        };
+      }),
+    [colors],
+  );
+  return createPortal(
+    <div aria-hidden="true" className="fixed z-[200] pointer-events-none" style={{ left: x, top: y }}>
+      {bits.map((b, i) => (
+        <motion.span
+          key={i}
+          className={`absolute block ${b.round ? 'rounded-full' : 'rounded-[3px]'}`}
+          style={{ width: b.size, height: b.size, left: -b.size / 2, top: -b.size / 2, background: b.color }}
+          initial={{ x: 0, y: 0, scale: 0.4, opacity: 1, rotate: 0 }}
+          animate={{ x: b.dx, y: b.dy + 14, scale: [0.4, 1.1, 0], opacity: [1, 1, 0], rotate: b.spin }}
+          transition={{ duration: 0.75, delay: b.delay, ease: [0.16, 1, 0.3, 1] }}
+        />
+      ))}
+    </div>,
+    document.body,
+  );
+}
+
+/** Width of the dock's buttons with the longest label open (px); narrower screens scale it down to fit. */
+const DOCK_CONTENT_WIDTH = 404;
+/** On tablets the dock stays compact and centred instead of stretching edge to edge. */
+const DOCK_MAX_WIDTH = 440;
 
 export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isHoveredNear, setIsHoveredNear] = useState(false);
   // Mobile dock is 30% bigger than the original; on narrow phones it scales down just enough to fit
+  // The gap under the dock equals the gap at its sides (16px phone, 24px tablet), so the spacing
+  // looks even; the phone's gesture bar is deliberately NOT added on top of it.
   const [dockZoom, setDockZoom] = useState(1);
-  const [dockMax, setDockMax] = useState(DOCK_FULL_WIDTH);
+  const [dockWidth, setDockWidth] = useState(DOCK_CONTENT_WIDTH);
+  const [dockGap, setDockGap] = useState(16);
   useEffect(() => {
     const fit = () => {
-      const room = window.innerWidth - 24;
-      const zoom = Math.min(1, room / DOCK_FULL_WIDTH);
+      const gap = window.innerWidth >= 640 ? 24 : 16;
+      const room = Math.min(window.innerWidth - 2 * gap, DOCK_MAX_WIDTH);
+      const zoom = Math.min(1, room / DOCK_CONTENT_WIDTH);
+      setDockGap(gap);
       setDockZoom(zoom);
-      setDockMax(room / zoom); // max width in the dock's own (zoomed) units
+      setDockWidth(room / zoom); // in the dock's own (zoomed) units, so it spans exactly `room`
     };
     fit();
     window.addEventListener('resize', fit);
     return () => window.removeEventListener('resize', fit);
   }, []);
   const [hoveredId, setHoveredId] = useState<SectionId | null>(null);
+
+  // Easter egg state
+  const [burst, setBurst] = useState<{ id: SectionId; phase: BurstPhase; x: number; y: number } | null>(null);
+  const tapLog = useRef<{ id: SectionId; times: number[] }>({ id: 'hero', times: [] });
+  const burstTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => burstTimers.current.forEach(clearTimeout), []);
+
+  /** Returns true when this tap set off the burst (so the caller can skip its normal action). */
+  const registerTap = (id: SectionId, isActive: boolean, el: HTMLElement | null): boolean => {
+    if (!isActive || burst) {
+      tapLog.current = { id, times: [] };
+      return false;
+    }
+    const now = Date.now();
+    const log = tapLog.current.id === id ? tapLog.current.times : [];
+    const times = [...log.filter((t) => now - t < BURST_WINDOW_MS), now];
+    tapLog.current = { id, times };
+    if (times.length < BURST_TAPS || !el) return false;
+
+    tapLog.current = { id, times: [] };
+    const r = el.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    setBurst({ id, phase: 'pop', x, y });
+    burstTimers.current.forEach(clearTimeout);
+    burstTimers.current = [
+      setTimeout(() => setBurst({ id, phase: 'gone', x, y }), 180),
+      setTimeout(() => setBurst({ id, phase: 'back', x, y }), 700),
+      setTimeout(() => setBurst(null), 1400),
+    ];
+    return true;
+  };
 
   // Manual scroll flag to prevent scroll-spy from rapidly overriding activeSection during programmatic smooth scroll
   const isManualScroll = useRef(false);
@@ -364,17 +464,25 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                 onMouseLeave={() =>
                   setHoveredId((current) => (current === item.id ? null : current))
                 }
-                onClick={() => scrollTo(item.id)}
+                onClick={(e) => {
+                  const burstNow = registerTap(item.id, isActive, e.currentTarget.firstElementChild as HTMLElement | null);
+                  if (!burstNow) scrollTo(item.id);
+                }}
                 className="nav-row relative flex items-center gap-3 cursor-pointer group"
               >
                 {/* Tactile Pastel Jelly-Clay Squircle Button:
                     Enlarges smoothly on hover (connected with text hover target).
                     Tucks and cascades cleanly behind or in front based on selection & hover focal point. */}
                 <motion.div
-                  animate={{
-                    scale: isItemHovered ? 1.08 : isActive ? 1.04 : 1,
-                    y: isItemHovered ? -2 : 0,
-                  }}
+                  animate={
+                    burst && burst.id === item.id
+                      ? BURST_ANIMATE[burst.phase as Exclude<BurstPhase, 'idle'>]
+                      : {
+                          scale: isItemHovered ? 1.08 : isActive ? 1.04 : 1,
+                          y: isItemHovered ? -2 : 0,
+                          opacity: 1,
+                        }
+                  }
                   whileTap={{ scale: 0.94 }}
                   transition={{ type: 'spring', stiffness: 600, damping: 30, mass: 0.6 }}
                   className={`w-[72px] h-[56px] rounded-[21px] bg-gradient-to-b ${item.gradient} border ${
@@ -479,6 +587,8 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
         </aside>
       )}
 
+      {burst && <BurstParticles key={`${burst.id}-${burst.x}-${burst.y}`} x={burst.x} y={burst.y} colors={BURST_COLORS[burst.id]} />}
+
       {/* Subtle blue gradient at screen bottom to guarantee floating button visibility & contrast */}
       {mode !== 'desktop' && (
         <div
@@ -490,10 +600,11 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
       {/* MOBILE & TABLET FLOATING DOCK (White container removed, buttons float directly over bottom blue gradient) */}
       {mode !== 'desktop' && (
         <nav
-          className="lg:hidden fixed bottom-[calc(env(safe-area-inset-bottom)+2.25rem)] sm:bottom-[calc(env(safe-area-inset-bottom)+2.5rem)] left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar select-none py-1.5 px-2"
-          style={{ zoom: dockZoom, maxWidth: dockMax }}
+          className="lg:hidden fixed inset-x-0 z-50 flex justify-center pointer-events-none select-none"
+          style={{ bottom: dockGap }}
           aria-label="Mobile Navigation"
         >
+          <div className="pointer-events-auto flex items-center justify-between gap-2" style={{ zoom: dockZoom, width: dockWidth }}>
           {NAV_ITEMS.map((item) => {
             const isActive = activeSection === item.id;
             const IconComponent = item.icon;
@@ -502,7 +613,11 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
               <motion.button
                 key={item.id}
                 whileTap={{ scale: 0.94 }}
-                onClick={() => scrollTo(item.id)}
+                animate={burst && burst.id === item.id ? BURST_ANIMATE[burst.phase as Exclude<BurstPhase, 'idle'>] : { scale: 1, opacity: 1 }}
+                onClick={(e) => {
+                  const burstNow = registerTap(item.id, isActive, e.currentTarget);
+                  if (!burstNow) scrollTo(item.id);
+                }}
                 className={`h-[55px] rounded-[20px] border shrink-0 cursor-pointer flex items-center transition-[padding,gap,background-color,border-color,opacity,box-shadow] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isActive
                     ? `px-[18px] sm:px-5 py-[9px] gap-2.5 bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow} opacity-100 shadow-[0_4px_14px_rgba(0,0,0,0.12)]`
@@ -531,6 +646,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
               </motion.button>
             );
           })}
+          </div>
         </nav>
       )}
     </>

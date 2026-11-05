@@ -14,6 +14,13 @@ export function ProjectViewer({ project, onBack }: Props) {
   const [activePanel, setActivePanel] = useState(1);
   const [viewing, setViewing] = useState<number | null>(null); // 1-based panel open in the overlay
   const [zoomed, setZoomed] = useState(false);
+  const [scrolledPast, setScrolledPast] = useState(false); // top nav has hidden (project pages hide it after 40px)
+  useEffect(() => {
+    const on = () => setScrolledPast(window.scrollY > 40);
+    on();
+    window.addEventListener('scroll', on, { passive: true });
+    return () => window.removeEventListener('scroll', on);
+  }, []);
 
   // Only suggest projects that have uploaded documentation
   const suggestions = PROJECTS.filter((p) => p.slug !== project.slug && p.panelCount > 0);
@@ -107,30 +114,37 @@ export function ProjectViewer({ project, onBack }: Props) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
-      className="w-full max-w-[1400px] mx-auto pt-24 sm:pt-28 pb-16 sm:pb-24"
+      className="w-full max-w-[1400px] mx-auto pt-24 sm:pt-28 pb-28 sm:pb-32 lg:pb-24"
     >
-      {/* Phone / tablet: back button lives in the thumb zone, bottom-left */}
-      <div className="lg:hidden fixed bottom-5 left-[var(--global-margin)] z-40">{backButton}</div>
+      {/* Phone / tablet: back button sits top-right; the stage stepper lives at the bottom */}
+      <div
+        className="lg:hidden fixed right-[var(--global-margin)] z-40 transition-[top] duration-300 ease-out"
+        style={{ top: scrolledPast ? 'max(12px, env(safe-area-inset-top))' : 'max(76px, calc(env(safe-area-inset-top) + 68px))' }}
+      >
+        {backButton}
+      </div>
 
-      {/* Phone / tablet: plain text stage links that stick below the back button */}
+      {/* Phone / tablet: stage stepper, floating at the bottom with the same even edge gap as the home dock */}
       {showMarkers && (
         <nav
           aria-label="Project stages"
-          className="lg:hidden sticky top-2 z-30 py-2.5 mb-4 bg-white/85 backdrop-blur-md overflow-x-auto flex gap-5 [scrollbar-width:none]"
+          className="lg:hidden fixed inset-x-0 bottom-[16px] sm:bottom-[24px] z-30 flex justify-center px-[16px] sm:px-[24px] pointer-events-none"
         >
+         <div className="pointer-events-auto w-full max-w-[440px] flex items-center justify-between gap-3 px-5 py-3.5 rounded-full bg-white/80 backdrop-blur-xl border border-neutral-200/70 shadow-[0_10px_30px_rgba(0,0,0,0.07)]">
           {milestones.map((m, i) => (
             <button
               key={m.label}
               type="button"
               onClick={() => jumpTo(m.panel)}
               aria-current={i === activeMilestone}
-              className={`shrink-0 font-sans text-[13px] cursor-pointer transition-colors duration-200 ${
+              className={`shrink-0 py-1 font-sans text-[12.5px] sm:text-[14px] cursor-pointer transition-colors duration-200 ${
                 i === activeMilestone ? 'text-ink font-semibold' : 'text-[#9B9B96] font-medium'
               }`}
             >
               {m.label}
             </button>
           ))}
+         </div>
         </nav>
       )}
 
@@ -273,7 +287,7 @@ export function ProjectViewer({ project, onBack }: Props) {
           >
             {/* Image area: fits the screen; click the image to zoom to full width and scroll */}
             <div
-              className={`absolute inset-0 overflow-auto flex ${zoomed ? 'items-start' : 'items-center'} justify-center px-4 sm:px-16 py-16`}
+              className="absolute inset-0 overflow-auto flex px-4 sm:px-16 py-16"
             >
               <img
                 key={viewing}
@@ -284,7 +298,7 @@ export function ProjectViewer({ project, onBack }: Props) {
                   setZoomed((z) => !z);
                 }}
                 draggable={false}
-                className={`rounded-[20px] bg-white select-none ${
+                className={`m-auto rounded-[20px] bg-white select-none ${
                   zoomed
                     ? 'w-full max-w-[1600px] h-auto cursor-zoom-out'
                     : 'max-w-full max-h-full w-auto h-auto object-contain cursor-zoom-in'
