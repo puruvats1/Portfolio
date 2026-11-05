@@ -221,8 +221,8 @@ export function ProjectViewer({ project, onBack }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 w-full">
             {suggestions.map((p) => (
               <a key={p.id} href={`#/project/${p.slug}`} className="flex flex-col gap-3 group cursor-pointer w-full">
-                <div className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 transition-shadow duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.12)] relative overflow-hidden">
-                  <img src={p.thumbnail} alt={p.title} className="w-full h-full object-cover object-center" loading="lazy" />
+                <div className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 relative overflow-hidden isolate">
+                  <img src={p.thumbnail} alt={p.title} className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]" loading="lazy" />
                 </div>
                 <div className="flex flex-col gap-2 px-1">
                   <div className="flex flex-wrap items-center gap-1.5">
@@ -242,7 +242,7 @@ export function ProjectViewer({ project, onBack }: Props) {
                       </h3>
                       <ArrowUpRight className="w-4 h-4 text-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shrink-0" />
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-neutral-500 font-medium">
+                    <div className="flex items-center gap-2 text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
                       <span>{p.category}</span>
                       <span className="text-neutral-300">·</span>
                       <span>{p.year}</span>

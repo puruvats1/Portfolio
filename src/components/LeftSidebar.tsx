@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { SHOW_WORKING_WITH_ME } from '../config';
 
 export type SectionId = 'hero' | 'work' | 'about' | 'skills' | 'testimonials' | 'contact';
 
@@ -126,7 +127,7 @@ function MailNavIcon({ className, strokeWidth = 1.8 }: { className?: string; str
 
 // Default labels are clean names without fancy symbols.
 // Hover labels contain the expressive punctuations/symbols (e.g. 'about', :work:, <skills>).
-export const NAV_ITEMS: NavItem[] = [
+const ALL_NAV_ITEMS: NavItem[] = [
   {
     id: 'hero',
     label: 'hello',
@@ -200,6 +201,11 @@ export const NAV_ITEMS: NavItem[] = [
     pillShadow: 'pill-clay-pink',
   },
 ];
+
+// Sections that are still in draft (see src/config.ts) are left out of the navigation
+export const NAV_ITEMS: NavItem[] = ALL_NAV_ITEMS.filter(
+  (item) => item.id !== 'skills' || SHOW_WORKING_WITH_ME
+);
 
 interface LeftSidebarProps {
   mode?: 'desktop' | 'mobile' | 'both';

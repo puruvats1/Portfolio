@@ -91,11 +91,11 @@ export function Work() {
                   className="md:col-span-4 flex flex-col gap-3 group cursor-pointer w-full"
                 >
                   {/* Clean thumbnail container with standardized 16:10 ratio & drop shadow on hover only */}
-                  <div className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 transition-shadow duration-300 group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.12)] relative overflow-hidden">
+                  <div className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 relative overflow-hidden isolate">
                     <img
                       src={project.thumbnail}
                       alt={project.title}
-                      className="w-full h-full object-cover object-center"
+                      className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
                       loading="lazy"
                     />
                   </div>
@@ -123,7 +123,7 @@ export function Work() {
                         <ArrowUpRight className="w-4 h-4 text-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shrink-0" />
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs text-neutral-500 font-medium">
+                      <div className="flex items-center gap-2 text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
                         <span>{project.category}</span>
                         <span className="text-neutral-300">·</span>
                         <span>{project.year}</span>
@@ -179,7 +179,7 @@ export function Work() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-xs text-neutral-500 font-medium pl-10 md:pl-0 shrink-0 self-end md:self-auto">
+                  <div className="flex items-center gap-4 text-[13px] sm:text-[13.5px] text-neutral-500 font-medium pl-10 md:pl-0 shrink-0 self-end md:self-auto">
                     <span className="hidden lg:inline">{project.category}</span>
                     <span className="hidden lg:inline text-neutral-300">·</span>
                     <span>{project.year}</span>

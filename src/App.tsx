@@ -8,6 +8,7 @@ import { Contact } from './components/Contact';
 import { LeftSidebar } from './components/LeftSidebar';
 import { TopNav } from './components/TopNav';
 import { CustomCursor } from './components/CustomCursor';
+import { SHOW_WORKING_WITH_ME } from './config';
 import { ProjectViewer } from './components/ProjectViewer';
 import { PROJECTS } from './data/projects';
 
@@ -115,7 +116,7 @@ export default function App() {
             <About />
 
             {/* 4. Working with me */}
-            <WorkingWithMe />
+            {SHOW_WORKING_WITH_ME && <WorkingWithMe />}
 
             {/* 5. About me from others / Testimonials */}
             <Testimonials />

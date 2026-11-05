@@ -85,7 +85,7 @@ export function TopNav({ hideOnScroll = false, onHome }: { hideOnScroll?: boolea
             href="/Puru_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className={`group relative overflow-hidden inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-[16px] font-display text-[13px] leading-none font-medium cursor-pointer shadow-xs active:scale-95 transition-transform duration-150 ${
+            className={`group relative overflow-hidden inline-flex items-center gap-2 h-9 sm:h-[38px] px-4 sm:px-5 rounded-[12px] font-display text-[13px] leading-none font-medium cursor-pointer shadow-xs active:scale-95 transition-transform duration-150 ${
               isDark ? 'bg-white text-[#2C2C2A]' : 'bg-[#2E2E2C] text-white'
             }`}
           >

@@ -109,7 +109,7 @@ export function Hero() {
               {/* Narrative Subtitle & Previous Experience */}
               <div className="flex flex-col gap-6 pl-1 sm:pl-2">
                 {/* DM Sans Regular, prominent and legible supporting text */}
-                <p className="font-sans text-[16px] sm:text-[17.5px] md:text-[18.5px] text-[#555552] leading-[27px] sm:leading-[30px] max-w-xl font-normal">
+                <p className="font-sans text-[15px] sm:text-[15.5px] text-[#555552] leading-[1.68] max-w-xl font-normal">
                   B.Des ‘27 at IDC, IIT Bombay. I dig until I understand the problem, design until it feels obvious, and build until it actually works.
                 </p>
 

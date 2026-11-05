@@ -18,25 +18,11 @@ export function About() {
         {/* Two-column layout matching reference layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 xl:gap-20 items-start">
           
-          {/* Column 1: Left narrative & updated person image */}
+          {/* Column 1: Left narrative */}
           <div className="flex flex-col gap-6 sm:gap-8">
             <p className="font-sans text-[15px] sm:text-[15.5px] text-[#40403E] leading-[1.68] font-normal">
               I'm a multidisciplinary person, from clay sculpting to zines to oil pastels I have tried multiple things but i keep coming back to <strong className="font-semibold text-ink">Interaction Design</strong>.
             </p>
-
-            {/* Updated Person with plain black cap and white clay pill backdrop */}
-            <motion.div
-              whileHover={{ y: -3, scale: 1.01 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-              className="w-full max-w-[330px] sm:max-w-[360px] select-none pt-2"
-            >
-              <img
-                src="./about_person.png"
-                alt="Puru Vats tipping black cap"
-                className="w-full h-auto object-contain select-none pointer-events-none drop-shadow-sm"
-                loading="eager"
-              />
-            </motion.div>
           </div>
 
           {/* Column 2: Right narrative, hobbies collage & reflection text */}
