@@ -14,13 +14,6 @@ export function ProjectViewer({ project, onBack }: Props) {
   const [activePanel, setActivePanel] = useState(1);
   const [viewing, setViewing] = useState<number | null>(null); // 1-based panel open in the overlay
   const [zoomed, setZoomed] = useState(false);
-  const [scrolledPast, setScrolledPast] = useState(false); // top nav has hidden (project pages hide it after 40px)
-  useEffect(() => {
-    const on = () => setScrolledPast(window.scrollY > 40);
-    on();
-    window.addEventListener('scroll', on, { passive: true });
-    return () => window.removeEventListener('scroll', on);
-  }, []);
 
   // Only suggest projects that have uploaded documentation
   const suggestions = PROJECTS.filter((p) => p.slug !== project.slug && p.panelCount > 0);
@@ -151,14 +144,6 @@ export function ProjectViewer({ project, onBack }: Props) {
           className="lg:hidden fixed bottom-0 left-0 right-0 h-[calc(9.5rem+env(safe-area-inset-bottom))] pointer-events-none z-[25] backdrop-blur-lg [mask-image:linear-gradient(to_top,black_45%,transparent)]"
         />
       )}
-
-      {/* Phone / tablet: back button sits top-right; the stage stepper lives at the bottom */}
-      <div
-        className="lg:hidden fixed right-[var(--global-margin)] z-40 transition-[top] duration-300 ease-out"
-        style={{ top: scrolledPast ? 'max(12px, env(safe-area-inset-top))' : 'max(76px, calc(env(safe-area-inset-top) + 68px))' }}
-      >
-        {renderBackButton(true)}
-      </div>
 
       {/* Phone / tablet: stage stepper, floating at the bottom with the same even edge gap as the home dock */}
       {showMarkers && (
