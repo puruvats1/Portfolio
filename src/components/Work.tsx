@@ -2,80 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { LayoutGrid, List, ArrowUpRight } from 'lucide-react';
 import { ScrollRevealTitle } from './ScrollRevealTitle';
-
-interface Project {
-  id: string;
-  title: string;
-  category: string;
-  year: string;
-  domain: string;
-  tags: string[];
-  link: string;
-  thumbnail: string;
-}
-
-const PROJECTS: Project[] = [
-  {
-    id: '01',
-    title: 'Ek-time',
-    category: 'Timetable Management System',
-    year: '2025',
-    domain: 'EdTech / Productivity',
-    tags: ['UI/UX', 'System Design', 'Figma'],
-    link: 'https://www.behance.net/gallery/235732005/Ek-time-Timetable-Managment-System-UX',
-    thumbnail: './projects/project_01_Ek-time-Timetable-Managment-System-UX.png',
-  },
-  {
-    id: '02',
-    title: 'Strava Redesign',
-    category: 'Ergonomic Evaluation & Redesign',
-    year: '2025',
-    domain: 'Fitness / Mobile',
-    tags: ['UI/UX', 'Mobile App', 'Heuristic'],
-    link: 'https://www.behance.net/gallery/235828073/Strava-Ergonomic-Evaluation-Redesign',
-    thumbnail: './projects/project_02_Strava-Ergonomic-Evaluation-Redesign.png',
-  },
-  {
-    id: '03',
-    title: 'Tring Tring',
-    category: 'Cycle Sharing Platform',
-    year: '2025',
-    domain: 'Urban Mobility',
-    tags: ['Interaction', 'Branding', 'Bubble.io'],
-    link: 'https://www.behance.net/gallery/235067237/Tring-Tring-Cycle-Sharing-Platform',
-    thumbnail: './projects/project_03_Tring-Tring-Cycle-Sharing-Platform.png',
-  },
-  {
-    id: '04',
-    title: 'One Step Two Step',
-    category: 'Immersive Web Storybook',
-    year: '2025',
-    domain: 'Interactive Web',
-    tags: ['Web Design', 'Illustration', 'Framer'],
-    link: 'https://www.behance.net/gallery/227102487/One-Step-Two-Step-Immersive-web-storybook',
-    thumbnail: './projects/project_04_One-Step-Two-Step-Immersive-web-storybook.png',
-  },
-  {
-    id: '05',
-    title: 'Honey Trails',
-    category: 'Playful Exhibition Design',
-    year: '2025',
-    domain: 'Spatial & Experience',
-    tags: ['Exhibition', 'Spatial', 'Blender 3D'],
-    link: 'https://www.behance.net/gallery/235895251/Honey-Trails-Exhibition-Design',
-    thumbnail: './projects/project_05_Honey-Trails-Exhibition-Design.png',
-  },
-  {
-    id: '06',
-    title: 'Mood Indigo 2024',
-    category: 'Brand Identity & Festival Design',
-    year: '2025',
-    domain: 'Branding & Culture',
-    tags: ['Brand Identity', 'Motion', 'Visual Design'],
-    link: 'https://www.behance.net/gallery/235661139/MOOD-INDIGO-2024-BRAND-IDENTITY',
-    thumbnail: './projects/project_06_MOOD-INDIGO-2024-BRAND-IDENTITY.jpg',
-  },
-];
+import { PROJECTS, projectLinkProps } from '../data/projects';
 
 export function Work() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -104,7 +31,7 @@ export function Work() {
               onClick={() => setViewMode('grid')}
               className={`h-9 sm:h-9.5 rounded-[12px] flex items-center justify-center cursor-pointer font-sans font-semibold text-[12px] sm:text-[13px] outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF] select-none transition-all duration-200 ease-out ${
                 viewMode === 'grid'
-                  ? 'px-2.5 sm:px-3 bg-gradient-to-b from-[#E6F1FE] to-[#72BDFF] border border-[#B7D9FF] pill-clay-blue text-[#1D4ED8] shadow-xs cursor-default'
+                  ? 'px-2.5 sm:px-3 bg-gradient-to-b from-[#E6F1FE] to-[#72BDFF] border border-[#B7D9FF] pill-clay-blue text-[#3F74E3] shadow-xs cursor-default'
                   : 'px-3 sm:px-3.5 text-[#2B7FFF] bg-white/45 hover:bg-white/90 hover:text-[#1D4ED8] hover:border-[#B7D9FF]/70 hover:shadow-2xs active:scale-95 active:bg-[#D5E7FD] active:text-[#1E3A8A] border border-transparent'
               }`}
               aria-pressed={viewMode === 'grid'}
@@ -114,7 +41,7 @@ export function Work() {
               <LayoutGrid className="w-4 h-4 stroke-[2] text-current shrink-0" />
               <span
                 className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap text-current ${
-                  viewMode === 'grid' ? 'max-w-0 opacity-0 -ml-1 pointer-events-none' : 'max-w-[50px] opacity-100 ml-1.5'
+                  viewMode === 'grid' ? 'max-w-0 opacity-0 ml-0 pointer-events-none' : 'max-w-[50px] opacity-100 ml-1.5'
                 }`}
               >
                 Grid
@@ -127,7 +54,7 @@ export function Work() {
               onClick={() => setViewMode('list')}
               className={`h-9 sm:h-9.5 rounded-[12px] flex items-center justify-center cursor-pointer font-sans font-semibold text-[12px] sm:text-[13px] outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF] select-none transition-all duration-200 ease-out ${
                 viewMode === 'list'
-                  ? 'px-2.5 sm:px-3 bg-gradient-to-b from-[#E6F1FE] to-[#72BDFF] border border-[#B7D9FF] pill-clay-blue text-[#1D4ED8] shadow-xs cursor-default'
+                  ? 'px-2.5 sm:px-3 bg-gradient-to-b from-[#E6F1FE] to-[#72BDFF] border border-[#B7D9FF] pill-clay-blue text-[#3F74E3] shadow-xs cursor-default'
                   : 'px-3 sm:px-3.5 text-[#2B7FFF] bg-white/45 hover:bg-white/90 hover:text-[#1D4ED8] hover:border-[#B7D9FF]/70 hover:shadow-2xs active:scale-95 active:bg-[#D5E7FD] active:text-[#1E3A8A] border border-transparent'
               }`}
               aria-pressed={viewMode === 'list'}
@@ -137,7 +64,7 @@ export function Work() {
               <List className="w-4 h-4 stroke-[2] text-current shrink-0" />
               <span
                 className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap text-current ${
-                  viewMode === 'list' ? 'max-w-0 opacity-0 -ml-1 pointer-events-none' : 'max-w-[50px] opacity-100 ml-1.5'
+                  viewMode === 'list' ? 'max-w-0 opacity-0 ml-0 pointer-events-none' : 'max-w-[50px] opacity-100 ml-1.5'
                 }`}
               >
                 List
@@ -160,9 +87,7 @@ export function Work() {
               {PROJECTS.map((project) => (
                 <a
                   key={project.id}
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...projectLinkProps(project)}
                   className="md:col-span-4 flex flex-col gap-3 group cursor-pointer w-full"
                 >
                   {/* Clean thumbnail container with standardized 16:10 ratio & drop shadow on hover only */}
@@ -220,9 +145,7 @@ export function Work() {
               {PROJECTS.map((project) => (
                 <a
                   key={project.id}
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...projectLinkProps(project)}
                   className="py-3.5 sm:py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-6 group cursor-pointer hover:bg-neutral-50/80 px-2 sm:px-4 rounded-xl transition-all duration-150"
                 >
                   <div className="flex items-center gap-3.5 sm:gap-5 min-w-0">

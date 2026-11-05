@@ -110,7 +110,7 @@ export function Hero() {
               <div className="flex flex-col gap-6 pl-1 sm:pl-2">
                 {/* DM Sans Regular, prominent and legible supporting text */}
                 <p className="font-sans text-[16px] sm:text-[17.5px] md:text-[18.5px] text-[#555552] leading-[27px] sm:leading-[30px] max-w-xl font-normal">
-                  B.Des '27 student at IDC, IIT Bombay. I’m drawn to challenging challenges ;) Always growing as an individual and as a professional.
+                  B.Des ‘27 at IDC, IIT Bombay. I dig until I understand the problem, design until it feels obvious, and build until it actually works.
                 </p>
 
                 {/* Previously At Logos */}
