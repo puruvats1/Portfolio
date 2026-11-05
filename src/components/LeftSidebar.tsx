@@ -60,7 +60,7 @@ function BriefcaseNavIcon({ className, strokeWidth = 1.8 }: { className?: string
 }
 
 // 3. Smiley face icon from Figma node 99:301 (sentiment_satisfied_alt)
-function SmileyNavIcon({ className }: { className?: string; strokeWidth?: number }) {
+export function SmileyNavIcon({ className }: { className?: string; strokeWidth?: number }) {
   return (
     <svg
       viewBox="0 0 18 18"
@@ -203,6 +203,14 @@ const ALL_NAV_ITEMS: NavItem[] = [
 ];
 
 // Sections that are still in draft (see src/config.ts) are left out of the navigation
+/** 'work' + ':work:' → { prefix: ':', suffix: ':' } (apostrophe styles are treated as equal) */
+export function splitHoverLabel(label: string, hoverLabel: string) {
+  const norm = (t: string) => t.replace(/[’‘]/g, "'");
+  const i = norm(hoverLabel).indexOf(norm(label));
+  if (i < 0) return { prefix: '', suffix: '' };
+  return { prefix: hoverLabel.slice(0, i), suffix: hoverLabel.slice(i + label.length) };
+}
+
 export const NAV_ITEMS: NavItem[] = ALL_NAV_ITEMS.filter(
   (item) => item.id !== 'skills' || SHOW_WORKING_WITH_ME
 );
@@ -340,7 +348,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                   setHoveredId((current) => (current === item.id ? null : current))
                 }
                 onClick={() => scrollTo(item.id)}
-                className="relative flex items-center gap-3 cursor-pointer group"
+                className="nav-row relative flex items-center gap-3 cursor-pointer group"
               >
                 {/* Tactile Pastel Jelly-Clay Squircle Button:
                     Enlarges smoothly on hover (connected with text hover target).
@@ -351,7 +359,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                     y: isItemHovered ? -2 : 0,
                   }}
                   whileTap={{ scale: 0.94 }}
-                  transition={{ type: 'spring', stiffness: 450, damping: 25 }}
+                  transition={{ type: 'spring', stiffness: 600, damping: 30, mass: 0.6 }}
                   className={`w-[72px] h-[56px] rounded-[21px] bg-gradient-to-b ${item.gradient} border ${
                     item.border
                   } ${item.btnShadow} flex items-center justify-center shrink-0 select-none`}
@@ -385,7 +393,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                           opacity: 0,
                           scale: 0.94,
                         }}
-                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }}
                         className={`absolute left-0 top-1/2 -translate-y-1/2 h-[40px] px-4 py-2 rounded-[15px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center select-none`}
                       >
                         <span
@@ -395,28 +403,55 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                         </span>
                       </motion.div>
                     ) : isHoveredNear ? (
-                      /* Non-selected section title: soft gray by default, highlights and reveals punctuations on hover */
+                      /* Non-selected section title: the word itself never moves. On hover the colour deepens
+                         and the ornaments fade/slide in around it (they are positioned outside the word). */
                       <motion.div
                         key={`text-${item.id}`}
-                        initial={{ opacity: 0, scale: 0.95 }}
+                        initial={{ opacity: 0, scale: 0.97 }}
                         animate={{
                           opacity: isItemHovered ? 1 : 0.75,
-                          scale: isItemHovered ? 1.05 : 1,
+                          scale: isItemHovered ? 1.04 : 1,
                         }}
                         exit={{
                           opacity: 0,
-                          scale: 0.95,
+                          scale: 0.97,
                         }}
-                        transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 select-none px-2 py-1 text-left whitespace-nowrap"
+                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ originX: 0 }}
+                        className="absolute left-1.5 top-1/2 -translate-y-1/2 select-none px-2 py-1 text-left whitespace-nowrap"
                       >
-                        <span
-                          className={`font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase transition-colors duration-150 ${
-                            isItemHovered ? 'text-[#2C2C2A]' : 'text-[#888884]'
-                          }`}
-                        >
-                          {isItemHovered ? item.hoverLabel : item.label}
-                        </span>
+                        {(() => {
+                          const { prefix, suffix } = splitHoverLabel(item.label, item.hoverLabel);
+                          return (
+                            <span
+                              className={`relative inline-block font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase transition-colors duration-300 ease-out ${
+                                isItemHovered ? 'text-[#2C2C2A]' : 'text-[#888884]'
+                              }`}
+                            >
+                              {prefix && (
+                                <span
+                                  aria-hidden="true"
+                                  className={`absolute right-full top-0 pr-px transition-[opacity,translate] duration-300 ease-out ${
+                                    isItemHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-1.5'
+                                  }`}
+                                >
+                                  {prefix}
+                                </span>
+                              )}
+                              {item.label}
+                              {suffix && (
+                                <span
+                                  aria-hidden="true"
+                                  className={`absolute left-full top-0 pl-px transition-[opacity,translate] duration-300 ease-out ${
+                                    isItemHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1.5'
+                                  }`}
+                                >
+                                  {suffix}
+                                </span>
+                              )}
+                            </span>
+                          );
+                        })()}
                       </motion.div>
                     ) : null}
                   </AnimatePresence>

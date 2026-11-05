@@ -107,7 +107,6 @@ export function ProjectViewer({ project, onBack }: Props) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
-      style={{ paddingLeft: 'var(--global-margin)', paddingRight: 'var(--global-margin)' }}
       className="w-full max-w-[1400px] mx-auto pt-24 sm:pt-28 pb-16 sm:pb-24"
     >
       {/* Phone / tablet: back button lives in the thumb zone, bottom-left */}
@@ -117,7 +116,7 @@ export function ProjectViewer({ project, onBack }: Props) {
       {showMarkers && (
         <nav
           aria-label="Project stages"
-          className="lg:hidden sticky top-2 z-30 -mx-[var(--global-margin)] px-[var(--global-margin)] py-2.5 mb-4 bg-white/85 backdrop-blur-md overflow-x-auto flex gap-5 [scrollbar-width:none]"
+          className="lg:hidden sticky top-2 z-30 py-2.5 mb-4 bg-white/85 backdrop-blur-md overflow-x-auto flex gap-5 [scrollbar-width:none]"
         >
           {milestones.map((m, i) => (
             <button
@@ -135,8 +134,11 @@ export function ProjectViewer({ project, onBack }: Props) {
         </nav>
       )}
 
+      {/* Desktop grid: a rail column (back + stage markers) running the full height of the page,
+          next to the title, the scroll and "More work", so the rail never ends before the content does */}
+      <div className="lg:grid lg:grid-cols-[225px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)]">
       {/* Title block sits directly on top of the scroll, aligned with it */}
-      <div className="flex flex-col gap-3 mb-5 sm:mb-6 lg:ml-[15%]">
+      <div className="flex flex-col gap-3 mb-5 sm:mb-6 lg:col-start-2 lg:row-start-1">
         <div className="flex flex-wrap items-center gap-1.5">
           {project.tags.map((tag) => (
             <span
@@ -152,15 +154,14 @@ export function ProjectViewer({ project, onBack }: Props) {
         </h1>
       </div>
 
-      <div className="flex items-start w-full">
         {/* Desktop: minimal stage markers, vertically centred in the viewport */}
         {showMarkers && (
-          <aside className="hidden lg:block w-[15%] shrink-0 self-stretch pr-6">
+          <aside className="hidden lg:block lg:col-start-1 lg:row-start-1 lg:row-span-3 self-stretch pl-3 xl:pl-4 pr-6">
             {/* Back: level with the top of the scroll and pinned there while the page scrolls */}
             <div className="sticky top-[178px] z-40 w-max">{backButton}</div>
 
             {/* Stage markers: pinned at the vertical middle of the screen */}
-            <div className="sticky top-1/2 -translate-y-1/2">
+            <div className="sticky top-[max(50vh,300px)] -translate-y-1/2">
             <nav aria-label="Project stages" className="flex flex-col gap-3.5">
               {milestones.map((m, i) => {
                 const isActive = i === activeMilestone;
@@ -184,7 +185,7 @@ export function ProjectViewer({ project, onBack }: Props) {
         )}
 
         {/* The scroll */}
-        <div className="w-full lg:w-[85%] min-w-0">
+        <div className="w-full min-w-0 lg:col-start-2 lg:row-start-2">
           {/* Case study: panels stacked edge to edge as one continuous scroll */}
           <div className="w-full rounded-[20px] bg-[#F2F1ED] border border-neutral-200/70 overflow-hidden">
             <div className="flex flex-col w-full leading-[0]">
@@ -210,11 +211,10 @@ export function ProjectViewer({ project, onBack }: Props) {
             </div>
           </div>
         </div>
-      </div>
 
       {/* End of case study: suggest other documented projects */}
       {suggestions.length > 0 && (
-        <section className="mt-16 sm:mt-24 w-full lg:w-[85%] lg:ml-[15%]" aria-label="More projects">
+        <section className="mt-16 sm:mt-24 min-w-0 lg:col-start-2 lg:row-start-3" aria-label="More projects">
           <div className="mb-8 sm:mb-10 lg:mb-12">
             <h2 className="font-display text-2xl sm:text-3xl lg:text-[32px] font-semibold leading-tight tracking-tight heading-gradient">More work</h2>
           </div>
@@ -240,7 +240,7 @@ export function ProjectViewer({ project, onBack }: Props) {
                       <h3 className="font-display text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-snug heading-gradient">
                         {p.title}
                       </h3>
-                      <ArrowUpRight className="w-4 h-4 text-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shrink-0" />
+                      <ArrowUpRight className="w-6 h-6 stroke-[2.25] text-neutral-500 shrink-0 opacity-0 -translate-x-3 translate-y-3 scale-75 transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100" />
                     </div>
                     <div className="flex items-center gap-2 text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
                       <span>{p.category}</span>
@@ -254,6 +254,7 @@ export function ProjectViewer({ project, onBack }: Props) {
           </div>
         </section>
       )}
+      </div>
 
       {/* Overlay viewer for a single panel */}
       <AnimatePresence>

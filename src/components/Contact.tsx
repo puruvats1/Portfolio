@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowUpRight, Mail, ExternalLink, FileText, MessageSquareQuote } from 'lucide-react';
+import { ArrowUp, ArrowUpRight, Mail, ExternalLink, FileText, MessageSquareQuote } from 'lucide-react';
 import { motion } from 'motion/react';
 import { ScrollRevealTitle } from './ScrollRevealTitle';
 import { FeedbackModal } from './FeedbackModal';
@@ -10,18 +10,27 @@ export function Contact() {
   return (
     <footer
       id="contact"
-      className="relative pt-16 pb-28 sm:pb-32 lg:pt-20 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] mt-20 sm:mt-24 border-t border-white/10 will-change-transform scroll-mt-24"
+      className="relative pt-20 pb-28 sm:pb-32 lg:pt-24 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] mt-20 sm:mt-24 border-t border-white/10 will-change-transform scroll-mt-24"
     >
-      <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-8 md:px-10 lg:px-6 xl:px-10">
+      <div className="max-w-[1400px] mx-auto w-full px-6 sm:px-10 lg:px-12 xl:px-14">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start"
+          className="relative grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start lg:items-baseline"
         >
+          {/* Back to top: top-right corner */}
+          <a
+            href="#hero"
+            className="absolute -top-14 sm:-top-16 right-0 inline-flex items-center gap-1.5 text-xs sm:text-[13px] text-neutral-400 hover:text-white transition-colors cursor-pointer"
+          >
+            <span>Back to top</span>
+            <ArrowUp size={14} />
+          </a>
+
           {/* Columns 1-3: Section title "Work with me" sticky until scrolled past */}
-          <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">
+          <div className="lg:col-span-3 lg:pr-6">
             <ScrollRevealTitle>
               <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient-light">
                 Work with me
@@ -37,13 +46,13 @@ export function Contact() {
               </h3>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-1">
                 <span className="font-display text-xl font-semibold heading-gradient-light">Puru.</span>
                 <span className="text-neutral-400 text-sm font-normal">Interaction & Product Designer · IDC, IIT Bombay</span>
               </div>
 
-              <div className="flex flex-wrap sm:flex-nowrap gap-2.5 sm:gap-3 md:justify-end">
+              <div className="flex flex-wrap gap-2.5 sm:gap-3">
                 {/* Email Link */}
                 <motion.a 
                   whileHover={{ y: -2 }}
@@ -87,22 +96,14 @@ export function Contact() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400 font-normal">
-              <span>© 2026 Puru. Crafted with tactile care.</span>
+            <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center sm:justify-start gap-4 text-xs text-neutral-400 font-normal">
               <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
                 <button
                   onClick={() => setIsFeedbackOpen(true)}
                   className="hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1.5 text-neutral-300 hover:underline"
                 >
-                  <span>💬 Give feedback</span>
+                  <span>Give feedback</span>
                 </button>
-                <span>·</span>
-                <a 
-                  href="#hero" 
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  Back to top ↑
-                </a>
                 <span>·</span>
                 <a 
                   href="https://www.behance.net/puruvats" 

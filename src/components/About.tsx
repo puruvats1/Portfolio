@@ -15,42 +15,34 @@ export function About() {
           </ScrollRevealTitle>
         </div>
 
-        {/* Two-column layout matching reference layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 xl:gap-20 items-start">
-          
-          {/* Column 1: Left narrative */}
-          <div className="flex flex-col gap-6 sm:gap-8">
-            <p className="font-sans text-[15px] sm:text-[15.5px] text-[#40403E] leading-[1.68] font-normal">
-              I'm a multidisciplinary person, from clay sculpting to zines to oil pastels I have tried multiple things but i keep coming back to <strong className="font-semibold text-ink">Interaction Design</strong>.
-            </p>
-          </div>
+        {/* Two-column layout: the two paragraphs side by side, collage + note underneath */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-14 xl:gap-x-20 gap-y-8 sm:gap-y-10 items-start">
+          <p className="font-sans text-[15px] sm:text-[15.5px] text-[#40403E] leading-[1.68] font-normal">
+            I'm a multidisciplinary person, from clay sculpting to zines to oil pastels I have tried multiple things but i keep coming back to <strong className="font-semibold text-ink">Interaction Design</strong>.
+          </p>
 
-          {/* Column 2: Right narrative, hobbies collage & reflection text */}
-          <div className="flex flex-col gap-6 sm:gap-8">
-            <p className="font-sans text-[15px] sm:text-[15.5px] text-[#40403E] leading-[1.68] font-normal">
-              Inspired by the beauty of everyday life and human behaviour supported by the skills I've gathered along from my visual craft to my sense of humor I try to make digital experiences <span className="font-medium text-ink">more meaningful</span>.
-            </p>
+          <p className="font-sans text-[15px] sm:text-[15.5px] text-[#40403E] leading-[1.68] font-normal">
+            Inspired by the beauty of everyday life and human behaviour supported by the skills I've gathered along from my visual craft to my sense of humor I try to make digital experiences <span className="font-medium text-ink">more meaningful</span>.
+          </p>
 
-            {/* Hobbies collage: albums, amp, plant, keyboard */}
-            <motion.div
-              whileHover={{ y: -3, scale: 1.01 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-              className="w-full max-w-[540px] select-none pt-2"
-            >
-              <img
-                src="./about_hobbies.png"
-                alt="Puru Vats musical taste and hobbies: 90s albums, guitar amp, plant, and keyboard"
-                className="w-full h-auto object-contain select-none pointer-events-none drop-shadow-sm"
-                loading="eager"
-              />
-            </motion.div>
+          {/* Hobbies collage: albums, amp, plant, keyboard */}
+          <motion.div
+            whileHover={{ y: -3, scale: 1.01 }}
+            transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+            className="w-full max-w-[540px] select-none"
+          >
+            <img
+              src="./about_hobbies.png"
+              alt="Puru Vats musical taste and hobbies: 90s albums, guitar amp, plant, and keyboard"
+              className="w-full h-auto object-contain select-none pointer-events-none drop-shadow-sm"
+              loading="eager"
+            />
+          </motion.div>
 
-            {/* Reflection text directly below the hobbies collage */}
-            <p className="font-sans text-[13px] sm:text-[13.5px] text-[#71716E] leading-[1.65] max-w-lg">
-              Other than that I've got the music taste of a divorced dad & I sing my heart out at karaoke, i play the guitar, piano, I killed 2 plants and currently taking care of 3 after learning a lesson.
-            </p>
-          </div>
-
+          {/* Reflection text beside the collage */}
+          <p className="font-sans text-[13px] sm:text-[13.5px] text-[#71716E] leading-[1.65] max-w-lg md:self-center">
+            Other than that I've got the music taste of a divorced dad & I sing my heart out at karaoke, i play the guitar, piano, I killed 2 plants and currently taking care of 3 after learning a lesson.
+          </p>
         </div>
       </div>
     </section>

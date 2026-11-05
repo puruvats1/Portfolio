@@ -1,6 +1,32 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { PenTool, Code2, Compass, Music, Palette, X } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion } from 'motion/react';
+import { PenTool, Code2, Compass, Music, Palette } from 'lucide-react';
+import { HeroCardDeck } from './HeroCardDeck';
+import { Sweatdrop } from './Sweatdrop';
+import { HeadBubble } from './HeadBubble';
+import { AvatarBubbles } from './AvatarBubbles';
+import {
+  CAPTION_ON_LOOP,
+  SWEAT_DROPS_PER_CARD,
+  TAP_WINDOW_MS,
+  TAPS_FOR_ONE_DROP,
+  TAPS_FOR_TWO_DROPS,
+} from '../data/heroCards';
+
+/** Logo with a small hover description (role held there). */
+function LogoTip({ tip, children }: { tip: string; children: React.ReactNode }) {
+  return (
+    <div className="group relative h-7 sm:h-8 flex items-center opacity-90 hover:opacity-100 transition-opacity cursor-default">
+      {children}
+      <span
+        role="tooltip"
+        className="pointer-events-none absolute left-1/2 bottom-full mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-[10px] bg-white border border-neutral-200/80 px-3 py-1.5 font-sans text-[13px] font-medium leading-none text-[#555552] shadow-[0_10px_24px_rgba(0,0,0,0.07),0_2px_6px_rgba(0,0,0,0.04)] opacity-0 transition-[opacity,translate] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100"
+      >
+        {tip}
+      </span>
+    </div>
+  );
+}
 
 // Sequence of tokens for the bottom animating strip in pure greyscale
 const WORDS_SEQUENCE = [
@@ -12,9 +38,40 @@ const WORDS_SEQUENCE = [
 ];
 
 export function Hero() {
-  const [isDialogueOpen, setIsDialogueOpen] = useState(true);
+  const [cardIndex, setCardIndex] = useState(0);
+  const [bubbleKey, setBubbleKey] = useState<number | null>(null);
+
+  // Tap-to-sweat: count avatar taps over a rolling window (thresholds in heroCards.ts)
+  const [tapDrops, setTapDrops] = useState(0);
+  const tapTimes = useRef<number[]>([]);
+  const evaluateTaps = useCallback(() => {
+    const now = Date.now();
+    tapTimes.current = tapTimes.current.filter((t) => now - t < TAP_WINDOW_MS);
+    const n = tapTimes.current.length;
+    setTapDrops(n >= TAPS_FOR_TWO_DROPS ? 2 : n >= TAPS_FOR_ONE_DROP ? 1 : 0);
+  }, []);
+  const handleAvatarTap = useCallback(() => {
+    tapTimes.current.push(Date.now());
+    evaluateTaps();
+  }, [evaluateTaps]);
+  // While sweating, keep re-checking so the drops disappear once the tapping stops
+  useEffect(() => {
+    if (tapDrops === 0) return;
+    const id = setInterval(evaluateTaps, 400);
+    return () => clearInterval(id);
+  }, [tapDrops, evaluateTaps]);
   const [queue, setQueue] = useState([0, 1, 2, 3, 4, 0, 1, 2, 3, 4]);
   const [translateX, setTranslateX] = useState(0);
+
+  // Speech bubble auto-hides after ~3s, or as soon as the next card is dismissed.
+  useEffect(() => {
+    if (bubbleKey === null) return;
+    const t = setTimeout(() => setBubbleKey(null), 3000);
+    return () => clearTimeout(t);
+  }, [bubbleKey]);
+  useEffect(() => {
+    if (cardIndex !== 0) setBubbleKey(null);
+  }, [cardIndex]);
   const firstWordRef = useRef<HTMLSpanElement>(null);
   const secondWordRef = useRef<HTMLSpanElement>(null);
 
@@ -61,50 +118,12 @@ export function Hero() {
           <div className="flex-1 min-w-0 sm:min-w-[400px] lg:min-w-[440px] max-w-[620px] w-full flex flex-col items-center xl:items-start justify-center">
             <div className="flex flex-col gap-5 sm:gap-6 w-full max-w-[620px]">
               
-              {/* Clay Dialogue Card (Matching reference image) */}
-              <AnimatePresence mode="wait">
-                {isDialogueOpen ? (
-                  <motion.div
-                    key="dialogue"
-                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.92, y: -10 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="clay-dialogue-card border border-[#EBEBE8] rounded-[28px] sm:rounded-[36px] p-6 sm:p-9 md:p-10 lg:p-11 relative overflow-hidden w-full max-w-[620px]"
-                  >
-                    {/* Top-right circular close button matching reference image */}
-                    <button
-                      onClick={() => setIsDialogueOpen(false)}
-                      className="absolute top-4 right-4 sm:top-5 sm:right-5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#D9D9D9] hover:bg-[#CCCCCC] flex items-center justify-center transition-colors cursor-pointer group shadow-2xs z-10"
-                      aria-label="Close dialogue"
-                      title="Dismiss card"
-                    >
-                      <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#555555] group-hover:text-[#222222] transition-colors" strokeWidth={2.4} />
-                    </button>
-
-                    {/* Dialogue Main Statement - clean typography and layout matching reference image */}
-                    <p className="font-sans text-[19px] sm:text-[21px] md:text-[24px] xl:text-[26px] font-medium leading-[1.38] tracking-[-0.015em] text-[#60605D] max-w-[95%] pr-6 sm:pr-8 pt-1 sm:pt-2">
-                      I’m Puru and I resolve conflict between humans & computers so that they can be{' '}
-                      <span className="text-[#2B7FFF] font-bold inline">best friends.</span>
-                    </p>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="closed-state"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="flex items-center gap-3"
-                  >
-                    <button
-                      onClick={() => setIsDialogueOpen(true)}
-                      className="px-4 py-2.5 rounded-full bg-white border border-neutral-200 shadow-xs text-xs sm:text-sm font-medium text-neutral-600 hover:text-ink hover:border-neutral-300 transition-all flex items-center gap-2 cursor-pointer"
-                    >
-                      <span>💬 Show message: "I resolve conflict between humans & computers..."</span>
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* Clay Dialogue Card deck (copy lives in src/data/heroCards.ts) */}
+              <HeroCardDeck
+                index={cardIndex}
+                onIndexChange={setCardIndex}
+                onLoop={() => setBubbleKey(Date.now())}
+              />
 
               {/* Narrative Subtitle & Previous Experience */}
               <div className="flex flex-col gap-6 pl-1 sm:pl-2">
@@ -122,31 +141,31 @@ export function Hero() {
 
                   <div className="flex flex-wrap items-center gap-6 sm:gap-8">
                     {/* D. E. Shaw Logo */}
-                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="D. E. Shaw & Co.">
+                    <LogoTip tip="Interaction Design Intern">
                       <img
                         src="./deshaw_logo.svg"
                         alt="D. E. Shaw & Co."
-                        className="h-5 sm:h-6 md:h-7 w-auto object-contain"
+                        className="h-[22px] sm:h-[26.5px] md:h-[31px] w-auto object-contain"
                       />
-                    </div>
+                    </LogoTip>
 
                     {/* GE3S Sustainability Logo */}
-                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="GE3S Sustainability Corp">
+                    <LogoTip tip="UI/UX Intern">
                       <img
                         src="./ge3s_logo.png"
                         alt="GE3S"
                         className="h-7 sm:h-8 md:h-9 w-auto object-contain"
                       />
-                    </div>
+                    </LogoTip>
 
                     {/* Akai Space Logo */}
-                    <div className="h-7 sm:h-8 flex items-center hover:opacity-100 opacity-90 transition-opacity" title="AKAISPACE">
+                    <LogoTip tip="Product Design Intern">
                       <img
                         src="./logo2.png"
                         alt="AKAISPACE"
                         className="h-5 sm:h-5.5 md:h-6 w-auto object-contain"
                       />
-                    </div>
+                    </LogoTip>
                   </div>
                 </div>
               </div>
@@ -176,7 +195,7 @@ export function Hero() {
                       <div
                         key={item.id}
                         title={item.label}
-                        className={`w-[34px] h-[34px] flex items-center justify-center transition-all duration-300 cursor-default group ${
+                        className={`w-[34px] h-[34px] flex items-center justify-center transition-all duration-300 group ${
                           isCurrent
                             ? 'text-neutral-900 scale-110'
                             : 'text-neutral-400/80 hover:text-neutral-900'
@@ -210,14 +229,29 @@ export function Hero() {
                   </svg>
 
                   {/* 3D Clay Curly-Haired Avatar Bust (Flipped horizontally to face inwards towards content) */}
-                  <div className="-scale-x-100 relative z-10 flex items-center justify-center translate-x-1 sm:translate-x-2">
-                    <motion.img
+                  {/* The wrapper bobs and is the positioning box for the sweatdrop (% of image). */}
+                  <div className="relative z-10 flex items-center justify-center translate-x-1 sm:translate-x-2">
+                    <motion.div
                       animate={{ y: [0, -6, 0] }}
                       transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                      src="./avatar_bust.png"
-                      alt="Puru Vats 3D Avatar"
-                      className="w-[168px] xl:w-[182px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
-                    />
+                      className="relative"
+                    >
+                      <motion.div
+                        className="relative"
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+                      >
+                        <img
+                          src="./avatar_bust.png"
+                          alt="Puru Vats 3D Avatar"
+                          className="block -scale-x-100 w-[168px] xl:w-[182px] h-auto object-contain select-none pointer-events-none drop-shadow-md"
+                        />
+                        {/* Drops per card: heroCards.ts. Placement: Sweatdrop.tsx. Bubble placement: HeadBubble.tsx */}
+                        <Sweatdrop count={Math.max(SWEAT_DROPS_PER_CARD[cardIndex] ?? 0, tapDrops)} />
+                        <HeadBubble text={CAPTION_ON_LOOP} showKey={bubbleKey} />
+                        <AvatarBubbles onTap={handleAvatarTap} />
+                      </motion.div>
+                    </motion.div>
                   </div>
                 </div>
 

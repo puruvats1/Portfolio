@@ -120,7 +120,7 @@ export function Work() {
                         <h3 className="font-display text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-snug heading-gradient">
                           {project.title}
                         </h3>
-                        <ArrowUpRight className="w-4 h-4 text-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shrink-0" />
+                        <ArrowUpRight className="w-6 h-6 stroke-[2.25] text-neutral-500 shrink-0 opacity-0 -translate-x-3 translate-y-3 scale-75 transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100" />
                       </div>
 
                       <div className="flex items-center gap-2 text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
@@ -183,7 +183,7 @@ export function Work() {
                     <span className="hidden lg:inline">{project.category}</span>
                     <span className="hidden lg:inline text-neutral-300">·</span>
                     <span>{project.year}</span>
-                    <ArrowUpRight className="w-4 h-4 text-neutral-700 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    <ArrowUpRight className="w-6 h-6 stroke-[2.25] text-neutral-500 shrink-0 opacity-0 -translate-x-3 translate-y-3 scale-75 transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100" />
                   </div>
                 </a>
               ))}

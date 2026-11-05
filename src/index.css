@@ -285,6 +285,7 @@ body {
 /* Custom 3D Cartoon Glove Cursor (Figma node 55:2552) */
 @media (pointer: fine) {
   html.custom-cursor-active,
+  html.custom-cursor-active *,
   html.custom-cursor-active body,
   html.custom-cursor-active button,
   html.custom-cursor-active a,
@@ -311,5 +312,40 @@ body {
   .pill-clay-mint,
   .pill-clay-pink {
     transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* Side-nav rows: the glow follows the whole row (icon + label), not just the pointer position on the icon */
+.nav-row:hover .btn-clay-yellow,
+.nav-row:hover .btn-clay-blue,
+.nav-row:hover .btn-clay-peach,
+.nav-row:hover .btn-clay-lime,
+.nav-row:hover .btn-clay-mint,
+.nav-row:hover .btn-clay-pink,
+.nav-row:hover .pill-clay-yellow,
+.nav-row:hover .pill-clay-blue,
+.nav-row:hover .pill-clay-peach,
+.nav-row:hover .pill-clay-lime,
+.nav-row:hover .pill-clay-mint,
+.nav-row:hover .pill-clay-pink {
+  box-shadow: 0px 20.6px 33.4px rgba(0, 0, 0, 0.07),
+              0px 4.1px 6.7px rgba(0, 0, 0, 0.04),
+              inset 0px 1.5px 1px rgba(255, 255, 255, 0.85),
+              inset 0px -8px 12px rgba(255, 255, 255, 0.3);
+}
+@layer components {
+  .nav-row .btn-clay-yellow,
+  .nav-row .btn-clay-blue,
+  .nav-row .btn-clay-peach,
+  .nav-row .btn-clay-lime,
+  .nav-row .btn-clay-mint,
+  .nav-row .btn-clay-pink,
+  .nav-row .pill-clay-yellow,
+  .nav-row .pill-clay-blue,
+  .nav-row .pill-clay-peach,
+  .nav-row .pill-clay-lime,
+  .nav-row .pill-clay-mint,
+  .nav-row .pill-clay-pink {
+    transition: box-shadow 0.18s ease-out;
   }
 }
