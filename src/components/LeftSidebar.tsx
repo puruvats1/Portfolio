@@ -280,28 +280,26 @@ function BurstParticles({ x, y, colors }: { x: number; y: number; colors: string
   );
 }
 
-/** Width of the dock's buttons with the longest label open (px); narrower screens scale it down to fit. */
-const DOCK_CONTENT_WIDTH = 404;
-/** On tablets the dock stays compact and centred instead of stretching edge to edge. */
+/** Natural width of the dock with the longest label open (5 buttons + 4 gaps, px); narrower screens scale it down to fit. */
+const DOCK_CONTENT_WIDTH = 399;
+/** Upper bound of the room the dock may use (it only ever takes its natural width, centred). */
 const DOCK_MAX_WIDTH = 440;
 
 export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isHoveredNear, setIsHoveredNear] = useState(false);
   // Mobile dock is 30% bigger than the original; on narrow phones it scales down just enough to fit
-  // The gap under the dock equals the gap at its sides (16px phone, 24px tablet), so the spacing
+  // The gap under the dock equals the gap at its sides (24px phone, 32px tablet), so the spacing
   // looks even; the phone's gesture bar is deliberately NOT added on top of it.
   const [dockZoom, setDockZoom] = useState(1);
-  const [dockWidth, setDockWidth] = useState(DOCK_CONTENT_WIDTH);
-  const [dockGap, setDockGap] = useState(16);
+  const [dockGap, setDockGap] = useState(24);
   useEffect(() => {
     const fit = () => {
-      const gap = window.innerWidth >= 640 ? 24 : 16;
+      const gap = window.innerWidth >= 640 ? 32 : 24;
       const room = Math.min(window.innerWidth - 2 * gap, DOCK_MAX_WIDTH);
       const zoom = Math.min(1, room / DOCK_CONTENT_WIDTH);
       setDockGap(gap);
       setDockZoom(zoom);
-      setDockWidth(room / zoom); // in the dock's own (zoomed) units, so it spans exactly `room`
     };
     fit();
     window.addEventListener('resize', fit);
@@ -604,7 +602,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
           style={{ bottom: dockGap }}
           aria-label="Mobile Navigation"
         >
-          <div className="pointer-events-auto flex items-center justify-between gap-2" style={{ zoom: dockZoom, width: dockWidth }}>
+          <div className="pointer-events-auto flex items-center justify-center gap-[6px]" style={{ zoom: dockZoom }}>
           {NAV_ITEMS.map((item) => {
             const isActive = activeSection === item.id;
             const IconComponent = item.icon;
