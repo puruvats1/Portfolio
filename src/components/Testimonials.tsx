@@ -65,7 +65,7 @@ export function Testimonials() {
       <div className="w-full">
         
         {/* Title area with 'Leave a testimonial' button */}
-        <div className="mb-8 sm:mb-10 lg:mb-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="mb-8 sm:mb-10 lg:mb-12 flex flex-row items-center justify-between gap-3 sm:gap-4">
           <ScrollRevealTitle>
             <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient">
               About me from others
@@ -75,7 +75,7 @@ export function Testimonials() {
           {/* Leave a testimonial without signup */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="self-start sm:self-auto inline-flex items-center gap-2 h-[40px] px-4 rounded-[15px] bg-[#EAEAEA] hover:bg-[#DFDFDC] text-ink font-sans text-xs sm:text-sm font-semibold tracking-tight transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF]"
+            className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 sm:gap-2 h-[40px] px-3 sm:px-4 rounded-[15px] bg-[#EAEAEA] hover:bg-[#DFDFDC] text-ink font-sans text-xs sm:text-sm font-semibold tracking-tight transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF]"
           >
             <Plus size={15} className="text-[#555] group-hover:text-ink transition-colors" />
             <span>Leave a testimonial</span>

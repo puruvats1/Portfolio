@@ -219,9 +219,26 @@ interface LeftSidebarProps {
   mode?: 'desktop' | 'mobile' | 'both';
 }
 
+/** Width of the enlarged dock with its longest label open (px); narrower screens scale it down to fit. */
+const DOCK_FULL_WIDTH = 410;
+
 export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isHoveredNear, setIsHoveredNear] = useState(false);
+  // Mobile dock is 30% bigger than the original; on narrow phones it scales down just enough to fit
+  const [dockZoom, setDockZoom] = useState(1);
+  const [dockMax, setDockMax] = useState(DOCK_FULL_WIDTH);
+  useEffect(() => {
+    const fit = () => {
+      const room = window.innerWidth - 24;
+      const zoom = Math.min(1, room / DOCK_FULL_WIDTH);
+      setDockZoom(zoom);
+      setDockMax(room / zoom); // max width in the dock's own (zoomed) units
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
   const [hoveredId, setHoveredId] = useState<SectionId | null>(null);
 
   // Manual scroll flag to prevent scroll-spy from rapidly overriding activeSection during programmatic smooth scroll
@@ -465,7 +482,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
       {/* Subtle blue gradient at screen bottom to guarantee floating button visibility & contrast */}
       {mode !== 'desktop' && (
         <div
-          className="lg:hidden fixed bottom-0 left-0 right-0 h-28 sm:h-32 pointer-events-none z-40 backdrop-blur-lg [mask-image:linear-gradient(to_top,black_45%,transparent)]"
+          className="lg:hidden fixed bottom-0 left-0 right-0 h-[calc(9.5rem+env(safe-area-inset-bottom))] pointer-events-none z-40 backdrop-blur-lg [mask-image:linear-gradient(to_top,black_45%,transparent)]"
           aria-hidden="true"
         />
       )}
@@ -473,7 +490,8 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
       {/* MOBILE & TABLET FLOATING DOCK (White container removed, buttons float directly over bottom blue gradient) */}
       {mode !== 'desktop' && (
         <nav
-          className="lg:hidden fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 sm:gap-2 max-w-[calc(100vw-24px)] overflow-x-auto no-scrollbar select-none py-1 px-1.5"
+          className="lg:hidden fixed bottom-[calc(env(safe-area-inset-bottom)+2.25rem)] sm:bottom-[calc(env(safe-area-inset-bottom)+2.5rem)] left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar select-none py-1.5 px-2"
+          style={{ zoom: dockZoom, maxWidth: dockMax }}
           aria-label="Mobile Navigation"
         >
           {NAV_ITEMS.map((item) => {
@@ -485,16 +503,16 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                 key={item.id}
                 whileTap={{ scale: 0.94 }}
                 onClick={() => scrollTo(item.id)}
-                className={`h-[42px] rounded-[15px] border shrink-0 cursor-pointer flex items-center transition-[padding,gap,background-color,border-color,opacity,box-shadow] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                className={`h-[55px] rounded-[20px] border shrink-0 cursor-pointer flex items-center transition-[padding,gap,background-color,border-color,opacity,box-shadow] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isActive
-                    ? `px-3.5 sm:px-4 py-[7px] gap-2 bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow} opacity-100 shadow-[0_4px_14px_rgba(0,0,0,0.12)]`
-                    : `w-[42px] justify-center px-0 gap-0 bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85 hover:opacity-100 shadow-[0_2px_8px_rgba(0,0,0,0.08)]`
+                    ? `px-[18px] sm:px-5 py-[9px] gap-2.5 bg-gradient-to-b ${item.gradient} ${item.border} ${item.pillShadow} opacity-100 shadow-[0_4px_14px_rgba(0,0,0,0.12)]`
+                    : `w-[55px] justify-center px-0 gap-0 bg-gradient-to-b ${item.gradient} ${item.border} ${item.btnShadow} opacity-85 hover:opacity-100 shadow-[0_2px_8px_rgba(0,0,0,0.08)]`
                 }`}
                 aria-label={item.label}
               >
                 <IconComponent
                   strokeWidth={1.82}
-                  className={`w-[20px] h-[20px] ${item.iconColor} opacity-90 shrink-0 pointer-events-none select-none`}
+                  className={`w-[26px] h-[26px] ${item.iconColor} opacity-90 shrink-0 pointer-events-none select-none`}
                 />
 
                 <AnimatePresence initial={false}>
@@ -504,7 +522,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                       animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
                       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                      className={`font-sans font-bold text-[14.5px] leading-none tracking-[-0.25px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap overflow-hidden block`}
+                      className={`font-sans font-bold text-[19px] leading-none tracking-[-0.3px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap overflow-hidden block`}
                     >
                       {item.label}
                     </motion.span>

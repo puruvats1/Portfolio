@@ -10,7 +10,7 @@ export function Contact() {
   return (
     <footer
       id="contact"
-      className="relative pt-20 pb-28 sm:pb-32 lg:pt-24 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] mt-20 sm:mt-24 border-t border-white/10 will-change-transform scroll-mt-24"
+      className="relative pt-20 pb-40 sm:pb-40 lg:pt-24 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] mt-20 sm:mt-24 max-lg:mx-[calc((100%-100vw)/2)] border-t border-white/10 will-change-transform scroll-mt-24"
     >
       <div className="max-w-[1400px] mx-auto w-full px-6 sm:px-10 lg:px-12 xl:px-14">
         <motion.div

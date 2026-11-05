@@ -67,7 +67,9 @@ export function Hero() {
       setStacked(stack);
       if (stack) {
         setDeckScale(Math.min(1, Math.max(0.55, w / DECK_FULL_WIDTH)));
-        setCardScale(Math.min(0.85, Math.max(0.7, w / 800)));
+        // 30% smaller than the original stacked size; on phones it grows back by up to 44% (eases in below 768px)
+        const phoneBoost = 1 + 0.44 * Math.min(1, Math.max(0, (768 - window.innerWidth) / 168));
+        setCardScale(Math.min(0.85, Math.max(0.7, w / 800)) * 0.7 * phoneBoost);
         return;
       }
       // Side by side: as space gets tight the profile card gives up size first; the speech card
@@ -171,24 +173,25 @@ export function Hero() {
                   index={cardIndex}
                   onIndexChange={setCardIndex}
                   onLoop={() => setBubbleKey(Date.now())}
+                  centered={stacked}
                 />
               </div>
 
               {/* Narrative Subtitle & Previous Experience */}
-              <div className="flex flex-col gap-6 pl-1 sm:pl-2">
+              <div className={`flex flex-col gap-6 ${stacked ? 'items-center text-center' : 'pl-1 sm:pl-2'}`}>
                 {/* DM Sans Regular, prominent and legible supporting text */}
-                <p className="font-sans text-[15px] sm:text-[15.5px] text-[#555552] leading-[1.68] max-w-xl font-normal">
+                <p className={`font-sans text-[15px] sm:text-[15.5px] text-[#555552] leading-[1.68] max-w-xl font-normal ${stacked ? 'mx-auto' : ''}`}>
                   B.Des ‘27 at IDC, IIT Bombay. I dig until I understand the problem, design until it feels obvious, and build until it actually works.
                 </p>
 
                 {/* Previously At Logos */}
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-1">
+                <div className={`flex flex-wrap items-center gap-x-6 gap-y-3 pt-1 ${stacked ? 'justify-center' : ''}`}>
                   {/* Previously at - DM Sans Medium */}
-                  <span className="font-sans text-[13px] sm:text-[14px] md:text-[14.5px] leading-[18px] font-medium text-[#888884] shrink-0 uppercase sm:normal-case tracking-wider sm:tracking-normal">
+                  <span className="font-sans text-[13px] sm:text-[14px] md:text-[14.5px] leading-[18px] font-medium text-[#888884] shrink-0">
                     Previously at
                   </span>
 
-                  <div className="flex flex-wrap items-center gap-6 sm:gap-8">
+                  <div className={`flex flex-wrap items-center gap-6 sm:gap-8 ${stacked ? 'justify-center' : ''}`}>
                     {/* D. E. Shaw Logo */}
                     <LogoTip tip="Interaction Design Intern">
                       <img

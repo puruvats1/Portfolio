@@ -9,7 +9,7 @@
 export const HERO_CARDS: string[] = [
   'I’m Puru and I resolve conflict between humans & computers so that they can be **best friends**.',
   'I’m Puru, a designer who creates intuitive, **user-centered** experiences.',
-  'I’m Puru, a passionate, detail-oriented designer crafting seamless, delightful, **pixel-perfect** experiences that make an impact.',
+  'I’m Puru, a detail-oriented designer crafting delightful, **pixel-perfect** experiences.',
 ];
 
 /** Speech bubble by the avatar's head, shown for ~3s when the deck loops from the last card back to the first. */

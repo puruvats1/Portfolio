@@ -161,6 +161,7 @@ function renderCopy(copy: string) {
 
 interface DeckCardProps {
   copy: string;
+  cardClass: string;
   copyIndex: number;
   base: BaseSize | null;
   closeLabel: string;
@@ -170,7 +171,7 @@ interface DeckCardProps {
   onClose: () => void;
 }
 
-function DeckCard({ copy, copyIndex, base, closeLabel, focusOnMount, wobble, reduceMotion, onClose }: DeckCardProps) {
+function DeckCard({ copy, copyIndex, base, cardClass, closeLabel, focusOnMount, wobble, reduceMotion, onClose }: DeckCardProps) {
   const isPresent = useIsPresent();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -210,7 +211,7 @@ function DeckCard({ copy, copyIndex, base, closeLabel, focusOnMount, wobble, red
       style={{ gridArea: '1 / 1', zIndex: isPresent ? 1 : 2 }}
       aria-hidden={isPresent ? undefined : true}
       inert={!isPresent}
-      className={CARD_CLASS}
+      className={cardClass}
     >
       <motion.button
         ref={buttonRef}
@@ -240,13 +241,16 @@ interface HeroCardDeckProps {
   onIndexChange: (next: number) => void;
   /** Fired when dismissing the last card loops back to the first. */
   onLoop?: () => void;
+  /** Centre the cards in the column (stacked phone/tablet layout). */
+  centered?: boolean;
 }
 
 /**
  * Stack of dismissible title cards. State (`index`) lives in the parent so the
  * avatar's sweatdrop can react to the last card.
  */
-export function HeroCardDeck({ index, onIndexChange, onLoop }: HeroCardDeckProps) {
+export function HeroCardDeck({ index, onIndexChange, onLoop, centered = false }: HeroCardDeckProps) {
+  const cardClass = centered ? CARD_CLASS.replace('justify-self-start', 'justify-self-center') : CARD_CLASS;
   const reduceMotion = !!useReducedMotion();
   const [base, setBaseState] = useState<BaseSize | null>(null);
   const setBase = useCallback((b: BaseSize) => {
@@ -297,7 +301,7 @@ export function HeroCardDeck({ index, onIndexChange, onLoop }: HeroCardDeckProps
           key={i}
           aria-hidden="true"
           inert
-          className={`${CARD_CLASS} invisible pointer-events-none`}
+          className={`${cardClass} invisible pointer-events-none`}
           style={{ gridArea: '1 / 1' }}
         >
           <FitText copyIndex={i} measure={i === 0} base={base} onBase={i === 0 ? setBase : undefined}>{renderCopy(copy)}</FitText>
@@ -308,7 +312,7 @@ export function HeroCardDeck({ index, onIndexChange, onLoop }: HeroCardDeckProps
       {/* Stack hint: a card edge peeking out behind the active one */}
       <motion.div
         aria-hidden="true"
-        className={`${CARD_CLASS} pointer-events-none`}
+        className={`${cardClass} pointer-events-none`}
         style={{ gridArea: '1 / 1', zIndex: 0 }}
         initial={false}
         animate={{
@@ -327,6 +331,7 @@ export function HeroCardDeck({ index, onIndexChange, onLoop }: HeroCardDeckProps
         <DeckCard
           key={index}
           copy={HERO_CARDS[index]}
+          cardClass={cardClass}
           copyIndex={index}
           base={base}
           closeLabel={closeLabel}
