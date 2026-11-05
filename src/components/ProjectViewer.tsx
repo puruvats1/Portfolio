@@ -149,7 +149,7 @@ export function ProjectViewer({ project, onBack }: Props) {
       {showMarkers && (
         <nav
           aria-label="Project stages"
-          className="lg:hidden fixed inset-x-0 bottom-[24px] sm:bottom-[32px] z-30 flex justify-center px-[24px] sm:px-[32px] pointer-events-none"
+          className="lg:hidden fixed inset-x-0 bottom-[28.8px] sm:bottom-[38.4px] z-30 flex justify-center px-[24px] sm:px-[32px] pointer-events-none"
         >
          <div className="pointer-events-auto w-full max-w-[440px] flex items-center justify-between gap-3 px-5 py-3.5 rounded-full bg-white/80 backdrop-blur-xl border border-neutral-200/70 shadow-[0_10px_30px_rgba(0,0,0,0.07)]">
           {milestones.map((m, i) => (

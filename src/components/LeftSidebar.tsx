@@ -289,16 +289,16 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isHoveredNear, setIsHoveredNear] = useState(false);
   // Mobile dock is 30% bigger than the original; on narrow phones it scales down just enough to fit
-  // The gap under the dock equals the gap at its sides (24px phone, 32px tablet), so the spacing
-  // looks even; the phone's gesture bar is deliberately NOT added on top of it.
+  // Side margin: 24px phone, 32px tablet. The gap under the dock is 20% larger than that
+  // (28.8px / 38.4px); the phone's gesture bar is deliberately NOT added on top of it.
   const [dockZoom, setDockZoom] = useState(1);
-  const [dockGap, setDockGap] = useState(24);
+  const [dockGap, setDockGap] = useState(24 * 1.2); // bottom gap
   useEffect(() => {
     const fit = () => {
       const gap = window.innerWidth >= 640 ? 32 : 24;
       const room = Math.min(window.innerWidth - 2 * gap, DOCK_MAX_WIDTH);
       const zoom = Math.min(1, room / DOCK_CONTENT_WIDTH);
-      setDockGap(gap);
+      setDockGap(gap * 1.2);
       setDockZoom(zoom);
     };
     fit();
