@@ -14,7 +14,26 @@
   --color-canvas: #FFFFFF;
   --color-canvas-subtle: #F9F9F9;
   --color-ink: #30302E;
-  
+
+  /* Text roles on light surfaces (same warm-grey hue as ink, stepped in lightness) */
+  --color-ink-strong: #2C2C2A;   /* hover state of muted links */
+  --color-ink-muted: #5A5A55;    /* secondary links and labels, 6.9:1 on white */
+  --color-ink-subtle: #74746F;   /* tertiary text, 4.7:1 on white (was #8E8E89, 3.3:1) */
+
+  /* Accent: the clay blue family */
+  --color-accent: #2B7FFF;        /* icons, highlights, filled chips */
+  --color-accent-text: #1F6AE6;   /* accent text on pale blue tints, 4.5:1 on #EEF6FE */
+  --color-accent-hover: #1D4ED8;
+  --color-accent-ring: #72BDFF;   /* focus rings */
+  --color-accent-border: #B7D9FF;
+
+  --color-surface-inverse: #111110; /* dark contact section / overlays */
+
+  /* Motion: stronger curves than the CSS built-ins. Overriding the ease-* theme keys
+     upgrades every existing ease-out / ease-in-out utility in place. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
   --color-pastel-blue: #D9E8F5;
   --color-powder-blue: #B5D0F5;
   --color-butter: #FDF1C2;
@@ -28,6 +47,33 @@
 html {
   font-size: 80%; /* Global 20% font size reduction */
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* The browser's own overscroll bounce / pull-to-refresh is off: the page draws its own rubber-band stretch at the top (see lib/useOverscrollStretch.ts) */
+html {
+  overscroll-behavior-y: none;
+}
+
+@layer base {
+  /* Even out multi-line headings; keep a lone word off the last line of paragraphs */
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+  p, li, blockquote {
+    text-wrap: pretty;
+  }
+
+  /* Consistent focus ring for anything that doesn't style its own */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-ring);
+    outline-offset: 2px;
+  }
 }
 
 /* ========================================================
@@ -94,131 +140,56 @@ body {
    Shadow lists keep the same structure at rest and on hover so the hover can animate smoothly.
    ======================================================== */
 
-.btn-clay-blue {
-  background-image: linear-gradient(180deg, #d8ecfe 0%, #c6e3fe 20%, #afd8fe 52%, #baddfe 82%, #c3e1fe 100%);
+/* Each colour only sets its fill and border; the shared rule below carries the shadows. */
+.btn-clay-blue, .pill-clay-blue {
+  --clay-fill: linear-gradient(180deg, #d8ecfe 0%, #c6e3fe 20%, #afd8fe 52%, #baddfe 82%, #c3e1fe 100%);
   border-color: #cce6fe;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
 }
-
-.pill-clay-blue {
-  background-image: linear-gradient(180deg, #d8ecfe 0%, #c6e3fe 20%, #afd8fe 52%, #baddfe 82%, #c3e1fe 100%);
-  border-color: #cce6fe;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
-}
-
-.btn-clay-yellow {
-  background-image: linear-gradient(180deg, #fef8d8 0%, #fef4c6 20%, #fdf0b0 52%, #fdf2bb 82%, #fdf4c3 100%);
+.btn-clay-yellow, .pill-clay-yellow {
+  --clay-fill: linear-gradient(180deg, #fef8d8 0%, #fef4c6 20%, #fdf0b0 52%, #fdf2bb 82%, #fdf4c3 100%);
   border-color: #fef5cc;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
 }
-
-.pill-clay-yellow {
-  background-image: linear-gradient(180deg, #fef8d8 0%, #fef4c6 20%, #fdf0b0 52%, #fdf2bb 82%, #fdf4c3 100%);
-  border-color: #fef5cc;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
-}
-
-.btn-clay-peach {
-  background-image: linear-gradient(180deg, #fde6da 0%, #fcdbc8 20%, #facdb3 52%, #fbd4bd 82%, #fbd9c5 100%);
+.btn-clay-peach, .pill-clay-peach {
+  --clay-fill: linear-gradient(180deg, #fde6da 0%, #fcdbc8 20%, #facdb3 52%, #fbd4bd 82%, #fbd9c5 100%);
   border-color: #fcdfce;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
 }
-
-.pill-clay-peach {
-  background-image: linear-gradient(180deg, #fde6da 0%, #fcdbc8 20%, #facdb3 52%, #fbd4bd 82%, #fbd9c5 100%);
-  border-color: #fcdfce;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
-}
-
-.btn-clay-lime {
-  background-image: linear-gradient(180deg, #f6fdda 0%, #f1fcc8 20%, #ecfab3 52%, #effbbd 82%, #f1fbc5 100%);
+.btn-clay-lime, .pill-clay-lime {
+  --clay-fill: linear-gradient(180deg, #f6fdda 0%, #f1fcc8 20%, #ecfab3 52%, #effbbd 82%, #f1fbc5 100%);
   border-color: #f3fcce;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
 }
-
-.pill-clay-lime {
-  background-image: linear-gradient(180deg, #f6fdda 0%, #f1fcc8 20%, #ecfab3 52%, #effbbd 82%, #f1fbc5 100%);
-  border-color: #f3fcce;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
-}
-
-.btn-clay-mint {
-  background-image: linear-gradient(180deg, #dbfbeb 0%, #cafae2 20%, #b5f8d7 52%, #c0f9dc 82%, #c7f9e0 100%);
+.btn-clay-mint, .pill-clay-mint {
+  --clay-fill: linear-gradient(180deg, #dbfbeb 0%, #cafae2 20%, #b5f8d7 52%, #c0f9dc 82%, #c7f9e0 100%);
   border-color: #d0fae5;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
 }
-
-.pill-clay-mint {
-  background-image: linear-gradient(180deg, #dbfbeb 0%, #cafae2 20%, #b5f8d7 52%, #c0f9dc 82%, #c7f9e0 100%);
-  border-color: #d0fae5;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
-}
-
-.btn-clay-pink {
-  background-image: linear-gradient(180deg, #fcdae2 0%, #facad5 20%, #f9b5c5 52%, #f9bfcc 82%, #fac7d3 100%);
+.btn-clay-pink, .pill-clay-pink {
+  --clay-fill: linear-gradient(180deg, #fcdae2 0%, #facad5 20%, #f9b5c5 52%, #f9bfcc 82%, #fac7d3 100%);
   border-color: #fbcfd9;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
 }
 
-.pill-clay-pink {
-  background-image: linear-gradient(180deg, #fcdae2 0%, #facad5 20%, #f9b5c5 52%, #f9bfcc 82%, #fac7d3 100%);
-  border-color: #fbcfd9;
-  box-shadow: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
-              0px 2px 6px rgba(88, 88, 150, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.22);
+:root {
+  --clay-shadow-rest: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
+                      0px 2px 6px rgba(88, 88, 150, 0.04),
+                      inset 0px 1.5px 1px rgba(255, 255, 255, 0.75),
+                      inset 0px -8px 12px rgba(255, 255, 255, 0.22);
+  /* Apple-style layered soft shadow; same structure as rest so it animates smoothly */
+  --clay-shadow-raised: 0px 20.6px 33.4px rgba(0, 0, 0, 0.07),
+                        0px 4.1px 6.7px rgba(0, 0, 0, 0.04),
+                        inset 0px 1.5px 1px rgba(255, 255, 255, 0.85),
+                        inset 0px -8px 12px rgba(255, 255, 255, 0.3);
 }
 
-/* Hover: Apple-style layered soft shadow */
-.btn-clay-blue:hover,
-.btn-clay-yellow:hover,
-.btn-clay-peach:hover,
-.btn-clay-lime:hover,
-.btn-clay-mint:hover,
-.btn-clay-pink:hover,
-.pill-clay-blue:hover,
-.pill-clay-yellow:hover,
-.pill-clay-peach:hover,
-.pill-clay-lime:hover,
-.pill-clay-mint:hover,
-.pill-clay-pink:hover {
-  box-shadow: 0px 20.6px 33.4px rgba(0, 0, 0, 0.07),
-              0px 4.1px 6.7px rgba(0, 0, 0, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.85),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.3);
+:is(.btn-clay-blue, .btn-clay-yellow, .btn-clay-peach, .btn-clay-lime, .btn-clay-mint, .btn-clay-pink,
+    .pill-clay-blue, .pill-clay-yellow, .pill-clay-peach, .pill-clay-lime, .pill-clay-mint, .pill-clay-pink) {
+  background-image: var(--clay-fill);
+  box-shadow: var(--clay-shadow-rest);
+}
+
+/* Hover lift only on devices that really hover, so a tap on a phone doesn't leave it stuck on */
+@media (hover: hover) and (pointer: fine) {
+  :is(.btn-clay-blue, .btn-clay-yellow, .btn-clay-peach, .btn-clay-lime, .btn-clay-mint, .btn-clay-pink,
+      .pill-clay-blue, .pill-clay-yellow, .pill-clay-peach, .pill-clay-lime, .pill-clay-mint, .pill-clay-pink):hover {
+    box-shadow: var(--clay-shadow-raised);
+  }
 }
 
 /* ========================================================
@@ -311,27 +282,16 @@ body {
   .pill-clay-lime,
   .pill-clay-mint,
   .pill-clay-pink {
-    transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: box-shadow 0.4s var(--ease-out);
   }
 }
 
 /* Side-nav rows: the glow follows the whole row (icon + label), not just the pointer position on the icon */
-.nav-row:hover .btn-clay-yellow,
-.nav-row:hover .btn-clay-blue,
-.nav-row:hover .btn-clay-peach,
-.nav-row:hover .btn-clay-lime,
-.nav-row:hover .btn-clay-mint,
-.nav-row:hover .btn-clay-pink,
-.nav-row:hover .pill-clay-yellow,
-.nav-row:hover .pill-clay-blue,
-.nav-row:hover .pill-clay-peach,
-.nav-row:hover .pill-clay-lime,
-.nav-row:hover .pill-clay-mint,
-.nav-row:hover .pill-clay-pink {
-  box-shadow: 0px 20.6px 33.4px rgba(0, 0, 0, 0.07),
-              0px 4.1px 6.7px rgba(0, 0, 0, 0.04),
-              inset 0px 1.5px 1px rgba(255, 255, 255, 0.85),
-              inset 0px -8px 12px rgba(255, 255, 255, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .nav-row:hover :is(.btn-clay-yellow, .btn-clay-blue, .btn-clay-peach, .btn-clay-lime, .btn-clay-mint, .btn-clay-pink,
+                     .pill-clay-yellow, .pill-clay-blue, .pill-clay-peach, .pill-clay-lime, .pill-clay-mint, .pill-clay-pink) {
+    box-shadow: var(--clay-shadow-raised);
+  }
 }
 @layer components {
   .nav-row .btn-clay-yellow,
@@ -348,4 +308,262 @@ body {
   .nav-row .pill-clay-pink {
     transition: box-shadow 0.18s ease-out;
   }
+}
+
+/* Hero avatar idle bob: CSS keyframes run off the main thread, unlike a JS-driven infinite loop */
+@keyframes avatar-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.avatar-bob {
+  animation: avatar-bob 4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .avatar-bob { animation: none; }
+}
+
+/* ========================================================
+   Page change (home <-> project), View Transitions API. See src/lib/pageTransition.ts.
+   Opening (~450ms): the home page dissolves while the project page pops up from the bottom.
+   Back (~400ms): the project page drops away and the home page fades back in.
+   The top bar and the custom cursor stay put on their own layers.
+   ======================================================== */
+header.site-header {
+  view-transition-name: site-header;
+}
+/* The custom cursor rides above everything and does not fade with the pages */
+.custom-cursor {
+  view-transition-name: custom-cursor;
+}
+::view-transition-group(custom-cursor) {
+  z-index: 10;
+  animation: none;
+}
+::view-transition-old(custom-cursor) {
+  display: none;
+}
+::view-transition-new(custom-cursor) {
+  animation: none;
+}
+::view-transition-group(site-header) {
+  z-index: 3;
+  animation-duration: 0s;
+}
+
+@keyframes vt-dissolve {
+  to { opacity: 0; }
+}
+@keyframes vt-appear {
+  from { opacity: 0; }
+}
+@keyframes vt-sheet-rise {
+  from { transform: translateY(100%); }
+}
+@keyframes vt-sheet-fall {
+  to { transform: translateY(100%); }
+}
+
+html[data-vt="forward"]::view-transition-old(root) {
+  animation: vt-dissolve 260ms var(--ease-out) both;
+}
+html[data-vt="forward"]::view-transition-new(root) {
+  animation: vt-sheet-rise 450ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+html[data-vt="back"]::view-transition-old(root) {
+  z-index: 1;
+  animation: vt-sheet-fall 400ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+html[data-vt="back"]::view-transition-new(root) {
+  animation: vt-appear 300ms var(--ease-out) 60ms both;
+}
+
+/* Reduced motion: a quick crossfade, nothing moves */
+html[data-vt="reduced"]::view-transition-group(*),
+html[data-vt="reduced"]::view-transition-old(*),
+html[data-vt="reduced"]::view-transition-new(*) {
+  animation-duration: 180ms;
+}
+
+/* ========================================================
+   Scroll-driven motion (CSS animation-timeline: runs off the main thread, no JS).
+   Browsers without support fall back to the final, static state.
+   Everything here is movement, so it is skipped for prefers-reduced-motion,
+   except the About text darkening, which is only an opacity change.
+   ======================================================== */
+@keyframes hero-recede {
+  to { opacity: 0.35; scale: 0.94; translate: 0 6vh; }
+}
+@keyframes thumb-parallax {
+  from { translate: 0 -4%; }
+  to { translate: 0 4%; }
+}
+@keyframes drift {
+  from { translate: 0 28px; }
+  to { translate: 0 -28px; }
+}
+@keyframes footer-rise {
+  from { scale: 0.94; }
+  to { scale: 1; }
+}
+@keyframes ink-word {
+  from { opacity: 0.16; }
+  to { opacity: 1; }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Hero content sinks back and dims over the first 80% of a screen of scrolling */
+    .hero-recede {
+      animation: hero-recede linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 80vh;
+    }
+    /* Project thumbnails drift inside their frames as they cross the screen */
+    .thumb-parallax {
+      animation: thumb-parallax linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+    .drift {
+      animation: drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+    /* The dark footer grows to full width as it arrives */
+    .footer-rise {
+      transform-origin: 50% 0;
+      animation: footer-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+
+  /* About copy darkens word by word as it scrolls up into reading position */
+  .ink-word {
+    animation: ink-word linear both;
+    animation-timeline: view();
+    animation-range: cover 8% cover 42%;
+  }
+}
+
+/* ========================================================
+   Micro-interactions
+   ======================================================== */
+
+/* Cards that lift on hover. The hover shadow is drawn once on ::after and only its opacity
+   animates, so hovering a large card never repaints a blurred shadow every frame. */
+.lift-card {
+  position: relative;
+  transition: translate 300ms var(--ease-out);
+}
+.lift-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  pointer-events: none;
+}
+.lift-card--blue::after {
+  box-shadow: 0 12px 28px rgba(43, 127, 255, 0.1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lift-card:hover { translate: 0 -4px; }
+  .lift-card:hover::after { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lift-card:hover { translate: none; } /* keep the shadow, drop the movement */
+}
+
+/* "puru." logo: the letters hop one after another when the logo is hovered (mouse only) */
+@keyframes logo-hop {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .logo-wave:hover .logo-char {
+    animation: logo-hop 420ms var(--ease-out) both;
+    animation-delay: calc(var(--i) * 45ms);
+  }
+}
+
+/* ========================================================
+   Nav icon micro-animations. Each icon's own parts move, instead of the whole icon wobbling:
+   the hand waves while its motion arcs pulse outward, the briefcase handle pops, the smiley
+   blinks and smiles wider, the handshake pumps, the quote marks pop one after the other, and
+   the envelope flap lifts. Plays only when the button is clicked. "a" and "b" alternate on every click (the "b" copies of the
+   keyframes carry a -h suffix) so clicking the same icon twice replays it. Transform and opacity only,
+   under 700ms; off with reduced motion.
+   ======================================================== */
+.nav-icon { display: inline-flex; }
+.nav-icon svg { overflow: visible; } /* parts may move past the icon box */
+.nav-icon svg [class^="ni-"], .nav-icon svg [class*=" ni-"] { transform-box: fill-box; }
+.nav-icon .ni-hand { transform-origin: 25% 85%; }
+.nav-icon .ni-arc { transform-origin: 50% 50%; }
+.nav-icon .ni-handle { transform-origin: 50% 100%; }
+.nav-icon .ni-body { transform-origin: 50% 100%; }
+.nav-icon .ni-eye { transform-origin: 50% 50%; }
+.nav-icon .ni-mouth { transform-origin: 50% 50%; }
+.nav-icon .ni-ring { transform-origin: 50% 50%; }
+.nav-icon .ni-clasp { transform-origin: 50% 60%; }
+.nav-icon .ni-q1 { transform-origin: 50% 100%; }
+.nav-icon .ni-q2 { transform-origin: 50% 100%; }
+.nav-icon .ni-flap { transform-origin: 50% 0%; }
+.nav-icon .ni-env { transform-origin: 50% 100%; }
+@keyframes ni-hand-wave { 0% { transform: rotate(0deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 16% { transform: rotate(17deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 36% { transform: rotate(-10deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 55% { transform: rotate(8deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 74% { transform: rotate(-3.5deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 90% { transform: rotate(1deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: rotate(0deg); } }
+@keyframes ni-hand-wave-h { 0% { transform: rotate(0deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 16% { transform: rotate(17deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 36% { transform: rotate(-10deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 55% { transform: rotate(8deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 74% { transform: rotate(-3.5deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 90% { transform: rotate(1deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: rotate(0deg); } }
+@keyframes ni-arc-out-br { 0% { transform: translate(0, 0); opacity: 1; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 24% { transform: translate(1.4px, 1.4px); opacity: 0.4; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 58% { transform: translate(0.5px, 0.5px); opacity: 0.85; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: translate(0, 0); opacity: 1; } }
+@keyframes ni-arc-out-br-h { 0% { transform: translate(0, 0); opacity: 1; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 24% { transform: translate(1.4px, 1.4px); opacity: 0.4; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 58% { transform: translate(0.5px, 0.5px); opacity: 0.85; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: translate(0, 0); opacity: 1; } }
+@keyframes ni-arc-out-tl { 0% { transform: translate(0, 0); opacity: 1; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 24% { transform: translate(-1.4px, -1.4px); opacity: 0.4; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 58% { transform: translate(-0.5px, -0.5px); opacity: 0.85; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: translate(0, 0); opacity: 1; } }
+@keyframes ni-arc-out-tl-h { 0% { transform: translate(0, 0); opacity: 1; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 24% { transform: translate(-1.4px, -1.4px); opacity: 0.4; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 58% { transform: translate(-0.5px, -0.5px); opacity: 0.85; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: translate(0, 0); opacity: 1; } }
+@keyframes ni-handle-pop { 0% { transform: translateY(0); } 28% { transform: translateY(-1.4px); } 52% { transform: translateY(0.3px); } 72% { transform: translateY(-0.5px); } 100% { transform: translateY(0); } }
+@keyframes ni-handle-pop-h { 0% { transform: translateY(0); } 28% { transform: translateY(-1.4px); } 52% { transform: translateY(0.3px); } 72% { transform: translateY(-0.5px); } 100% { transform: translateY(0); } }
+@keyframes ni-body-squash { 0% { transform: scale(1, 1); } 22% { transform: scale(1.03, 0.93); } 50% { transform: scale(0.99, 1.03); } 100% { transform: scale(1, 1); } }
+@keyframes ni-body-squash-h { 0% { transform: scale(1, 1); } 22% { transform: scale(1.03, 0.93); } 50% { transform: scale(0.99, 1.03); } 100% { transform: scale(1, 1); } }
+@keyframes ni-eye-blink { 0%, 100% { transform: scaleY(1); } 28% { transform: scaleY(0.12); } 46% { transform: scaleY(1); } }
+@keyframes ni-eye-blink-h { 0%, 100% { transform: scaleY(1); } 28% { transform: scaleY(0.12); } 46% { transform: scaleY(1); } }
+@keyframes ni-mouth-smile { 0%, 100% { transform: scale(1, 1) translateY(0); } 30%, 62% { transform: scale(1.22, 1.35) translateY(0.5px); } }
+@keyframes ni-mouth-smile-h { 0%, 100% { transform: scale(1, 1) translateY(0); } 30%, 62% { transform: scale(1.22, 1.35) translateY(0.5px); } }
+@keyframes ni-ring-breathe { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.05); } }
+@keyframes ni-ring-breathe-h { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.05); } }
+@keyframes ni-clasp-pump { 0% { transform: translateY(0) rotate(0deg); } 20% { transform: translateY(-1.6px) rotate(-5deg); } 40% { transform: translateY(0.4px) rotate(3deg); } 60% { transform: translateY(-1px) rotate(-3deg); } 80% { transform: translateY(0.2px) rotate(1deg); } 100% { transform: translateY(0) rotate(0deg); } }
+@keyframes ni-clasp-pump-h { 0% { transform: translateY(0) rotate(0deg); } 20% { transform: translateY(-1.6px) rotate(-5deg); } 40% { transform: translateY(0.4px) rotate(3deg); } 60% { transform: translateY(-1px) rotate(-3deg); } 80% { transform: translateY(0.2px) rotate(1deg); } 100% { transform: translateY(0) rotate(0deg); } }
+@keyframes ni-quote-pop { 0% { transform: translateY(0) scale(1); } 24% { transform: translateY(1px) scale(0.84); } 56% { transform: translateY(-1.6px) scale(1.12); } 80% { transform: translateY(0.2px) scale(0.99); } 100% { transform: translateY(0) scale(1); } }
+@keyframes ni-quote-pop-h { 0% { transform: translateY(0) scale(1); } 24% { transform: translateY(1px) scale(0.84); } 56% { transform: translateY(-1.6px) scale(1.12); } 80% { transform: translateY(0.2px) scale(0.99); } 100% { transform: translateY(0) scale(1); } }
+@keyframes ni-flap-open { 0% { transform: scaleY(1); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 36% { transform: scaleY(0.55); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 66% { transform: scaleY(1.08); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 86% { transform: scaleY(0.97); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: scaleY(1); } }
+@keyframes ni-flap-open-h { 0% { transform: scaleY(1); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 36% { transform: scaleY(0.55); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 66% { transform: scaleY(1.08); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 86% { transform: scaleY(0.97); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: scaleY(1); } }
+@keyframes ni-env-hop { 0% { transform: translateY(0) rotate(0deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 32% { transform: translateY(-2.6px) rotate(-5deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 62% { transform: translateY(0.5px) rotate(3deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 82% { transform: translateY(-0.4px) rotate(-1deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: translateY(0) rotate(0deg); } }
+@keyframes ni-env-hop-h { 0% { transform: translateY(0) rotate(0deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 32% { transform: translateY(-2.6px) rotate(-5deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 62% { transform: translateY(0.5px) rotate(3deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 82% { transform: translateY(-0.4px) rotate(-1deg); animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); } 100% { transform: translateY(0) rotate(0deg); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-icon[data-play="a"][data-icon="hero"] .ni-hand { animation: ni-hand-wave 900ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="hero"] .ni-hand { animation: ni-hand-wave-h 900ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="hero"] .ni-arc-br { animation: ni-arc-out-br 900ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="hero"] .ni-arc-br { animation: ni-arc-out-br-h 900ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="hero"] .ni-arc-tl { animation: ni-arc-out-tl 900ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="hero"] .ni-arc-tl { animation: ni-arc-out-tl-h 900ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="work"] .ni-handle { animation: ni-handle-pop 600ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="work"] .ni-handle { animation: ni-handle-pop-h 600ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="work"] .ni-body { animation: ni-body-squash 600ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="work"] .ni-body { animation: ni-body-squash-h 600ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="about"] .ni-eye { animation: ni-eye-blink 600ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="about"] .ni-eye { animation: ni-eye-blink-h 600ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="about"] .ni-mouth { animation: ni-mouth-smile 700ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="about"] .ni-mouth { animation: ni-mouth-smile-h 700ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="about"] .ni-ring { animation: ni-ring-breathe 700ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="about"] .ni-ring { animation: ni-ring-breathe-h 700ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="skills"] .ni-clasp { animation: ni-clasp-pump 600ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="skills"] .ni-clasp { animation: ni-clasp-pump-h 600ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="testimonials"] .ni-q1 { animation: ni-quote-pop 560ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="testimonials"] .ni-q1 { animation: ni-quote-pop-h 560ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="a"][data-icon="testimonials"] .ni-q2 { animation: ni-quote-pop 560ms var(--ease-out) 70ms both; }
+  .nav-icon[data-play="b"][data-icon="testimonials"] .ni-q2 { animation: ni-quote-pop-h 560ms var(--ease-out) 70ms both; }
+  .nav-icon[data-play="a"][data-icon="contact"] .ni-flap { animation: ni-flap-open 760ms var(--ease-out) 70ms both; }
+  .nav-icon[data-play="b"][data-icon="contact"] .ni-flap { animation: ni-flap-open-h 760ms var(--ease-out) 70ms both; }
+  .nav-icon[data-play="a"][data-icon="contact"] .ni-env { animation: ni-env-hop 760ms var(--ease-out) 0ms both; }
+  .nav-icon[data-play="b"][data-icon="contact"] .ni-env { animation: ni-env-hop-h 760ms var(--ease-out) 0ms both; }
 }

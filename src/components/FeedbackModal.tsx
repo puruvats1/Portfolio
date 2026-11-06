@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Send, CheckCircle2, MessageSquare, Mail, Sparkles } from 'lucide-react';
+import { EASE_OUT } from "../lib/motion";
+import { X, Send, MessageSquare, Mail, Sparkles } from 'lucide-react';
+
+/** Form and success screens swap with a short lift: the old one leaves upward, the new one rises in. */
+const SWAP = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -6, transition: { duration: 0.14, ease: EASE_OUT } },
+  transition: { duration: 0.22, ease: EASE_OUT },
+};
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -78,7 +87,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.25, ease: EASE_OUT }}
             className="relative w-full max-w-lg bg-[#181816] text-[#F3F3F0] rounded-3xl border border-neutral-700/60 p-6 sm:p-8 shadow-2xl z-10 my-auto overflow-hidden"
           >
             {/* Top Close Button */}
@@ -90,12 +99,33 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
               <X size={16} />
             </button>
 
+            <AnimatePresence mode="wait" initial={false}>
             {submitted ? (
-              /* Success State */
-              <div className="py-6 flex flex-col items-center text-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                  <CheckCircle2 size={28} />
-                </div>
+              /* Success State: the badge pops, then the ring and the tick draw themselves */
+              <motion.div key="done" {...SWAP} className="py-6 flex flex-col items-center text-center gap-4">
+                <motion.div
+                  initial={{ scale: 0.6, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: 'spring', duration: 0.5, bounce: 0.4, delay: 0.05 }}
+                  className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400"
+                >
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <motion.circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ duration: 0.45, ease: EASE_OUT, delay: 0.15 }}
+                    />
+                    <motion.path
+                      d="m8 12.5 2.8 2.8L16.2 9.5"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ duration: 0.28, ease: EASE_OUT, delay: 0.5 }}
+                    />
+                  </svg>
+                </motion.div>
 
                 <div className="flex flex-col gap-1.5">
                   <h3 className="font-display text-xl font-semibold text-white">
@@ -121,10 +151,10 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                     Done
                   </button>
                 </div>
-              </div>
+              </motion.div>
             ) : (
               /* Feedback Form */
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <motion.form key="form" {...SWAP} onSubmit={handleSubmit} className="flex flex-col gap-5">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-[#58A6FF]">
                     <MessageSquare size={18} />
@@ -150,7 +180,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                         type="button"
                         key={cat}
                         onClick={() => setCategory(cat)}
-                        className={`text-xs font-medium px-3 py-1.5 rounded-full transition-all cursor-pointer ${
+                        className={`text-xs font-medium px-3 py-1.5 rounded-full transition-colors cursor-pointer ${
                           category === cat
                             ? 'bg-[#2B7FFF] text-white shadow-xs'
                             : 'bg-white/5 text-neutral-300 hover:bg-white/10 border border-white/5'
@@ -172,8 +202,8 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                     rows={4}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Tell me what you liked, what felt confusing, or any creative suggestions..."
-                    className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] focus:ring-1 focus:ring-[#2B7FFF] transition-all resize-none"
+                    placeholder="Tell me what you liked, what felt confusing, or any creative suggestions…"
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] focus:ring-1 focus:ring-[#2B7FFF] transition-[border-color,box-shadow] resize-none"
                   />
                 </div>
 
@@ -188,7 +218,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Alex Morgan"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] transition-all"
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] transition-[border-color]"
                     />
                   </div>
 
@@ -201,7 +231,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="alex@domain.com"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] transition-all"
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] transition-[border-color]"
                     />
                   </div>
                 </div>
@@ -215,14 +245,15 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                   <button
                     type="submit"
                     disabled={!message.trim()}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-ink hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed font-sans text-sm font-semibold transition-all cursor-pointer shadow-xs"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-ink hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed font-sans text-sm font-semibold transition-[background-color,opacity] cursor-pointer shadow-xs"
                   >
                     <span>Submit</span>
                     <Send size={14} />
                   </button>
                 </div>
-              </form>
+              </motion.form>
             )}
+            </AnimatePresence>
           </motion.div>
         </div>
       )}

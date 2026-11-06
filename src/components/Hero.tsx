@@ -1,5 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
+import { EASE_OUT, intro } from "../lib/motion";
 import { PenTool, Code2, Compass, Music, Palette } from 'lucide-react';
 import { HeroCardDeck } from './HeroCardDeck';
 import { Sweatdrop } from './Sweatdrop';
@@ -52,7 +53,32 @@ const WORDS_SEQUENCE = [
   { id: 'art', text: '[Art]' },
 ];
 
+/**
+ * First-load choreography (once per visit, never blocks input):
+ * the profile card springs in with a tilt, the speech deck rises in, then text, logos and CTA follow.
+ */
+const CARD_ENTER = {
+  initial: { opacity: 0, y: 70, rotate: 7, scale: 0.9 },
+  animate: { opacity: 1, y: 0, rotate: 0, scale: 1 },
+  transition: { type: 'spring' as const, duration: 1.1, bounce: 0.28, delay: 0.1, opacity: { duration: 0.4, delay: 0.1 } },
+};
+const DECK_ENTER = {
+  initial: { opacity: 0, y: 40 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 1.3, ease: EASE_OUT, delay: 0.32 },
+};
+const enter = (i: number) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.7, ease: EASE_OUT, delay: 0.42 + i * 0.09 },
+});
+
+
 export function Hero() {
+  const reduceMotion = useReducedMotion();
+  // Intro plays on the first visit only; coming back from a project page shows the hero settled
+  const [playIntro] = useState(() => !intro.played);
+  const intoView = <T extends { initial: object }>(e: T) => (playIntro ? e : { ...e, initial: false as const });
   // Fluid layout. ≥1024px: side by side, the whole row shrinks smoothly (zoom) when space gets tight.
   // <1024px (phones + tablets): one column with the profile card on top; the speech card and the
   // profile card scale smoothly with the width, the intro text and logos keep their normal size.
@@ -164,7 +190,7 @@ export function Hero() {
 
   return (
     <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center pt-24 sm:pt-28 pb-16 sm:pb-20 overflow-hidden sm:overflow-visible">
-      <div ref={fitRef} className="w-full my-auto flex flex-col justify-center items-center">
+      <div ref={fitRef} className="hero-recede w-full my-auto flex flex-col justify-center items-center">
         <div className={`flex ${stacked ? 'flex-col gap-8' : 'flex-row'} items-center justify-center w-full max-w-6xl mx-auto overflow-visible`} style={stacked ? undefined : { gap: rowGap }}>
           
           {/* CENTER NARRATIVE & DIALOGUE CARD */}
@@ -172,24 +198,24 @@ export function Hero() {
             <div className="flex flex-col gap-5 sm:gap-6 w-full max-w-[620px]">
               
               {/* Clay Dialogue Card deck (copy lives in src/data/heroCards.ts) */}
-              <div style={{ zoom: deckScale }}>
+              <motion.div style={{ zoom: deckScale }} {...intoView(DECK_ENTER)}>
                 <HeroCardDeck
                   index={cardIndex}
                   onIndexChange={setCardIndex}
                   onLoop={() => setBubbleKey(Date.now())}
                   centered={stacked}
                 />
-              </div>
+              </motion.div>
 
               {/* Narrative Subtitle & Previous Experience */}
               <div className={`flex flex-col gap-6 ${stacked ? 'items-center text-center' : 'pl-1 sm:pl-2'}`}>
                 {/* DM Sans Regular, prominent and legible supporting text */}
-                <p className={`font-sans text-[15px] sm:text-[15.5px] text-[#555552] leading-[1.68] max-w-xl font-normal ${stacked ? 'mx-auto' : ''}`}>
+                <motion.p {...intoView(enter(0))} className={`font-sans text-[15px] sm:text-[15.5px] text-[#555552] leading-[1.68] max-w-xl font-normal ${stacked ? 'mx-auto' : ''}`}>
                   B.Des ‘27 at IDC, IIT Bombay. I dig until I understand the problem, design until it feels obvious, and build until it actually works.
-                </p>
+                </motion.p>
 
                 {/* Previously At Logos */}
-                <div className={`flex flex-wrap items-center gap-x-6 gap-y-3 pt-1 ${stacked ? 'justify-center' : ''}`}>
+                <motion.div {...intoView(enter(1))} className={`flex flex-wrap items-center gap-x-6 gap-y-3 pt-1 ${stacked ? 'justify-center' : ''}`}>
                   {/* Previously at - DM Sans Medium */}
                   <span className="font-sans text-[13px] sm:text-[14px] md:text-[14.5px] leading-[18px] font-medium text-[#888884] shrink-0">
                     Previously at
@@ -201,7 +227,7 @@ export function Hero() {
                       <img
                         src="./deshaw_logo.svg"
                         alt="D. E. Shaw & Co."
-                        className="h-[22px] sm:h-[26.5px] md:h-[31px] w-auto object-contain"
+                        className="h-[19.8px] sm:h-[23.85px] md:h-[27.9px] w-auto object-contain"
                       />
                     </LogoTip>
 
@@ -219,11 +245,11 @@ export function Hero() {
                       <img
                         src="./logo2.png"
                         alt="AKAISPACE"
-                        className="h-5 sm:h-5.5 md:h-6 w-auto object-contain"
+                        className="h-5 sm:h-5.5 md:h-6 w-auto object-contain relative top-[1.5px] sm:top-[2px]"
                       />
                     </LogoTip>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
             </div>
@@ -234,11 +260,13 @@ export function Hero() {
             <div className="flex flex-col items-center gap-3.5">
               
               {/* Profile Card (matching Figma node 58:2955, w=312.13, h=390.63, radius=27.5px) */}
-              <div style={{ zoom: cardScale }}>
+              <motion.div style={{ zoom: cardScale }} {...intoView(CARD_ENTER)}>
               <motion.div
+                // Motion drives the whole transform: rests at -2deg and straightens on hover
+                style={{ rotate: -2 }}
                 whileHover={{ rotate: 0, y: -4 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="w-[326px] h-[405px] clay-binder-card border border-[#EBEBEB] rounded-[30px] relative overflow-hidden flex flex-col justify-between -rotate-[2deg] hover:rotate-0 transition-transform duration-300 mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
+                className="w-[326px] h-[405px] clay-binder-card border border-[#EBEBEB] rounded-[30px] relative overflow-hidden flex flex-col justify-between mx-auto select-none shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
               >
                 {/* 1. TOP-HALF LEFT END ICONS: Design, Code, Research, Music, Art */}
                 <div
@@ -252,7 +280,7 @@ export function Hero() {
                       <div
                         key={item.id}
                         title={item.label}
-                        className={`w-[34px] h-[34px] flex items-center justify-center transition-all duration-300 group ${
+                        className={`w-[34px] h-[34px] flex items-center justify-center transition-[color,scale] duration-300 ease-out group ${
                           isCurrent
                             ? 'text-neutral-900 scale-110'
                             : 'text-neutral-400/80 hover:text-neutral-900'
@@ -288,11 +316,8 @@ export function Hero() {
                   {/* 3D Clay Curly-Haired Avatar Bust (Flipped horizontally to face inwards towards content) */}
                   {/* The wrapper bobs and is the positioning box for the sweatdrop (% of image). */}
                   <div className="relative z-10 flex items-center justify-center translate-x-2">
-                    <motion.div
-                      animate={{ y: [0, -6, 0] }}
-                      transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                      className="relative"
-                    >
+                    {/* idle bob runs as a CSS animation (off the main thread), see .avatar-bob in index.css */}
+                    <div className="relative avatar-bob">
                       <motion.div
                         className="relative"
                         whileTap={{ scale: 0.95 }}
@@ -308,7 +333,7 @@ export function Hero() {
                         <HeadBubble text={CAPTION_ON_LOOP} showKey={bubbleKey} />
                         <AvatarBubbles onTap={handleAvatarTap} />
                       </motion.div>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
 
@@ -319,9 +344,9 @@ export function Hero() {
                       // slides with `left`, not a transform: no GPU layer, so the text is never resampled (no blur)
                       animate={{ left: translateX }}
                       transition={
-                        translateX === 0
+                        translateX === 0 || reduceMotion
                           ? { duration: 0 }
-                          : { duration: 0.58, ease: [0.16, 1, 0.3, 1] }
+                          : { duration: 0.58, ease: EASE_OUT }
                       }
                       onAnimationComplete={() => {
                         if (translateX !== 0) {
@@ -357,12 +382,13 @@ export function Hero() {
                   </div>
                 </div>
               </motion.div>
-              </div>
+              </motion.div>
 
               {/* know me through my work ↓ CTA */}
-              <button
+              <motion.button
+                {...intoView(enter(2))}
                 onClick={scrollToWork}
-                className="inline-flex items-center gap-2.5 font-sans text-[13px] sm:text-[14px] leading-[18px] font-semibold text-[#666663] hover:text-[#111110] transition-colors cursor-pointer group mt-2"
+                className="inline-flex items-center gap-2.5 font-sans text-[13px] sm:text-[14px] leading-[18px] font-semibold text-[#666663] hover:text-[#111110] active:scale-[0.97] transition-[color,scale] duration-150 ease-out cursor-pointer group mt-2"
               >
                 <span>know me through my work</span>
                 <img
@@ -370,7 +396,7 @@ export function Hero() {
                   alt=""
                   className="w-4 h-4 transition-transform duration-200 group-hover:translate-y-1"
                 />
-              </button>
+              </motion.button>
 
             </div>
           </div>

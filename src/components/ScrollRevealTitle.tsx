@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, ReactNode } from 'react';
 import { motion } from 'motion/react';
+import { EASE_OUT } from "../lib/motion";
 
 interface ScrollRevealTitleProps {
   children: ReactNode;
@@ -50,7 +51,7 @@ export function ScrollRevealTitle({ children, className = '' }: ScrollRevealTitl
             ? { opacity: 1, y: 0, filter: 'blur(0px)' }
             : { opacity: 0, y: 24, filter: 'blur(4px)' }
         }
-        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.38, ease: EASE_OUT }}
       >
         {children}
       </motion.div>

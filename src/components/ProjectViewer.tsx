@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from 'lucide-react';
+import { EASE_OUT } from '../lib/motion';
+import { prefetchImage } from '../lib/pageTransition';
 import { MILESTONES, PROJECTS, panelUrl, type Project } from '../data/projects';
 
 interface Props {
@@ -8,12 +10,27 @@ interface Props {
   onBack: () => void;
 }
 
+/** Spring for the sliding "current stage" markers. */
+const STAGE_SLIDE = { type: 'spring' as const, stiffness: 500, damping: 38 };
+
+/**
+ * Page entrance, staged to play inside the page transition's crossfade: the title rises out of its
+ * own baseline, tags pop in one by one, the back button and stage markers slide in from the rail.
+ */
+const rise = (delay: number) => ({
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.55, ease: EASE_OUT, delay },
+});
+
 export function ProjectViewer({ project, onBack }: Props) {
   const milestones = MILESTONES[project.slug] ?? [];
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activePanel, setActivePanel] = useState(1);
   const [viewing, setViewing] = useState<number | null>(null); // 1-based panel open in the overlay
   const [zoomed, setZoomed] = useState(false);
+  // Direction of the last step in the overlay (0 = just opened), so the next image enters from that side
+  const [stepDir, setStepDir] = useState<-1 | 0 | 1>(0);
 
   // Only suggest projects that have uploaded documentation
   const suggestions = PROJECTS.filter((p) => p.slug !== project.slug && p.panelCount > 0);
@@ -56,6 +73,7 @@ export function ProjectViewer({ project, onBack }: Props) {
   };
   const step = (dir: 1 | -1) => {
     setZoomed(false);
+    setStepDir(dir);
     setViewing((cur) => (cur === null ? cur : Math.min(project.panelCount, Math.max(1, cur + dir))));
   };
 
@@ -109,6 +127,8 @@ export function ProjectViewer({ project, onBack }: Props) {
       type="button"
       onClick={onBack}
       aria-label="Back"
+      initial={{ opacity: 0, x: -14 }}
+      animate={{ opacity: 1, x: 0, transition: { duration: 0.5, ease: EASE_OUT, delay: 0.3 } }}
       whileHover={{ scale: 1.06 }}
       whileTap={{ scale: 0.94 }}
       transition={{ type: 'spring', stiffness: 450, damping: 25 }}
@@ -127,7 +147,8 @@ export function ProjectViewer({ project, onBack }: Props) {
 
   return (
     <motion.main
-      initial={{ opacity: 0 }}
+      // the View Transition crossfade already covers the page change; fade in only where it is unsupported
+      initial={'startViewTransition' in document ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
       className="w-full max-w-[1400px] mx-auto pt-24 sm:pt-28 pb-28 sm:pb-32 lg:pb-24"
@@ -151,21 +172,34 @@ export function ProjectViewer({ project, onBack }: Props) {
           aria-label="Project stages"
           className="lg:hidden fixed inset-x-0 bottom-[28.8px] sm:bottom-[38.4px] z-30 flex justify-center px-[24px] sm:px-[32px] pointer-events-none"
         >
-         <div className="pointer-events-auto w-full max-w-[440px] flex items-center justify-between gap-3 px-5 py-3.5 rounded-full bg-white/80 backdrop-blur-xl border border-neutral-200/70 shadow-[0_10px_30px_rgba(0,0,0,0.07)]">
+         <motion.div
+           initial={{ opacity: 0, y: 40 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ type: 'spring', duration: 0.8, bounce: 0.25, delay: 0.35 }}
+           className="pointer-events-auto w-full max-w-[440px] flex items-center justify-between gap-1 px-2.5 py-2.5 rounded-full bg-white/80 backdrop-blur-xl border border-neutral-200/70 shadow-[0_10px_30px_rgba(0,0,0,0.07)]"
+         >
           {milestones.map((m, i) => (
             <button
               key={m.label}
               type="button"
               onClick={() => jumpTo(m.panel)}
               aria-current={i === activeMilestone}
-              className={`shrink-0 py-1 font-sans text-[12.5px] sm:text-[14px] cursor-pointer transition-colors duration-200 ${
+              className={`relative isolate shrink-0 px-2.5 py-2 font-sans text-[12.5px] sm:text-[14px] cursor-pointer transition-colors duration-200 ${
                 i === activeMilestone ? 'text-ink font-semibold' : 'text-[#9B9B96] font-medium'
               }`}
             >
+              {i === activeMilestone && (
+                <motion.span
+                  layoutId="stage-pill-mobile"
+                  aria-hidden="true"
+                  transition={STAGE_SLIDE}
+                  className="absolute inset-0 -z-10 rounded-full bg-[#EFEEEA]"
+                />
+              )}
               {m.label}
             </button>
           ))}
-         </div>
+         </motion.div>
         </nav>
       )}
 
@@ -175,18 +209,30 @@ export function ProjectViewer({ project, onBack }: Props) {
       {/* Title block sits directly on top of the scroll, aligned with it */}
       <div className="flex flex-col gap-3 mb-5 sm:mb-6 lg:col-start-2 lg:row-start-1">
         <div className="flex flex-wrap items-center gap-1.5">
-          {project.tags.map((tag) => (
-            <span
+          {project.tags.map((tag, i) => (
+            <motion.span
               key={tag}
+              initial={{ opacity: 0, scale: 0.8, y: 6 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ type: 'spring', duration: 0.5, bounce: 0.35, delay: 0.3 + i * 0.05 }}
               className="px-2.5 py-0.5 rounded-full bg-[#F3F2EE] text-[10.5px] sm:text-[11px] font-medium text-neutral-600 border border-neutral-200/60"
             >
               {tag}
-            </span>
+            </motion.span>
           ))}
         </div>
-        <h1 className="font-display text-2xl sm:text-[28px] lg:text-[30px] font-semibold leading-tight tracking-tight heading-gradient">
-          {project.title}
-        </h1>
+        {/* the title rises out of its own baseline (overflow-clip is the mask; padding keeps descenders) */}
+        <div className="overflow-clip pb-[0.15em] -mb-[0.15em]">
+          <motion.div
+            initial={{ y: '105%' }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.7, ease: EASE_OUT, delay: 0.18 }}
+          >
+            <h1 className="font-display text-2xl sm:text-[28px] lg:text-[30px] font-semibold leading-tight tracking-tight heading-gradient">
+              {project.title}
+            </h1>
+          </motion.div>
+        </div>
       </div>
 
         {/* Desktop: minimal stage markers, vertically centred in the viewport */}
@@ -201,17 +247,26 @@ export function ProjectViewer({ project, onBack }: Props) {
               {milestones.map((m, i) => {
                 const isActive = i === activeMilestone;
                 return (
-                  <button
+                  <motion.button
                     key={m.label}
                     type="button"
                     onClick={() => jumpTo(m.panel)}
                     aria-current={isActive}
-                    className={`text-left font-sans text-[14px] leading-none cursor-pointer select-none outline-none focus-visible:underline transition-colors duration-200 ${
+                    {...rise(0.35 + i * 0.05)}
+                    className={`relative text-left font-sans text-[14px] leading-none cursor-pointer select-none outline-none focus-visible:underline transition-colors duration-200 ${
                       isActive ? 'text-ink font-semibold' : 'text-[#9B9B96] font-medium hover:text-[#60605D]'
                     }`}
                   >
+                    {isActive && (
+                      <motion.span
+                        layoutId="stage-dot"
+                        aria-hidden="true"
+                        transition={STAGE_SLIDE}
+                        className="absolute -left-3 top-1/2 -mt-[2.5px] w-[5px] h-[5px] rounded-full bg-ink"
+                      />
+                    )}
                     {m.label}
-                  </button>
+                  </motion.button>
                 );
               })}
             </nav>
@@ -220,7 +275,7 @@ export function ProjectViewer({ project, onBack }: Props) {
         )}
 
         {/* The scroll */}
-        <div className="w-full min-w-0 lg:col-start-2 lg:row-start-2">
+        <div className="relative w-full min-w-0 lg:col-start-2 lg:row-start-2">
           {/* Case study: panels stacked edge to edge as one continuous scroll */}
           <div className="w-full rounded-[20px] bg-[#F2F1ED] border border-neutral-200/70 overflow-hidden">
             <div className="flex flex-col w-full leading-[0]">
@@ -231,11 +286,16 @@ export function ProjectViewer({ project, onBack }: Props) {
                     panelRefs.current[i] = el;
                   }}
                   className="scroll-mt-28 lg:scroll-mt-8 cursor-zoom-in"
-                  onClick={() => setViewing(i + 1)}
+                  onClick={() => {
+                    setStepDir(0);
+                    setViewing(i + 1);
+                  }}
                 >
                   <img
                     src={panelUrl(project.slug, i + 1)}
                     alt={i === 0 ? `${project.title} case study` : ''}
+                    // the page transition waits (briefly) for the first panel so the page is revealed complete
+                    {...(i < 3 ? { 'data-vt-ready': '' } : {})}
                     className="block w-full h-auto select-none"
                     loading="eager"
                     decoding="async"
@@ -254,10 +314,20 @@ export function ProjectViewer({ project, onBack }: Props) {
             <h2 className="font-display text-2xl sm:text-3xl lg:text-[32px] font-semibold leading-tight tracking-tight heading-gradient">More work</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 w-full">
-            {suggestions.map((p) => (
-              <a key={p.id} href={`#/project/${p.slug}`} className="flex flex-col gap-3 group cursor-pointer w-full">
-                <div className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 relative overflow-hidden isolate">
-                  <img src={p.thumbnail} alt={p.title} className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]" loading="lazy" />
+            {suggestions.map((p, i) => (
+              <motion.a
+                key={p.id}
+                href={`#/project/${p.slug}`}
+                onPointerEnter={() => prefetchImage(panelUrl(p.slug, 1))}
+                onPointerDown={() => prefetchImage(panelUrl(p.slug, 1))}
+                initial={{ opacity: 0, y: 36, scale: 0.94 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: false, margin: '0px 0px -10% 0px' }}
+                transition={{ type: 'spring', duration: 0.8, bounce: 0.28, delay: (i % 2) * 0.08 }}
+                className="flex flex-col gap-3 group cursor-pointer w-full"
+              >
+                <div data-vt-slug={p.slug} data-vt-part="media" className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 relative overflow-hidden isolate">
+                  <img src={p.thumbnail} alt={p.title} className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]" loading="lazy" />
                 </div>
                 <div className="flex flex-col gap-2 px-1">
                   <div className="flex flex-wrap items-center gap-1.5">
@@ -282,7 +352,7 @@ export function ProjectViewer({ project, onBack }: Props) {
                     </div>
                   </div>
                 </div>
-              </a>
+              </motion.a>
             ))}
           </div>
         </section>
@@ -310,8 +380,14 @@ export function ProjectViewer({ project, onBack }: Props) {
               onTouchEnd={onTouchEnd}
               className="absolute inset-0 overflow-auto flex px-4 sm:px-16 pt-16 pb-28"
             >
-              <img
+              <motion.img
                 key={viewing}
+                data-cursor={zoomed ? 'Zoom out' : 'Zoom in'}
+                data-cursor-tone="light"
+                // opened: grows from 97%; stepped: slides in 6% from the side you are heading to
+                initial={stepDir === 0 ? { opacity: 0, scale: 0.97 } : { opacity: 0, x: `${stepDir * 6}%` }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                transition={{ duration: 0.22, ease: EASE_OUT }}
                 src={panelUrl(project.slug, viewing)}
                 alt={`${project.title} panel ${viewing}`}
                 onClick={(e) => {

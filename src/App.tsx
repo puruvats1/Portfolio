@@ -11,11 +11,30 @@ import { CustomCursor } from './components/CustomCursor';
 import { SHOW_WORKING_WITH_ME } from './config';
 import { ProjectViewer } from './components/ProjectViewer';
 import { PROJECTS } from './data/projects';
+import { intro } from './lib/motion';
+import { navigateWithTransition } from './lib/pageTransition';
+import { useOverscrollStretch } from './lib/useOverscrollStretch';
+
+/** The page a hash points at: a project slug, or null for the home page. In-page anchors like #hero stay null. */
+const routeOf = (hash: string) => (hash.startsWith("#/project/") ? hash.slice("#/project/".length) : null);
 
 function useHashRoute() {
   const [hash, setHash] = useState(window.location.hash);
+  const current = useRef(hash);
   useEffect(() => {
-    const onChange = () => setHash(window.location.hash);
+    const onChange = () => {
+      const next = window.location.hash;
+      const from = routeOf(current.current);
+      const to = routeOf(next);
+      current.current = next;
+      // Home <-> project (or project -> project): animated page change with shared-element morphs.
+      // In-page anchors like #hero just update.
+      if (from !== to) {
+        navigateWithTransition(() => setHash(next), { dir: to ? 'forward' : 'back', slug: (to ?? from)! });
+      } else {
+        setHash(next);
+      }
+    };
     window.addEventListener("hashchange", onChange);
     return () => window.removeEventListener("hashchange", onChange);
   }, []);
@@ -23,11 +42,18 @@ function useHashRoute() {
 }
 
 export default function App() {
+  const pageRef = useRef<HTMLDivElement>(null);
+  // Children have read intro.played during their first mount; from now on the intro is done
+  useEffect(() => {
+    intro.played = true;
+  }, []);
   const hash = useHashRoute();
   const slug = hash.startsWith("#/project/") ? hash.slice("#/project/".length) : null;
   const project = slug ? PROJECTS.find((p) => p.slug === slug) : undefined;
 
   const showingProject = !!project && project.panelCount > 0;
+  // rubber-band stretch past the top and bottom of the home page; re-attached when the page remounts
+  useOverscrollStretch(pageRef, !showingProject);
   const pendingScroll = useRef<"back" | "top" | null>(null);
   const homeScrollY = useRef<number | null>(null);
 
@@ -77,7 +103,7 @@ export default function App() {
 
   if (project && project.panelCount > 0) {
     return (
-      <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink">
+      <div className="min-h-screen bg-canvas selection:bg-pastel-blue selection:text-ink relative font-sans text-ink">
         <CustomCursor />
         <TopNav hideOnScroll onHome={() => goHome("top")} />
         <ProjectViewer project={project} onBack={() => goHome("back")} />
@@ -86,7 +112,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-canvas selection:bg-neutral-200 selection:text-ink relative font-sans text-ink">
+    // overflow-y: clip keeps the stretched page from changing the document height (and so the scroll extent) every
+    // frame; unlike hidden it is not a scroll container, so sticky children keep working
+    <div className="min-h-screen bg-canvas selection:bg-pastel-blue selection:text-ink relative font-sans text-ink overflow-y-clip">
       {/* 3D Cartoon White Glove Custom Cursor matching Figma node 55:2552 */}
       <CustomCursor />
 
@@ -97,7 +125,7 @@ export default function App() {
       <LeftSidebar mode="mobile" />
 
       {/* 1400px Max-Width Grid Container: Accounts for sticky nav rail and scrolling content */}
-      <div className="w-full max-w-[1400px] mx-auto min-h-screen relative flex">
+      <div ref={pageRef} className="w-full max-w-[1400px] mx-auto min-h-screen relative flex">
         {/* Dedicated Sticky Left Rail for Nav Menu & Text Popups */}
         <div className="hidden lg:flex w-[225px] xl:w-[240px] shrink-0 sticky top-0 h-screen items-center z-40 pl-3 xl:pl-4 self-start">
           <LeftSidebar mode="desktop" />

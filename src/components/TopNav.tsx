@@ -47,7 +47,7 @@ export function TopNav({ hideOnScroll = false, onHome }: { hideOnScroll?: boolea
     <header
       inert={hidden}
       style={{ paddingLeft: 'var(--global-margin)', paddingRight: 'var(--global-margin)' }}
-      className={`fixed top-0 left-0 right-0 z-50 pt-5 pb-3.5 sm:pt-7 sm:pb-4 pointer-events-none transition-[translate,opacity,background-color,backdrop-filter] duration-[700ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
+      className={`site-header fixed top-0 left-0 right-0 z-50 pt-5 pb-3.5 sm:pt-7 sm:pb-4 pointer-events-none transition-[translate,opacity,background-color,backdrop-filter] duration-[400ms] ease-out ${
         // soft exit: a short drift upwards while fading, instead of a full slide off-screen
         hidden ? '-translate-y-3 opacity-0' : 'translate-y-0 opacity-100'
       } ${
@@ -61,21 +61,27 @@ export function TopNav({ hideOnScroll = false, onHome }: { hideOnScroll?: boolea
         <div className="pointer-events-auto flex items-center gap-3 sm:gap-4">
           <button
             onClick={onHome ?? scrollToTop}
-            className="text-left cursor-pointer group flex items-baseline gap-2.5 sm:gap-3 transition-opacity hover:opacity-85"
+            className="logo-wave text-left cursor-pointer group flex items-baseline gap-2.5 sm:gap-3 transition-opacity hover:opacity-85"
           >
             {/* puru. - Urbanist Bold, mild grey gradient when in light mode */}
-            <span
-              className={`font-display text-[21px] sm:text-[24px] font-bold tracking-[-0.02em] leading-none ${
-                isDark ? 'text-white' : 'heading-gradient'
-              }`}
-            >
-              puru.
+            <span aria-label="puru." className="font-display text-[21px] sm:text-[24px] font-bold tracking-[-0.02em] leading-none">
+              {/* each letter carries its own gradient so it can hop independently */}
+              {'puru.'.split('').map((ch, i) => (
+                <span
+                  key={i}
+                  aria-hidden="true"
+                  className={`logo-char ${isDark ? 'text-white' : 'heading-gradient'}`}
+                  style={{ display: 'inline-block', ['--i' as string]: i } as React.CSSProperties}
+                >
+                  {ch}
+                </span>
+              ))}
             </span>
 
             {/* Interaction Design Student @ IDC IIT Bombay - same size as body text */}
             <span
               className={`font-sans text-[15px] sm:text-[15.5px] leading-[1.4] font-normal tracking-normal hidden md:inline ${
-                isDark ? 'text-neutral-400' : 'text-[#8E8E89]'
+                isDark ? 'text-neutral-400' : 'text-ink-subtle'
               }`}
             >
               Interaction Design Student @ IDC IIT Bombay
@@ -91,13 +97,13 @@ export function TopNav({ hideOnScroll = false, onHome }: { hideOnScroll?: boolea
             target="_blank"
             rel="noopener noreferrer"
             className={`group relative font-sans text-[15px] sm:text-[15.5px] leading-[1.4] font-medium transition-colors duration-200 cursor-pointer ${
-              isDark ? 'text-neutral-300 hover:text-white' : 'text-[#5A5A55] hover:text-[#2C2C2A]'
+              isDark ? 'text-neutral-300 hover:text-white' : 'text-ink-muted hover:text-ink-strong'
             }`}
           >
             Behance
             <span
               aria-hidden
-              className="absolute left-0 -bottom-0.5 h-px w-full bg-current origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"
+              className="absolute left-0 -bottom-0.5 h-px w-full bg-current origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100"
             />
           </a>
 
@@ -125,14 +131,14 @@ export function TopNav({ hideOnScroll = false, onHome }: { hideOnScroll?: boolea
               <img
                 src="./resume_arrow.svg"
                 alt=""
-                className={`absolute inset-0 w-3.5 h-3.5 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-full group-hover:-translate-y-full ${
+                className={`absolute inset-0 w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:translate-x-full group-hover:-translate-y-full ${
                   isDark ? 'invert' : ''
                 }`}
               />
               <img
                 src="./resume_arrow.svg"
                 alt=""
-                className={`absolute inset-0 w-3.5 h-3.5 -translate-x-full translate-y-full transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:translate-y-0 ${
+                className={`absolute inset-0 w-3.5 h-3.5 -translate-x-full translate-y-full transition-transform duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0 ${
                   isDark ? 'invert' : ''
                 }`}
               />

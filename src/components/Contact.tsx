@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { ArrowUp, ArrowUpRight, Mail, ExternalLink, FileText, MessageSquareQuote } from 'lucide-react';
 import { motion } from 'motion/react';
+import { EASE_OUT } from "../lib/motion";
 import { ScrollRevealTitle } from './ScrollRevealTitle';
+import { Pop, pop } from './ui/Pop';
 import { FeedbackModal } from './FeedbackModal';
 
 export function Contact() {
@@ -10,14 +12,14 @@ export function Contact() {
   return (
     <footer
       id="contact"
-      className="relative pt-20 pb-40 sm:pb-40 lg:pt-24 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] mt-20 sm:mt-24 max-lg:mx-[calc((100%-100vw)/2)] border-t border-white/10 will-change-transform scroll-mt-24"
+      className="footer-rise relative pt-20 pb-40 sm:pb-40 lg:pt-24 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] shadow-[0_240px_0_0_var(--color-ink)] mt-20 sm:mt-24 max-lg:mx-[calc((100%-100vw)/2)] border-t border-white/10 scroll-mt-24"
     >
       <div className="max-w-[1400px] mx-auto w-full px-6 sm:px-10 lg:px-12 xl:px-14">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.05 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: false, amount: 0.05 }}
+          transition={{ duration: 0.5, ease: EASE_OUT }}
           className="relative grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start lg:items-baseline"
         >
           {/* Back to top: top-right corner */}
@@ -40,11 +42,11 @@ export function Contact() {
 
           {/* Columns 4-8: Minimal Contact details, feedback and footer links */}
           <div className="lg:col-span-5 flex flex-col gap-10">
-            <div>
+            <Pop>
               <h3 className="font-display text-xl sm:text-2xl font-semibold leading-tight tracking-tight heading-gradient-light">
                 Got something complicated?
               </h3>
-            </div>
+            </Pop>
 
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-1">
@@ -55,35 +57,41 @@ export function Contact() {
               <div className="flex flex-wrap gap-2.5 sm:gap-3">
                 {/* Email Link */}
                 <motion.a 
+                  {...pop(0.1)}
                   whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.97 }}
                   href="mailto:hello.puruvats@gmail.com" 
-                  className="flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
+                  className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
                 >
                   <div className="flex items-center gap-2">
                     <Mail size={15} />
                     <span>Email</span>
                   </div>
-                  <ArrowUpRight size={15} />
+                  <ArrowUpRight size={15} className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </motion.a>
 
                 {/* LinkedIn Link */}
                 <motion.a 
+                  {...pop(0.17)}
                   whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.97 }}
                   href="https://www.linkedin.com/in/puruvats" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
+                  className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
                 >
                   <div className="flex items-center gap-2">
                     <ExternalLink size={15} />
                     <span>LinkedIn</span>
                   </div>
-                  <ArrowUpRight size={15} />
+                  <ArrowUpRight size={15} className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </motion.a>
 
                 {/* Quick Feedback Button in Actions */}
                 <motion.button
+                  {...pop(0.24)}
                   whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => setIsFeedbackOpen(true)}
                   className="flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white cursor-pointer"
                   title="Share quick feedback"

@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useIsPresent, useReducedMotion } from 'motion/react';
+import { EASE_OUT } from "../lib/motion";
 import { X } from 'lucide-react';
 import { HERO_CARDS } from '../data/heroCards';
 
@@ -11,6 +12,9 @@ const TEXT_LINES = 3;
 // on phones it stays full width.
 const CARD_CLASS =
   'clay-dialogue-card border border-[#EBEBE8] rounded-[36px] p-9 relative overflow-hidden flex items-start gap-4 w-fit max-w-[620px] justify-self-start self-start';
+// Hover hint (mouse only): while the pointer is over the live card, its × gets a soft round backing and
+// turns a quarter turn, and the card leans a few px toward the side it will flick off to.
+const CARD_HOVER = 'group/card transition-[translate] duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:translate-x-[4px]';
 const TEXT_CLASS =
   'font-sans text-[29px] lg:text-[26px] font-medium leading-[1.38] tracking-[-0.015em] text-[#60605D] [text-wrap:balance] flex-none';
 // keeps the layout box of the × button (used by the hidden sizers)
@@ -193,14 +197,15 @@ function DeckCard({ copy, copyIndex, base, cardClass, closeLabel, focusOnMount, 
           opacity: 1,
           scale: 1,
           y: 0,
-          transition: { duration: 0.35, ease: 'easeOut' as const },
+          transition: { duration: 0.5, ease: EASE_OUT },
         },
         // dismiss: tilt + flick right while fading
         exit: {
           opacity: 0,
           x: 90,
           rotate: 5,
-          transition: { duration: 0.3, ease: 'easeIn' as const },
+          // ease-out: the flick responds the instant you click, then settles
+          transition: { duration: 0.36, ease: EASE_OUT },
         },
       };
 
@@ -211,7 +216,7 @@ function DeckCard({ copy, copyIndex, base, cardClass, closeLabel, focusOnMount, 
       style={{ gridArea: '1 / 1', zIndex: isPresent ? 1 : 2 }}
       aria-hidden={isPresent ? undefined : true}
       inert={!isPresent}
-      className={cardClass}
+      className={`${cardClass} ${isPresent ? CARD_HOVER : ''}`}
     >
       <motion.button
         ref={buttonRef}
@@ -220,12 +225,12 @@ function DeckCard({ copy, copyIndex, base, cardClass, closeLabel, focusOnMount, 
         animate={wobble && !reduceMotion ? { rotate: [0, 10, -10, 7, -7, 0] } : { rotate: 0 }}
         transition={{ duration: wobble ? 0.4 : 0 }}
         // before: grows the hit area to ≥44×44px without changing the visual circle
-        className={`${CLOSE_BOX} rounded-full flex items-center justify-center transition-colors cursor-pointer group z-10 before:absolute before:-inset-[18px] outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F9F9]`}
+        className={`${CLOSE_BOX} rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer group z-10 before:absolute before:-inset-[18px] outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F9F9]`}
         aria-label={closeLabel}
         title={closeLabel}
       >
         <X
-          className="w-[1.3rem] h-[1.3rem] text-[#555555] group-hover:text-[#222222] transition-colors"
+          className="w-[1.3rem] h-[1.3rem] text-[#555555] group-hover:text-[#222222] [@media(hover:hover)_and_(pointer:fine)]:group-hover/card:rotate-90 [@media(hover:hover)_and_(pointer:fine)]:group-hover/card:text-[#3A3A38] transition-[color,rotate] duration-300 ease-out"
           strokeWidth={2.4}
         />
       </motion.button>
@@ -320,7 +325,7 @@ export function HeroCardDeck({ index, onIndexChange, onLoop, centered = false }:
           scale: 0.95, // shrinks ~5px per edge about centre…
           y: 12, // …so this leaves ~7px of edge showing below the active card
         }}
-        transition={{ duration: reduceMotion ? 0.15 : 0.3, ease: 'easeOut' }}
+        transition={{ duration: reduceMotion ? 0.15 : 0.42, ease: EASE_OUT }}
       >
         {/* invisible copy of the active card so the edge has the same width */}
         <FitText key={index} copyIndex={index} base={base} className="invisible">{renderCopy(HERO_CARDS[index])}</FitText>

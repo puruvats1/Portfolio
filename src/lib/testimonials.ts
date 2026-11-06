@@ -24,7 +24,7 @@ export async function fetchApprovedTestimonials(signal?: AbortSignal): Promise<A
     const rows = parseCsv(await res.text()).slice(1);
     const out: ApprovedTestimonial[] = [];
     rows.forEach((r, i) => {
-      const [timestamp = '', name = '', role = '', company = '', quote = ''] = r.map((c) => c.trim());
+      const [timestamp = '', name = '', role = '', company = '', quote = ''] = r.map((c) => c.replace(/\r\n?/g, '\n').trim());
       if (!name || !quote) return;
       out.push({
         id: `approved-${i}-${timestamp}`,
