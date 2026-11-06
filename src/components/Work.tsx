@@ -146,42 +146,43 @@ export function Work() {
                 <a
                   key={project.id}
                   {...projectLinkProps(project)}
-                  className="py-3.5 sm:py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-6 group cursor-pointer hover:bg-neutral-50/80 px-2 sm:px-4 rounded-xl transition-all duration-150"
+                  className="py-3.5 sm:py-4 flex items-center gap-4 sm:gap-5 md:gap-6 group cursor-pointer hover:bg-neutral-50/80 px-2 sm:px-4 rounded-xl transition-all duration-150"
                 >
-                  <div className="flex items-center gap-3.5 sm:gap-5 min-w-0">
-                    <span className="font-mono text-xs text-neutral-400 font-medium w-6 shrink-0">
-                      {project.id}
-                    </span>
-                    {/* Mini Thumbnail with matching 16:10 ratio */}
-                    <div className="w-16 h-10 rounded-lg overflow-hidden shrink-0 border border-neutral-200/70 bg-neutral-100 hidden sm:block">
-                      <img
-                        src={project.thumbnail}
-                        alt=""
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 min-w-0">
-                      <h3 className="font-display text-[15.5px] sm:text-[16.5px] font-semibold heading-gradient truncate">
-                        {project.title}
-                      </h3>
-                      {/* Non-disruptive Tags */}
-                      <div className="flex items-center gap-1.5 flex-wrap shrink-0">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600 text-[10px] font-medium border border-neutral-200/60"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+                  {/* Thumbnail, 16:10, big enough to actually read (~102px wide on phones, ~154px from tablet up) */}
+                  <div className="w-32 h-20 sm:w-48 sm:h-[7.5rem] rounded-lg sm:rounded-xl overflow-hidden shrink-0 border border-neutral-200/70 bg-neutral-100">
+                    <img
+                      src={project.thumbnail}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
                   </div>
 
-                  <div className="flex items-center gap-4 text-[13px] sm:text-[13.5px] text-neutral-500 font-medium pl-10 md:pl-0 shrink-0 self-end md:self-auto">
-                    <span className="hidden lg:inline">{project.category}</span>
-                    <span className="hidden lg:inline text-neutral-300">·</span>
+                  {/* Title above its tags, so neither ever gets squeezed by the other columns */}
+                  <div className="flex-1 min-w-0 flex flex-col gap-2">
+                    <div className="flex flex-col gap-0.5">
+                      <h3 className="font-display text-[15.5px] sm:text-[16.5px] font-semibold leading-snug heading-gradient">
+                        {project.title}
+                      </h3>
+                      {/* Sub text sits right under the title */}
+                      <p className="text-[13px] sm:text-[13.5px] leading-snug text-neutral-500 font-medium">{project.category}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600 text-[10px] font-medium border border-neutral-200/60"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    {/* Phones: the year sits under the tags (the right-hand column is hidden there) */}
+                    <span className="md:hidden text-[12.5px] text-neutral-500 font-medium">{project.year}</span>
+                  </div>
+
+                  {/* Right-hand column: year + hover arrow, its own space so it never overlaps the text block */}
+                  <div className="hidden md:flex items-center gap-3 shrink-0 text-[13.5px] text-neutral-500 font-medium">
                     <span>{project.year}</span>
                     <ArrowUpRight className="w-6 h-6 stroke-[2.25] text-neutral-500 shrink-0 opacity-0 -translate-x-3 translate-y-3 scale-75 transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100" />
                   </div>
