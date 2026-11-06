@@ -144,7 +144,6 @@ export function Work() {
                   {...projectLinkProps(project)}
                   // Pops in every time it scrolls into view (right column trails the left). The card you are
                   // returning to from its project page starts in place, so the page can collapse into it.
-                  delay={(i % 2) * 0.08}
                   skipFirst={switched || navState.returningTo === project.slug}
                   {...warmUp(project)}
                   className="md:col-span-4 flex flex-col gap-3 group cursor-pointer w-full"

@@ -3,12 +3,15 @@ import { motion, useInView, type HTMLMotionProps } from 'motion/react';
 import { EASE_OUT } from '../../lib/motion';
 
 /**
- * Scroll "pop": the element springs up into place (slight overshoot) every time it scrolls into view,
+ * Scroll entry: the element rises a short way into place (no overshoot) every time it scrolls into view,
  * and quietly resets once it has scrolled out, so it pops again on the way back.
  * The transition lives on the whileInView target, so hover/tap animations on the same element keep their own feel.
  * Spread onto any motion element: <motion.p {...pop(0.08)}>, or wrap: <Pop delay={0.08}>…</Pop>.
  */
-const HIDDEN = { opacity: 0, y: 32, scale: 0.94 };
+// A short, settled rise: small travel, barely any scale, no overshoot
+export const ENTER_FROM = { opacity: 0, y: 14, scale: 0.985 };
+export const ENTER = { type: 'spring' as const, duration: 0.45, bounce: 0 };
+const HIDDEN = ENTER_FROM;
 const VIEWPORT = { once: false, margin: '0px 0px -10% 0px' };
 
 export const pop = (delay = 0) => ({
@@ -17,7 +20,7 @@ export const pop = (delay = 0) => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { type: 'spring' as const, duration: 0.8, bounce: 0.28, delay },
+    transition: { ...ENTER, delay },
   },
   viewport: VIEWPORT,
 });
@@ -36,7 +39,7 @@ const POP_VARIANTS = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { type: 'spring' as const, duration: 0.8, bounce: 0.28, delay },
+    transition: { ...ENTER, delay },
   }),
 };
 

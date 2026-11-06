@@ -16,10 +16,10 @@ export function Contact() {
     >
       <div className="max-w-[1400px] mx-auto w-full px-6 sm:px-10 lg:px-12 xl:px-14">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.05 }}
-          transition={{ duration: 0.5, ease: EASE_OUT }}
+          transition={{ duration: 0.35, ease: EASE_OUT }}
           className="relative grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start lg:items-baseline"
         >
           {/* Back to top: top-right corner */}
@@ -57,7 +57,7 @@ export function Contact() {
               <div className="flex flex-wrap gap-2.5 sm:gap-3">
                 {/* Email Link */}
                 <motion.a 
-                  {...pop(0.1)}
+                  {...pop()}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   href="mailto:hello.puruvats@gmail.com" 
@@ -72,7 +72,7 @@ export function Contact() {
 
                 {/* LinkedIn Link */}
                 <motion.a 
-                  {...pop(0.17)}
+                  {...pop()}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   href="https://www.linkedin.com/in/puruvats" 
@@ -89,7 +89,7 @@ export function Contact() {
 
                 {/* Quick Feedback Button in Actions */}
                 <motion.button
-                  {...pop(0.24)}
+                  {...pop()}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setIsFeedbackOpen(true)}

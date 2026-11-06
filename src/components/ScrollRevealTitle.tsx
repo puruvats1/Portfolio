@@ -49,9 +49,9 @@ export function ScrollRevealTitle({ children, className = '' }: ScrollRevealTitl
         animate={
           isVisible
             ? { opacity: 1, y: 0, filter: 'blur(0px)' }
-            : { opacity: 0, y: 24, filter: 'blur(4px)' }
+            : { opacity: 0, y: 12, filter: 'blur(2px)' }
         }
-        transition={{ duration: 0.38, ease: EASE_OUT }}
+        transition={{ duration: 0.28, ease: EASE_OUT }}
       >
         {children}
       </motion.div>

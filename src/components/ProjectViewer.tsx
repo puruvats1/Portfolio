@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from 'lucide-react';
 import { EASE_OUT } from '../lib/motion';
+import { ENTER, ENTER_FROM } from './ui/Pop';
 import { prefetchImage } from '../lib/pageTransition';
 import { MILESTONES, PROJECTS, panelUrl, type Project } from '../data/projects';
 
@@ -320,10 +321,10 @@ export function ProjectViewer({ project, onBack }: Props) {
                 href={`#/project/${p.slug}`}
                 onPointerEnter={() => prefetchImage(panelUrl(p.slug, 1))}
                 onPointerDown={() => prefetchImage(panelUrl(p.slug, 1))}
-                initial={{ opacity: 0, y: 36, scale: 0.94 }}
+                initial={ENTER_FROM}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: false, margin: '0px 0px -10% 0px' }}
-                transition={{ type: 'spring', duration: 0.8, bounce: 0.28, delay: (i % 2) * 0.08 }}
+                transition={ENTER}
                 className="flex flex-col gap-3 group cursor-pointer w-full"
               >
                 <div data-vt-slug={p.slug} data-vt-part="media" className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 relative overflow-hidden isolate">

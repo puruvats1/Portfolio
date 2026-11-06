@@ -43,8 +43,8 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
-/** Cards rise in once as they scroll into view; the right column trails the left (same as the Work grid). */
-const rise = (i: number) => pop((i % 2) * 0.08);
+/** Cards rise in as they scroll into view, both columns together (same as the Work grid). */
+const rise = () => pop();
 
 /**
  * Card language shared with the rest of the site: the clay speech-card surface of the hero card,
@@ -184,7 +184,7 @@ export function Testimonials() {
           {approved.map((t, i) => {
             const clay = CLAY[i % CLAY.length];
             return (
-              <motion.figure key={t.id} {...rise(i)} className={CARD}>
+              <motion.figure key={t.id} {...rise()} className={CARD}>
                 <div className="flex flex-col gap-5">
                   <QuoteBadge clay={clay} />
                   {/* the site's body text (same as About); line breaks from the submission are kept */}
@@ -220,7 +220,7 @@ export function Testimonials() {
             const i = approved.length + j;
             return (
               // Not yet public: the same card, with the words shown as soft clay bars
-              <motion.div key={t.id} {...rise(i)} className={CARD} aria-hidden="true">
+              <motion.div key={t.id} {...rise()} className={CARD} aria-hidden="true">
                 <div className="flex flex-col gap-5">
                   <QuoteBadge />
                   <GreyWords text={t.quote} height="h-3.5" roundness="rounded-full" color="bg-[#E9E8E4]" />
