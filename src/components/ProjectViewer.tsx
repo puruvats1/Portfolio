@@ -277,10 +277,8 @@ export function ProjectViewer({ project, onBack }: Props) {
                       </h3>
                       <ArrowUpRight className="w-6 h-6 stroke-[2.25] text-neutral-500 shrink-0 opacity-0 -translate-x-3 translate-y-3 scale-75 transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100" />
                     </div>
-                    <div className="flex items-center gap-2 text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
+                    <div className="text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
                       <span>{p.category}</span>
-                      <span className="text-neutral-300">·</span>
-                      <span>{p.year}</span>
                     </div>
                   </div>
                 </div>

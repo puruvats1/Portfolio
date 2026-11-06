@@ -123,10 +123,8 @@ export function Work() {
                         <ArrowUpRight className="w-6 h-6 stroke-[2.25] text-neutral-500 shrink-0 opacity-0 -translate-x-3 translate-y-3 scale-75 transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100" />
                       </div>
 
-                      <div className="flex items-center gap-2 text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
+                      <div className="text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
                         <span>{project.category}</span>
-                        <span className="text-neutral-300">·</span>
-                        <span>{project.year}</span>
                       </div>
                     </div>
                   </div>
@@ -177,13 +175,10 @@ export function Work() {
                         </span>
                       ))}
                     </div>
-                    {/* Phones: the year sits under the tags (the right-hand column is hidden there) */}
-                    <span className="md:hidden text-[12.5px] text-neutral-500 font-medium">{project.year}</span>
                   </div>
 
-                  {/* Right-hand column: year + hover arrow, its own space so it never overlaps the text block */}
-                  <div className="hidden md:flex items-center gap-3 shrink-0 text-[13.5px] text-neutral-500 font-medium">
-                    <span>{project.year}</span>
+                  {/* Hover arrow, in its own column so it never overlaps the text block */}
+                  <div className="hidden md:flex items-center shrink-0">
                     <ArrowUpRight className="w-6 h-6 stroke-[2.25] text-neutral-500 shrink-0 opacity-0 -translate-x-3 translate-y-3 scale-75 transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100" />
                   </div>
                 </a>
