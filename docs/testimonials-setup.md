@@ -2,46 +2,44 @@
 
 How it works
 
-1. A visitor fills in "Leave a testimonial". The site posts it to **your Google Form**.
+1. A visitor clicks **Leave a testimonial** on the site. It opens **your Google Form** in a new tab and
+   they fill it in there, on Google's own page.
 2. The answer lands in the form's **Google Sheet**, tagged *not approved*. Nothing appears on the site.
 3. You tick **Approved** on the rows you like.
 4. A second tab, **Published**, lists only approved rows. That tab (and only that tab) is
    published to the web as CSV, and the site reads it.
 
-Anyone can technically post to a Google Form, so the real protection is step 3: **nothing is shown
-until you tick the box.**
+Because visitors submit on Google's page, the browser, Google and the visitor all see the real result
+(Google shows its own "Your response has been recorded" page, or an error). Nothing on our side can
+silently drop a submission. Nothing is shown on the site until you tick the box.
 
 ## 1. Create the form
 
-Create a Google Form with exactly these four questions, **in this order**, all "Short answer"
-except the fourth, which is "Paragraph":
+Create a Google Form with these four questions, **in this order**, all "Short answer" except the
+fourth, which is "Paragraph":
 
-| # | Question title | Type       | Notes |
-|---|----------------|------------|-------|
+| # | Question title | Type         | Notes |
+|---|----------------|--------------|-------|
 | 1 | Name           | Short answer | Required |
 | 2 | Role           | Short answer | Optional |
 | 3 | Company        | Short answer | Optional |
-| 4 | Testimonial    | Paragraph  | Required. Add *Response validation → Maximum character count → 600* |
+| 4 | Testimonial    | Paragraph    | Required. Add *Response validation → Maximum character count → 600* |
 
-Add the same validation to Name, Role and Company (max 60 each) if you like; the site already enforces
-these, but Google would enforce them for direct posts too.
+The site reads the Sheet by **column position**, so keep the order. Don't add a fifth question.
 
-**Form settings that must stay OFF** (they force a Google sign-in, which makes the site's
-anonymous post fail silently): *Collect email addresses*, *Limit to 1 response*, *Restrict to
-users in your organisation*, and any *File upload* question. Don't add a fifth question either:
-the site only knows these four.
+Because people fill it in without signing in, keep these settings **OFF**: *Collect email addresses*,
+*Limit to 1 response*, *Restrict to users in your organisation*, and any *File upload* question.
+
+Make the form feel like the site: Form → **Customize theme** (colour, font, header image). Add a
+description such as "Thanks for the kind words. Puru reads every one before it appears on his site."
 
 Under **Responses → Link to Sheets**, create the linked Sheet.
 
-## 2. Get the form id and the four `entry.` ids
+## 2. Point the site at the form
 
-1. Form menu (⋮) → **Get pre-filled link**. Type `A`, `B`, `C`, `D` into the four questions (Name, Role, Company, Testimonial) → **Get link** → copy it.
-2. It looks like  
-   `https://docs.google.com/forms/d/e/1FAIpQLSc…/viewform?usp=pp_url&entry.111=A&entry.222=B&entry.333=C&entry.444=D`
-3. In `src/config.ts`:
-   - `TESTIMONIAL_FORM.formId` = the `1FAIpQLSc…` part
-   - `fields.name` = `entry.111`, `fields.role` = `entry.222`, `fields.company` = `entry.333`, `fields.quote` = `entry.444`  
-     (match them by the letters you typed: A = name, B = role, C = company, D = testimonial)
+Open the form → **Send** (top right) → the link icon → copy the link (it looks like
+`https://docs.google.com/forms/d/e/1FAIpQLSc…/viewform`) and paste it into `TESTIMONIAL_FORM_URL`
+in `src/config.ts`.
 
 ## 3. Add the approval checkbox
 
@@ -73,8 +71,8 @@ format **Comma-separated values (.csv)** → **Publish**. Copy the link and past
 
 ## 6. Deploy
 
-Commit the two values in `src/config.ts` and push to `main`. They are public by nature (the
-form id only allows posting; the CSV only contains approved rows).
+Commit the two values in `src/config.ts` and push to `main`. They are public by nature (the form link
+only allows posting; the CSV only contains approved rows).
 
 ## Day to day
 
@@ -82,4 +80,14 @@ form id only allows posting; the CSV only contains approved rows).
 - Google refreshes the published CSV every few minutes, so a ticked row can take ~5 minutes to
   show on the site.
 - Delete a row in the form tab to remove it permanently.
-- Optional: in the form, **Responses → ⋮ → Get email notifications for new responses**.
+- Recommended: in the form, **Responses → ⋮ → Get email notifications for new responses**. You get an
+  email for every submission, a second record in case a row is ever missing from the Sheet.
+
+## If a submission seems to be missing
+
+1. The form's own **Responses → Individual** tab shows every submission, even if the Sheet is filtered
+   or unlinked.
+2. In the Sheet, look for another tab ("Form Responses 2" appears if the form was re-linked), an active
+   filter, or a sort hiding rows. The Timestamp column uses the Sheet's timezone (File → Settings).
+3. Check the form is still **accepting responses** (Responses tab toggle) and has no response limit.
+4. Check your email notifications.

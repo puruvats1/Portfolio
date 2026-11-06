@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Quote, Plus } from 'lucide-react';
+import { Quote, ArrowUpRight } from 'lucide-react';
 import { ScrollRevealTitle } from './ScrollRevealTitle';
 import { GreyWords } from './ui/GreyWords';
-import { AddTestimonialModal } from './AddTestimonialModal';
 import { ApprovedTestimonial, fetchApprovedTestimonials } from '../lib/testimonials';
+import { TESTIMONIAL_FORM_URL } from '../config';
 
 interface Testimonial {
   id: string;
@@ -52,7 +52,6 @@ export function Testimonials() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   // Only testimonials Puru has approved (published from the Google Sheet) are shown.
   const [approved, setApproved] = useState<ApprovedTestimonial[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -72,14 +71,28 @@ export function Testimonials() {
             </h2>
           </ScrollRevealTitle>
 
-          {/* Leave a testimonial without signup */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 sm:gap-2 h-[40px] px-3 sm:px-4 rounded-[15px] bg-[#EAEAEA] hover:bg-[#DFDFDC] text-ink font-sans text-xs sm:text-sm font-semibold tracking-tight transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer group outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF]"
+          {/* Tertiary action: plain text link (same family as the nav's Behance link), opens the Google Form */}
+          <a
+            href={TESTIMONIAL_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group shrink-0 whitespace-nowrap inline-flex items-center gap-1 h-[40px] rounded-[10px] font-sans text-[14px] sm:text-[15px] font-medium text-[#5A5A55] hover:text-[#2C2C2A] transition-colors duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#72BDFF] focus-visible:ring-offset-2 focus-visible:ring-offset-canvas"
           >
-            <Plus size={15} className="text-[#555] group-hover:text-ink transition-colors" />
-            <span>Leave a testimonial</span>
-          </button>
+            <span className="relative">
+              Leave a testimonial
+              <span
+                aria-hidden
+                className="absolute left-0 -bottom-0.5 h-px w-full bg-current origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100"
+              />
+            </span>
+            <ArrowUpRight
+              size={15}
+              strokeWidth={2.2}
+              aria-hidden
+              className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
         </div>
 
         {/* Testimonial cards grid: Custom submissions + 4 core cards */}
@@ -194,9 +207,6 @@ export function Testimonials() {
         </div>
 
       </div>
-
-      {/* Add Testimonial Modal (No signup required; goes to Puru for approval) */}
-      <AddTestimonialModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }
