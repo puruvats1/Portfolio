@@ -6,9 +6,10 @@ export interface Project {
   year: string;
   domain: string;
   tags: string[];
-  /** Behance case study */
+  /** Behance or external case study */
   link: string;
   thumbnail: string;
+  thumbnailVideo?: string;
   /** Hosted PDF, served from public/projects/pdfs/<slug>.pdf */
   pdf: string;
   /** Number of stacked panels in public/projects/<slug>/01.webp, 02.webp, ... (0 = none yet) */
@@ -56,9 +57,23 @@ export const MILESTONES: Record<string, Milestone[]> = {
 
 export const panelUrl = (slug: string, i: number) => `./projects/${slug}/${String(i).padStart(2, '0')}.webp`;
 
+export const isVideo = (url?: string) => Boolean(url && /\.(mp4|webm|ogg|mov)$/i.test(url));
+
 export const PROJECTS: Project[] = [
   make({
     id: '01',
+    slug: 'deshaw-case-study',
+    title: 'Re-thinking Data visualization for better company wide adoption.',
+    category: 'Enterprise Data Visualization',
+    year: '2026',
+    domain: 'FinTech / Enterprise AI',
+    tags: ['UI/UX', 'Data Vis', 'AI Systems'],
+    link: 'https://puruvats1.github.io/deshaw-case-study/',
+    thumbnail: './projects/ThumbD-macro-cuts.mp4',
+    thumbnailVideo: './projects/ThumbD-macro-cuts.mp4',
+  }),
+  make({
+    id: '02',
     slug: 'ek-time',
     title: 'Ek-time',
     category: 'Timetable Management System',
@@ -69,7 +84,7 @@ export const PROJECTS: Project[] = [
     thumbnail: './projects/project_01_Ek-time-Timetable-Managment-System-UX.png',
   }),
   make({
-    id: '02',
+    id: '03',
     slug: 'strava-redesign',
     title: 'Strava Redesign',
     category: 'Ergonomic Evaluation & Redesign',
@@ -80,7 +95,7 @@ export const PROJECTS: Project[] = [
     thumbnail: './projects/project_02_Strava-Ergonomic-Evaluation-Redesign.png',
   }),
   make({
-    id: '03',
+    id: '04',
     slug: 'squeezy',
     title: 'Squeezy',
     category: 'Pressure & Gesture based Interaction',
@@ -91,7 +106,7 @@ export const PROJECTS: Project[] = [
     thumbnail: './projects/project_07_SQUEEZY-Pressure-Gesture-based-Interaction.png',
   }),
   make({
-    id: '04',
+    id: '05',
     slug: 'tring-tring',
     title: 'Tring Tring',
     category: 'Cycle Sharing Platform',
@@ -102,7 +117,7 @@ export const PROJECTS: Project[] = [
     thumbnail: './projects/project_03_Tring-Tring-Cycle-Sharing-Platform.png',
   }),
   make({
-    id: '05',
+    id: '06',
     slug: 'one-step-two-step',
     title: 'One Step Two Step',
     category: 'Immersive Web Storybook',
@@ -113,7 +128,7 @@ export const PROJECTS: Project[] = [
     thumbnail: './projects/project_04_One-Step-Two-Step-Immersive-web-storybook.png',
   }),
   make({
-    id: '06',
+    id: '07',
     slug: 'mood-indigo-2024',
     title: 'Mood Indigo 2024',
     category: 'Brand Identity & Festival Design',
@@ -125,7 +140,7 @@ export const PROJECTS: Project[] = [
   }),
 ];
 
-/** Projects with uploaded documentation open on-site; the rest go straight to Behance. */
+/** Projects with uploaded documentation open on-site; the rest go straight to Behance or their external case study. */
 export const projectLinkProps = (p: Project) =>
   p.panelCount > 0
     ? { href: `#/project/${p.slug}` }

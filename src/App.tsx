@@ -49,7 +49,14 @@ export default function App() {
   }, []);
   const hash = useHashRoute();
   const slug = hash.startsWith("#/project/") ? hash.slice("#/project/".length) : null;
-  const project = slug ? PROJECTS.find((p) => p.slug === slug) : undefined;
+  const project = slug
+    ? PROJECTS.find(
+        (p) =>
+          p.slug === slug ||
+          (p.slug === 'deshaw-case-study' &&
+            (slug === 'deshaw' || slug === 'rethinking-data-visualization' || slug === 'deshaw-data-visualization'))
+      )
+    : undefined;
 
   const showingProject = !!project && project.panelCount > 0;
   // rubber-band stretch past the top and bottom of the home page; re-attached when the page remounts

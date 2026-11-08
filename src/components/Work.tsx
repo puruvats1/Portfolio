@@ -3,9 +3,10 @@ import { motion } from 'motion/react';
 import { navState, prefetchImage } from '../lib/pageTransition';
 import { EASE_OUT } from '../lib/motion';
 import { PopAnchor } from './ui/Pop';
+import { VideoThumbnail } from './ui/VideoThumbnail';
 import { LayoutGrid, List, ArrowUpRight } from 'lucide-react';
 import { ScrollRevealTitle } from './ScrollRevealTitle';
-import { PROJECTS, panelUrl, projectLinkProps, type Project } from '../data/projects';
+import { PROJECTS, panelUrl, projectLinkProps, isVideo, type Project } from '../data/projects';
 
 /** Load a project's first panel as soon as someone shows interest, so opening it can morph immediately. */
 const warmUp = (p: Project) =>
@@ -158,12 +159,19 @@ export function Work() {
                     data-vt-part="media"
                     className="w-full aspect-[16/10] bg-[#F2F1ED] border border-neutral-200/70 relative overflow-hidden isolate"
                   >
-                    <img
-                      src={project.thumbnail}
-                      alt={project.title}
-                      className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
-                      loading="lazy"
-                    />
+                    {isVideo(project.thumbnail) ? (
+                      <VideoThumbnail
+                        src={project.thumbnail}
+                        className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
+                      />
+                    ) : (
+                      <img
+                        src={project.thumbnail}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
+                        loading="lazy"
+                      />
+                    )}
                   </motion.div>
 
                   {/* Clean metadata section: tags placed right below thumbnail, above title */}
@@ -218,12 +226,19 @@ export function Work() {
                     data-vt-part="media"
                     className="w-32 h-20 sm:w-48 sm:h-[7.5rem] overflow-hidden shrink-0 border border-neutral-200/70 bg-neutral-100"
                   >
-                    <img
-                      src={project.thumbnail}
-                      alt=""
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
+                    {isVideo(project.thumbnail) ? (
+                      <VideoThumbnail
+                        src={project.thumbnail}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={project.thumbnail}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    )}
                   </motion.div>
 
                   {/* Title above its tags, so neither ever gets squeezed by the other columns */}

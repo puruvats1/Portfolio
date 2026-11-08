@@ -4,7 +4,8 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, X } from 'lucide-react';
 import { EASE_OUT } from '../lib/motion';
 import { ENTER, ENTER_FROM } from './ui/Pop';
 import { prefetchImage } from '../lib/pageTransition';
-import { MILESTONES, PROJECTS, panelUrl, type Project } from '../data/projects';
+import { VideoThumbnail } from './ui/VideoThumbnail';
+import { MILESTONES, PROJECTS, panelUrl, isVideo, type Project } from '../data/projects';
 
 interface Props {
   project: Project;
@@ -328,7 +329,14 @@ export function ProjectViewer({ project, onBack }: Props) {
                 className="flex flex-col gap-3 group cursor-pointer w-full"
               >
                 <div data-vt-slug={p.slug} data-vt-part="media" className="w-full aspect-[16/10] rounded-[20px] sm:rounded-[26px] bg-[#F2F1ED] border border-neutral-200/70 relative overflow-hidden isolate">
-                  <img src={p.thumbnail} alt={p.title} className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]" loading="lazy" />
+                  {isVideo(p.thumbnail) ? (
+                    <VideoThumbnail
+                      src={p.thumbnail}
+                      className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
+                    />
+                  ) : (
+                    <img src={p.thumbnail} alt={p.title} className="w-full h-full object-cover object-center transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]" loading="lazy" />
+                  )}
                 </div>
                 <div className="flex flex-col gap-2 px-1">
                   <div className="flex flex-wrap items-center gap-1.5">
