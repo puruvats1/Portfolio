@@ -46,3 +46,4 @@ export function VideoThumbnail({ src, className, poster }: VideoThumbnailProps) 
     />
   );
 }
+

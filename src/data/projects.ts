@@ -69,8 +69,8 @@ export const PROJECTS: Project[] = [
     domain: 'FinTech / Enterprise AI',
     tags: ['UI/UX', 'Data Vis', 'AI Systems'],
     link: 'https://puruvats1.github.io/deshaw-case-study/',
-    thumbnail: './projects/ThumbD-macro-cuts.mp4',
-    thumbnailVideo: './projects/ThumbD-macro-cuts.mp4',
+    thumbnail: './projects/final_thumbnail_deshaw_documentation_V3.mp4',
+    thumbnailVideo: './projects/final_thumbnail_deshaw_documentation_V3.mp4',
   }),
   make({
     id: '02',
