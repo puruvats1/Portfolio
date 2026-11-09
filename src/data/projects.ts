@@ -127,17 +127,6 @@ export const PROJECTS: Project[] = [
     link: 'https://www.behance.net/gallery/227102487/One-Step-Two-Step-Immersive-web-storybook',
     thumbnail: './projects/project_04_One-Step-Two-Step-Immersive-web-storybook.png',
   }),
-  make({
-    id: '07',
-    slug: 'mood-indigo-2024',
-    title: 'Mood Indigo 2024',
-    category: 'Brand Identity & Festival Design',
-    year: '2025',
-    domain: 'Branding & Culture',
-    tags: ['Brand Identity', 'Motion', 'Visual Design'],
-    link: 'https://www.behance.net/gallery/235661139/MOOD-INDIGO-2024-BRAND-IDENTITY',
-    thumbnail: './projects/project_06_MOOD-INDIGO-2024-BRAND-IDENTITY.jpg',
-  }),
 ];
 
 /** Projects with uploaded documentation open on-site; the rest go straight to Behance or their external case study. */
