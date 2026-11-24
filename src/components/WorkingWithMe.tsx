@@ -83,7 +83,7 @@ export function WorkingWithMe() {
           {/* Columns 1-3: Section title "Working with me" and "it's in the works" illustration */}
           <div className="lg:col-span-3 flex flex-col gap-6 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
-              <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient">
+              <h2 className="font-display t-display heading-gradient">
                 Working with me
               </h2>
             </ScrollRevealTitle>
@@ -139,12 +139,12 @@ export function WorkingWithMe() {
       </div>
 
       {/* PART 2: Skills & capabilities (The dedicated Skills section) */}
-      <div id="skills" className="w-full pt-16 border-t border-neutral-200/50 overflow-visible scroll-mt-24">
+      <div id="working-with-me-skills" className="w-full pt-16 border-t border-neutral-200/50 overflow-visible scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 lg:gap-10 xl:gap-12 items-start">
           {/* Columns 1-3: Title "Skills & capabilities" sticky until scrolled past */}
           <div className="lg:col-span-3 lg:sticky lg:top-28 self-start">
             <ScrollRevealTitle>
-              <h3 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient">
+              <h3 className="font-display t-display heading-gradient">
                 Skills & capabilities
               </h3>
             </ScrollRevealTitle>

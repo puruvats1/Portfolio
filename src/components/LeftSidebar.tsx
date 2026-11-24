@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { EASE_OUT, intro } from "../lib/motion";
-import { SHOW_WORKING_WITH_ME } from '../config';
+import { BURST_ANIMATE, BURST_TIMES, BURST_WINDOW_MS, BurstParticles, type BurstPhase } from './ui/Burst';
 
 export type SectionId = 'hero' | 'work' | 'about' | 'skills' | 'testimonials' | 'contact';
 
@@ -203,7 +202,6 @@ const ALL_NAV_ITEMS: NavItem[] = [
   },
 ];
 
-// Sections that are still in draft (see src/config.ts) are left out of the navigation
 /** 'work' + ':work:' → { prefix: ':', suffix: ':' } (apostrophe styles are treated as equal) */
 export function splitHoverLabel(label: string, hoverLabel: string) {
   const norm = (t: string) => t.replace(/[’‘]/g, "'");
@@ -212,9 +210,7 @@ export function splitHoverLabel(label: string, hoverLabel: string) {
   return { prefix: hoverLabel.slice(0, i), suffix: hoverLabel.slice(i + label.length) };
 }
 
-export const NAV_ITEMS: NavItem[] = ALL_NAV_ITEMS.filter(
-  (item) => item.id !== 'skills' || SHOW_WORKING_WITH_ME
-);
+export const NAV_ITEMS: NavItem[] = ALL_NAV_ITEMS;
 
 interface LeftSidebarProps {
   mode?: 'desktop' | 'mobile' | 'both';
@@ -224,9 +220,8 @@ interface LeftSidebarProps {
  * Easter egg: tapping the nav button that is ALREADY selected over and over makes it burst
  * into confetti and then pop back in.
  */
-const BURST_TAPS = 6; // taps ...
-const BURST_WINDOW_MS = 2200; // ... inside this window
-const BURST_COLORS: Record<SectionId, string[]> = {
+const BURST_TAPS = 6; // taps inside BURST_WINDOW_MS
+export const BURST_COLORS: Record<SectionId, string[]> = {
   hero: ['#F5C518', '#F59E0B', '#FFD84D', '#D98E04'],
   work: ['#4DA6FF', '#3F74E3', '#72BDFF', '#2563EB'],
   about: ['#F59E78', '#D8693B', '#FDBA74', '#EA7C4A'],
@@ -235,55 +230,11 @@ const BURST_COLORS: Record<SectionId, string[]> = {
   contact: ['#FB7185', '#E11D48', '#F9A8D4', '#F43F5E'],
 };
 
-type BurstPhase = 'idle' | 'pop' | 'gone' | 'back';
 
-/** What the burst does to the button itself, per phase (used as its animate prop). */
-const BURST_ANIMATE = {
-  pop: { scale: 1.4, opacity: 0, transition: { duration: 0.18, ease: 'easeOut' as const } },
-  gone: { scale: 0, opacity: 0, transition: { duration: 0 } },
-  back: { scale: 1, opacity: 1, transition: { type: 'spring' as const, stiffness: 420, damping: 11 } },
-};
-
-/** Confetti flying out from (x, y) in viewport coordinates. Rendered in a portal so no overflow clips it. */
-function BurstParticles({ x, y, colors }: { x: number; y: number; colors: string[] }) {
-  const bits = React.useMemo(
-    () =>
-      Array.from({ length: 16 }, (_, i) => {
-        const angle = (i / 16) * Math.PI * 2 + Math.random() * 0.4;
-        const dist = 46 + Math.random() * 54;
-        return {
-          dx: Math.cos(angle) * dist,
-          dy: Math.sin(angle) * dist,
-          size: 6 + Math.random() * 6,
-          color: colors[i % colors.length],
-          round: i % 3 !== 0,
-          spin: (Math.random() - 0.5) * 240,
-          delay: Math.random() * 0.05,
-        };
-      }),
-    [colors],
-  );
-  return createPortal(
-    <div aria-hidden="true" className="fixed z-[200] pointer-events-none" style={{ left: x, top: y }}>
-      {bits.map((b, i) => (
-        <motion.span
-          key={i}
-          className={`absolute block ${b.round ? 'rounded-full' : 'rounded-[3px]'}`}
-          style={{ width: b.size, height: b.size, left: -b.size / 2, top: -b.size / 2, background: b.color }}
-          initial={{ x: 0, y: 0, scale: 0.4, opacity: 1, rotate: 0 }}
-          animate={{ x: b.dx, y: b.dy + 14, scale: [0.4, 1.1, 0], opacity: [1, 1, 0], rotate: b.spin }}
-          transition={{ duration: 0.75, delay: b.delay, ease: EASE_OUT }}
-        />
-      ))}
-    </div>,
-    document.body,
-  );
-}
-
-/** Natural width of the dock with the longest label open (5 buttons + 4 gaps, px); narrower screens scale it down to fit. */
-const DOCK_CONTENT_WIDTH = 399;
+/** Natural width of the dock with the longest label open (6 buttons + 5 gaps, px); narrower screens scale it down to fit. */
+const DOCK_CONTENT_WIDTH = 462;
 /** Upper bound of the room the dock may use (it only ever takes its natural width, centred). */
-const DOCK_MAX_WIDTH = 440;
+const DOCK_MAX_WIDTH = 500;
 
 export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
   // First-load entrance, in step with the hero intro (once per visit)
@@ -347,9 +298,9 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
     setBurst({ id, phase: 'pop', x, y });
     burstTimers.current.forEach(clearTimeout);
     burstTimers.current = [
-      setTimeout(() => setBurst({ id, phase: 'gone', x, y }), 180),
-      setTimeout(() => setBurst({ id, phase: 'back', x, y }), 700),
-      setTimeout(() => setBurst(null), 1400),
+      setTimeout(() => setBurst({ id, phase: 'gone', x, y }), BURST_TIMES[0]),
+      setTimeout(() => setBurst({ id, phase: 'back', x, y }), BURST_TIMES[1]),
+      setTimeout(() => setBurst(null), BURST_TIMES[2]),
     ];
     return true;
   };
@@ -543,7 +494,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                         className={`absolute left-0 top-1/2 -translate-y-1/2 h-[40px] px-4 py-2 rounded-[15px] bg-gradient-to-b ${item.gradient} border ${item.border} ${item.pillShadow} flex items-center justify-center select-none`}
                       >
                         <span
-                          className={`font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap`}
+                          className={`font-sans t-ui font-bold !leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b ${item.textGradient} bg-clip-text text-transparent opacity-95 whitespace-nowrap`}
                         >
                           {item.label}
                         </span>
@@ -570,7 +521,7 @@ export function LeftSidebar({ mode = 'both' }: LeftSidebarProps) {
                           const { prefix, suffix } = splitHoverLabel(item.label, item.hoverLabel);
                           return (
                             <span
-                              className={`relative inline-block font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase transition-colors duration-300 ease-out ${
+                              className={`relative inline-block font-sans t-ui font-bold !leading-[21px] tracking-[-0.25px] lowercase transition-colors duration-300 ease-out ${
                                 isItemHovered ? 'text-[#2C2C2A]' : 'text-[#888884]'
                               }`}
                             >

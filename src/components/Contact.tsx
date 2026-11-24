@@ -12,7 +12,7 @@ export function Contact() {
   return (
     <footer
       id="contact"
-      className="footer-rise relative pt-20 pb-40 sm:pb-40 lg:pt-24 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] shadow-[0_240px_0_0_var(--color-ink)] mt-20 sm:mt-24 max-lg:mx-[calc((100%-100vw)/2)] border-t border-white/10 scroll-mt-24"
+      className="footer-rise relative pt-20 pb-40 sm:pb-40 lg:pt-24 lg:pb-28 bg-ink text-canvas rounded-t-[2.5rem] shadow-[0_240px_0_0_var(--color-ink)] mt-20 sm:mt-24 lg:mt-32 max-lg:mx-[calc((100%-100vw)/2)] border-t border-white/10 scroll-mt-24"
     >
       <div className="max-w-[1400px] mx-auto w-full px-6 sm:px-10 lg:px-12 xl:px-14">
         <motion.div
@@ -25,7 +25,7 @@ export function Contact() {
           {/* Back to top: top-right corner */}
           <a
             href="#hero"
-            className="absolute -top-14 sm:-top-16 right-0 inline-flex items-center gap-1.5 text-xs sm:text-[13px] text-neutral-400 hover:text-white transition-colors cursor-pointer"
+            className="absolute -top-14 sm:-top-16 right-0 inline-flex items-center gap-1.5 t-meta text-white/55 hover:text-white transition-colors cursor-pointer"
           >
             <span>Back to top</span>
             <ArrowUp size={14} />
@@ -34,7 +34,7 @@ export function Contact() {
           {/* Columns 1-3: Section title "Work with me" sticky until scrolled past */}
           <div className="lg:col-span-3 lg:pr-6">
             <ScrollRevealTitle>
-              <h2 className="font-display text-2xl sm:text-3xl lg:text-[36px] font-semibold leading-tight tracking-tight heading-gradient-light">
+              <h2 className="font-display t-display heading-gradient-light">
                 Work with me
               </h2>
             </ScrollRevealTitle>
@@ -43,15 +43,15 @@ export function Contact() {
           {/* Columns 4-8: Minimal Contact details, feedback and footer links */}
           <div className="lg:col-span-5 flex flex-col gap-10">
             <Pop>
-              <h3 className="font-display text-xl sm:text-2xl font-semibold leading-tight tracking-tight heading-gradient-light">
+              <h3 className="font-display t-title heading-gradient-light">
                 Got something complicated?
               </h3>
             </Pop>
 
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-1">
-                <span className="font-display text-xl font-semibold heading-gradient-light">Puru.</span>
-                <span className="text-neutral-400 text-sm font-normal">Interaction & Product Designer · IDC, IIT Bombay</span>
+                <span className="font-display t-lead font-semibold heading-gradient-light">Puru.</span>
+                <span className="text-white/55 t-meta !font-normal">Interaction & Product Designer · IDC, IIT Bombay</span>
               </div>
 
               <div className="flex flex-wrap gap-2.5 sm:gap-3">
@@ -61,7 +61,7 @@ export function Contact() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   href="mailto:hello.puruvats@gmail.com" 
-                  className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
+                  className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors t-ui text-white"
                 >
                   <div className="flex items-center gap-2">
                     <Mail size={15} />
@@ -78,7 +78,7 @@ export function Contact() {
                   href="https://www.linkedin.com/in/puruvats" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white"
+                  className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors t-ui text-white"
                 >
                   <div className="flex items-center gap-2">
                     <ExternalLink size={15} />
@@ -93,7 +93,7 @@ export function Contact() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setIsFeedbackOpen(true)}
-                  className="flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors font-medium text-sm text-white cursor-pointer"
+                  className="flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors t-ui text-white cursor-pointer"
                   title="Share quick feedback"
                 >
                   <div className="flex items-center gap-2">
@@ -104,7 +104,7 @@ export function Contact() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center sm:justify-start gap-4 text-xs text-neutral-400 font-normal">
+            <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center sm:justify-start gap-4 t-meta !font-normal text-white/55">
               <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
                 <button
                   onClick={() => setIsFeedbackOpen(true)}

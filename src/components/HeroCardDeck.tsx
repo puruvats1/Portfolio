@@ -2,7 +2,7 @@ import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } f
 import { AnimatePresence, motion, useIsPresent, useReducedMotion } from 'motion/react';
 import { EASE_OUT } from "../lib/motion";
 import { X } from 'lucide-react';
-import { HERO_CARDS } from '../data/heroCards';
+import { HERO_CARDS, HERO_WORD_CYCLE } from '../data/heroCards';
 
 const WOBBLE_AFTER_MS = 6000;
 /** Every card's text is fitted to exactly this many lines. */
@@ -150,17 +150,146 @@ function FitText({
   );
 }
 
-/** "plain **highlight** plain" → text with blue highlighted spans. */
-function renderCopy(copy: string) {
-  return copy.split(/\*\*(.+?)\*\*/g).map((part, i) =>
-    i % 2 === 1 ? (
-      <span key={i} className="text-[#2B7FFF] font-bold inline">
-        {part}
+/**
+ * The highlighted word, backspaced and retyped through HERO_WORD_CYCLE (see data/heroCards.ts).
+ * A thin light-grey caret shows only while letters are being removed or typed; each new letter fades in.
+ * The word writes itself out when the card first appears.
+ *
+ * The word (and the punctuation after it) sits in a slot as wide as the longest option, so the rest of
+ * the sentence and its line breaks never move while it retypes (the card text is text-wrap: balance,
+ * which would otherwise re-wrap the lines on every letter).
+ */
+function TypeCycle({ trailing }: { trailing: string }) {
+  const { word, hold, firstHold, loops, rounds, typeMs, deleteMs, pauseMs, startMs } = HERO_WORD_CYCLE;
+  // starts empty: the main word is typed out when the card first appears (the slot below already has its width)
+  const [shown, setShown] = useState('');
+  const [busy, setBusy] = useState(false); // typing or deleting right now
+
+  useEffect(() => {
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const wait = (ms: number) => new Promise<void>((r) => (timer = setTimeout(r, ms)));
+
+    const run = async () => {
+      let current = '';
+      /** moves from the current text to `target`: types on the end if it only adds letters, else erases first */
+      const goTo = async (target: string) => {
+        setBusy(true);
+        let typed = current.length;
+        if (!(target.startsWith(current) && target.length > current.length)) {
+          for (let n = current.length - 1; n >= 0; n--) {
+            await wait(deleteMs);
+            if (cancelled) return false;
+            setShown(current.slice(0, n));
+          }
+          await wait(pauseMs); // a beat with the word gone
+          typed = 0;
+        }
+        for (let n = typed + 1; n <= target.length; n++) {
+          await wait(typeMs);
+          if (cancelled) return false;
+          setShown(target.slice(0, n));
+        }
+        setBusy(false);
+        current = target;
+        return true;
+      };
+
+      // first, write the main word out as the card appears
+      await wait(startMs);
+      if (cancelled) return;
+      if (!(await goTo(word))) return;
+
+      // the first read of the card is undisturbed; then the loop plays `loops` times and settles on the main word
+      await wait(firstHold);
+      if (cancelled) return;
+      let round = 0;
+      for (let loop = 0; loop < loops; loop++) {
+        for (const step of rounds[round++ % rounds.length]) {
+          if (!(await goTo(step.text))) return;
+          await wait(step.hold);
+          if (cancelled) return;
+        }
+        if (!(await goTo(word))) return;
+        if (loop < loops - 1) {
+          await wait(hold);
+          if (cancelled) return;
+        }
+      }
+      // done: the main word stays, still
+    };
+    run();
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [word, hold, firstHold, loops, rounds, typeMs, deleteMs, pauseMs, startMs]);
+
+  // every text the word can show: the slot is sized to the widest, so nothing around it ever moves
+  const options = [...new Set([word, ...rounds.flat().map((s) => s.text)])];
+  return (
+    // inline-grid: every option sits invisibly in the same cell, so the slot is as wide as the longest one
+    <span className="inline-grid justify-items-start align-baseline whitespace-nowrap">
+      {options.map((o) => (
+        <span key={o} aria-hidden className="invisible [grid-area:1/1]">
+          <span className="text-[#2B7FFF] font-bold">{o}</span>
+          {trailing}
+        </span>
+      ))}
+      <span className="[grid-area:1/1]">
+        <span className="text-[#2B7FFF] font-bold">
+          {shown.split('').map((ch, i) => (
+            <span key={i} className="type-in">
+              {ch}
+            </span>
+          ))}
+          {/* zero-width anchor, so the caret never pushes the punctuation along */}
+          <span className="relative inline-block w-0 h-[0.95em] -mb-[0.12em]">
+            <span
+              className={`absolute left-[2px] top-0 w-[2px] h-full rounded-full bg-[#C4C4C0] transition-opacity duration-300 ${
+                busy ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          </span>
+        </span>
+        {trailing}
       </span>
-    ) : (
-      <Fragment key={i}>{part}</Fragment>
-    ),
+    </span>
   );
+}
+
+/**
+ * "plain **highlight** plain" → text with blue highlighted spans.
+ * `animate`: the HERO_WORD_CYCLE word gets the backspace/retype effect (only on the visible card; the hidden
+ * copies used to measure the card keep the full word so the card never changes size).
+ */
+function renderCopy(copy: string, animate = false) {
+  const parts = copy.split(/\*\*(.+?)\*\*/g);
+  // punctuation straight after the animated word moves into its fixed-width slot, so it stays attached
+  const animatedAt = animate ? parts.findIndex((p, i) => i % 2 === 1 && p === HERO_WORD_CYCLE.word) : -1;
+  const trailing = animatedAt >= 0 ? (parts[animatedAt + 1] ?? '').match(/^[.,!?;:…]*/)![0] : '';
+
+  return parts.map((part, i) => {
+    if (i === animatedAt)
+      return (
+        <span key={i}>
+          <span className="sr-only">
+            {part}
+            {trailing}
+          </span>
+          <span aria-hidden>
+            <TypeCycle trailing={trailing} />
+          </span>
+        </span>
+      );
+    if (i % 2 === 1)
+      return (
+        <span key={i} className="text-[#2B7FFF] font-bold inline">
+          {part}
+        </span>
+      );
+    return <Fragment key={i}>{i === animatedAt + 1 && animatedAt >= 0 ? part.slice(trailing.length) : part}</Fragment>;
+  });
 }
 
 interface DeckCardProps {
@@ -235,7 +364,7 @@ function DeckCard({ copy, copyIndex, base, cardClass, closeLabel, focusOnMount, 
         />
       </motion.button>
 
-      <FitText copyIndex={copyIndex} base={base}>{renderCopy(copy)}</FitText>
+      <FitText copyIndex={copyIndex} base={base}>{renderCopy(copy, !reduceMotion)}</FitText>
       <span aria-hidden className={CLOSE_SPACER} />
     </motion.div>
   );

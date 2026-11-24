@@ -2,8 +2,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Hero } from './components/Hero';
 import { Work } from './components/Work';
 import { About } from './components/About';
+import { Skills, Tools } from './components/Skills';
 import { WorkingWithMe } from './components/WorkingWithMe';
 import { Testimonials } from './components/Testimonials';
+import { Companies } from './components/Companies';
 import { Contact } from './components/Contact';
 import { LeftSidebar } from './components/LeftSidebar';
 import { TopNav } from './components/TopNav';
@@ -112,8 +114,10 @@ export default function App() {
     return (
       <div className="min-h-screen bg-canvas selection:bg-pastel-blue selection:text-ink relative font-sans text-ink">
         <CustomCursor />
-        <TopNav hideOnScroll onHome={() => goHome("top")} />
-        <ProjectViewer project={project} onBack={() => goHome("back")} />
+        <div className="page-zoom">
+          <TopNav hideOnScroll onHome={() => goHome("top")} />
+          <ProjectViewer project={project} onBack={() => goHome("back")} />
+        </div>
       </div>
     );
   }
@@ -125,6 +129,8 @@ export default function App() {
       {/* 3D Cartoon White Glove Custom Cursor matching Figma node 55:2552 */}
       <CustomCursor />
 
+      {/* Everything but the cursor is drawn at 90% on laptops and desktops (see .page-zoom in index.css) */}
+      <div className="page-zoom">
       {/* Top navigation with branding on left and Resume & Behance on right */}
       <TopNav />
 
@@ -150,16 +156,24 @@ export default function App() {
             {/* 3. 'bout me! */}
             <About />
 
+            {/* 3b. Skills + Tools I use */}
+            <Skills />
+            <Tools />
+
             {/* 4. Working with me */}
             {SHOW_WORKING_WITH_ME && <WorkingWithMe />}
 
             {/* 5. About me from others / Testimonials */}
             <Testimonials />
+
+            {/* 5b. Companies I've worked with */}
+            <Companies />
           </main>
 
           {/* 6. Work with me / Contact */}
           <Contact />
         </div>
+      </div>
       </div>
     </div>
   );

@@ -128,10 +128,10 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                 </motion.div>
 
                 <div className="flex flex-col gap-1.5">
-                  <h3 className="font-display text-xl font-semibold text-white">
+                  <h3 className="font-display t-title text-white">
                     Thank you for the feedback!
                   </h3>
-                  <p className="font-sans text-sm text-neutral-300 max-w-sm">
+                  <p className="font-sans t-body text-white/75 max-w-sm">
                     Your note has been recorded. Want to send it directly to Puru's inbox as well?
                   </p>
                 </div>
@@ -139,14 +139,14 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                 <div className="flex flex-col sm:flex-row gap-3 w-full mt-3">
                   <button
                     onClick={handleSendEmail}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-ink font-sans text-sm font-semibold hover:bg-neutral-100 transition-colors cursor-pointer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-ink font-sans t-ui font-semibold hover:bg-neutral-100 transition-colors cursor-pointer"
                   >
                     <Mail size={16} />
                     <span>Send via Email</span>
                   </button>
                   <button
                     onClick={handleResetAndClose}
-                    className="flex-1 px-5 py-3 rounded-xl bg-white/10 text-white font-sans text-sm font-medium hover:bg-white/15 transition-colors cursor-pointer"
+                    className="flex-1 px-5 py-3 rounded-xl bg-white/10 text-white font-sans t-ui hover:bg-white/15 transition-colors cursor-pointer"
                   >
                     Done
                   </button>
@@ -160,10 +160,10 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                     <MessageSquare size={18} />
                   </div>
                   <div>
-                    <h3 className="font-display text-lg sm:text-xl font-semibold text-white leading-tight">
+                    <h3 className="font-display t-title text-white">
                       Share Feedback
                     </h3>
-                    <p className="font-sans text-xs text-neutral-400">
+                    <p className="font-sans t-meta !font-normal text-white/55">
                       No signup needed. Your thoughts help refine every detail.
                     </p>
                   </div>
@@ -171,7 +171,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
 
                 {/* Category Pills */}
                 <div className="flex flex-col gap-2">
-                  <label className="font-sans text-xs font-medium text-neutral-300">
+                  <label className="font-sans t-meta text-white/75">
                     What are you sharing feedback on?
                   </label>
                   <div className="flex flex-wrap gap-2">
@@ -180,7 +180,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                         type="button"
                         key={cat}
                         onClick={() => setCategory(cat)}
-                        className={`text-xs font-medium px-3 py-1.5 rounded-full transition-colors cursor-pointer ${
+                        className={`t-meta px-3 py-1.5 rounded-full transition-colors cursor-pointer ${
                           category === cat
                             ? 'bg-[#2B7FFF] text-white shadow-xs'
                             : 'bg-white/5 text-neutral-300 hover:bg-white/10 border border-white/5'
@@ -194,7 +194,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
 
                 {/* Message Textarea */}
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-sans text-xs font-medium text-neutral-300">
+                  <label className="font-sans t-meta text-white/75">
                     Your Note <span className="text-red-400">*</span>
                   </label>
                   <textarea
@@ -203,14 +203,14 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Tell me what you liked, what felt confusing, or any creative suggestions…"
-                    className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] focus:ring-1 focus:ring-[#2B7FFF] transition-[border-color,box-shadow] resize-none"
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 t-body text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] focus:ring-1 focus:ring-[#2B7FFF] transition-[border-color,box-shadow] resize-none"
                   />
                 </div>
 
                 {/* Optional Sender Info */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1">
-                    <label className="font-sans text-xs font-medium text-neutral-400">
+                    <label className="font-sans t-meta text-white/55">
                       Your Name <span className="text-neutral-500 font-normal">(optional)</span>
                     </label>
                     <input
@@ -218,12 +218,12 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Alex Morgan"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] transition-[border-color]"
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 t-ui !font-normal text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] transition-[border-color]"
                     />
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <label className="font-sans text-xs font-medium text-neutral-400">
+                    <label className="font-sans t-meta text-white/55">
                       Your Email <span className="text-neutral-500 font-normal">(optional)</span>
                     </label>
                     <input
@@ -231,21 +231,21 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="alex@domain.com"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] transition-[border-color]"
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 t-ui !font-normal text-white placeholder-neutral-500 focus:outline-none focus:border-[#2B7FFF] transition-[border-color]"
                     />
                   </div>
                 </div>
 
                 {/* Submit Action */}
                 <div className="pt-2 flex items-center justify-between gap-3">
-                  <span className="font-sans text-xs text-neutral-400 flex items-center gap-1">
+                  <span className="font-sans t-caption !font-normal text-white/55 flex items-center gap-1">
                     <Sparkles size={12} className="text-[#2B7FFF]" />
                     Sent directly to Puru
                   </span>
                   <button
                     type="submit"
                     disabled={!message.trim()}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-ink hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed font-sans text-sm font-semibold transition-[background-color,opacity] cursor-pointer shadow-xs"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-ink hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed font-sans t-ui font-semibold transition-[background-color,opacity] cursor-pointer shadow-xs"
                   >
                     <span>Submit</span>
                     <Send size={14} />

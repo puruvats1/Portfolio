@@ -21,7 +21,7 @@ function LogoTip({ tip, children }: { tip: string; children: React.ReactNode }) 
       {children}
       <span
         role="tooltip"
-        className="pointer-events-none absolute left-1/2 bottom-full mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-[10px] bg-white border border-neutral-200/80 px-3 py-1.5 font-sans text-[13px] font-medium leading-none text-[#555552] shadow-[0_10px_24px_rgba(0,0,0,0.07),0_2px_6px_rgba(0,0,0,0.04)] opacity-0 transition-[opacity,translate] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100"
+        className="pointer-events-none absolute left-1/2 bottom-full mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-[10px] bg-white border border-neutral-200/80 px-3 py-1.5 font-sans t-caption !leading-none text-ink-muted shadow-[0_10px_24px_rgba(0,0,0,0.07),0_2px_6px_rgba(0,0,0,0.04)] opacity-0 transition-[opacity,translate] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100"
       >
         {tip}
       </span>
@@ -189,7 +189,7 @@ export function Hero() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center pt-24 sm:pt-28 pb-16 sm:pb-20 overflow-hidden sm:overflow-visible">
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center pt-24 sm:pt-28 pb-20 sm:pb-24 lg:pb-32 overflow-hidden sm:overflow-visible">
       <div ref={fitRef} className="hero-recede w-full my-auto flex flex-col justify-center items-center">
         <div className={`flex ${stacked ? 'flex-col gap-8' : 'flex-row'} items-center justify-center w-full max-w-6xl mx-auto overflow-visible`} style={stacked ? undefined : { gap: rowGap }}>
           
@@ -210,14 +210,14 @@ export function Hero() {
               {/* Narrative Subtitle & Previous Experience */}
               <div className={`flex flex-col gap-6 ${stacked ? 'items-center text-center' : 'pl-1 sm:pl-2'}`}>
                 {/* DM Sans Regular, prominent and legible supporting text */}
-                <motion.p {...intoView(enter(0))} className={`font-sans text-[15px] sm:text-[15.5px] text-[#555552] leading-[1.68] max-w-xl font-normal ${stacked ? 'mx-auto' : ''}`}>
+                <motion.p {...intoView(enter(0))} className={`font-sans t-body text-ink-body max-w-xl ${stacked ? 'mx-auto' : ''}`}>
                   B.Des ‘27 at IDC, IIT Bombay. I dig until I understand the problem, design until it feels obvious, and build until it actually works.
                 </motion.p>
 
                 {/* Previously At Logos */}
                 <motion.div {...intoView(enter(1))} className={`flex flex-wrap items-center gap-x-6 gap-y-3 pt-1 ${stacked ? 'justify-center' : ''}`}>
                   {/* Previously at - DM Sans Medium */}
-                  <span className="font-sans text-[13px] sm:text-[14px] md:text-[14.5px] leading-[18px] font-medium text-[#888884] shrink-0">
+                  <span className="font-sans t-meta text-ink-subtle shrink-0">
                     Previously at
                   </span>
 
@@ -388,7 +388,7 @@ export function Hero() {
               <motion.button
                 {...intoView(enter(2))}
                 onClick={scrollToWork}
-                className="inline-flex items-center gap-2.5 font-sans text-[13px] sm:text-[14px] leading-[18px] font-semibold text-[#666663] hover:text-[#111110] active:scale-[0.97] transition-[color,scale] duration-150 ease-out cursor-pointer group mt-2"
+                className="inline-flex items-center gap-2.5 font-sans t-meta font-semibold text-ink-muted hover:text-ink-strong active:scale-[0.97] transition-[color,scale] duration-150 ease-out cursor-pointer group mt-2"
               >
                 <span>know me through my work</span>
                 <img

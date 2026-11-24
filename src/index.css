@@ -19,6 +19,7 @@
   --color-ink-strong: #2C2C2A;   /* hover state of muted links */
   --color-ink-muted: #5A5A55;    /* secondary links and labels, 6.9:1 on white */
   --color-ink-subtle: #74746F;   /* tertiary text, 4.7:1 on white (was #8E8E89, 3.3:1) */
+  --color-ink-body: #40403E;     /* paragraphs */
 
   /* Accent: the clay blue family */
   --color-accent: #2B7FFF;        /* icons, highlights, filled chips */
@@ -123,6 +124,62 @@ body {
   padding: 0;
 }
 
+/* ========================================================
+   Type scale. Every piece of text on the site uses one of these seven roles, so sizes, line heights
+   and weights stay consistent. Sizes are px (they are not affected by the 80% root font size).
+   They live in the components layer, so a Tailwind utility on the same element (e.g. font-bold)
+   still wins when an exception is really needed.
+     t-display  section titles, project page title        26 / 30 / 36px · 1.15 · 600
+     t-title    project titles, testimonial phrases        20 / 22 / 24px · 1.25 · 600
+     t-lead     hero speech card, footer name              18px · 1.4 · 500
+     t-body     paragraphs, full testimonials              16px · 1.65 · 400
+     t-ui       tags, keys, buttons, links, nav            15px · 1.35 · 500
+     t-meta     categories, roles, labels, tool names      13.5px · 1.4 · 500
+     t-caption  tooltips and tiny hints (the smallest)     12.5px · 1.3 · 500
+   Text colours: ink (headings), ink-body (paragraphs), ink-muted (UI / meta), ink-subtle (captions).
+   ======================================================== */
+@layer components {
+  .t-display { font-size: 26px; line-height: 1.15; font-weight: 600; letter-spacing: -0.025em; }
+  .t-title   { font-size: 20px; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; }
+  .t-lead    { font-size: 18px; line-height: 1.4;  font-weight: 500; }
+  .t-body    { font-size: 16px; line-height: 1.65; font-weight: 400; }
+  .t-ui      { font-size: 15px; line-height: 1.35; font-weight: 500; }
+  .t-meta    { font-size: 13.5px; line-height: 1.4; font-weight: 500; }
+  .t-caption { font-size: 12.5px; line-height: 1.3; font-weight: 500; }
+  @media (min-width: 640px) {
+    .t-display { font-size: 30px; }
+    .t-title   { font-size: 22px; }
+  }
+  @media (min-width: 1024px) {
+    .t-display { font-size: 36px; }
+    .t-title   { font-size: 24px; }
+  }
+}
+
+/* ========================================================
+   Page scale: on laptops and desktops the whole page is drawn at 90%, the way it looks at 90% browser zoom.
+   Phones and tablets stay at 100% so body text stays readable. The custom cursor sits outside this wrapper
+   (it follows the mouse in real screen pixels). Inside it, full-screen heights are divided by the zoom so
+   they still fill the screen.
+   ======================================================== */
+:root {
+  --page-zoom: 1;
+}
+@media (min-width: 1024px) {
+  :root {
+    --page-zoom: 0.9;
+  }
+  .page-zoom {
+    zoom: var(--page-zoom);
+  }
+  .page-zoom .h-screen {
+    height: calc(100vh / var(--page-zoom));
+  }
+  .page-zoom .min-h-screen {
+    min-height: calc(100vh / var(--page-zoom));
+  }
+}
+
 /* Hide scrollbar for clean horizontal mobile dock while keeping touch scrolling functional */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -165,6 +222,11 @@ body {
   --clay-fill: linear-gradient(180deg, #fcdae2 0%, #facad5 20%, #f9b5c5 52%, #f9bfcc 82%, #fac7d3 100%);
   border-color: #fbcfd9;
 }
+/* neutral clay (skill keys): a near-flat matte fill, so it doesn't read as shiny metal */
+.btn-clay-grey, .pill-clay-grey {
+  --clay-fill: linear-gradient(180deg, #f6f6f4 0%, #f2f2f0 55%, #efefed 100%);
+  border-color: #e9e9e6;
+}
 
 :root {
   --clay-shadow-rest: 0px 10px 24px -2px rgba(88, 88, 150, 0.08),
@@ -178,16 +240,16 @@ body {
                         inset 0px -8px 12px rgba(255, 255, 255, 0.3);
 }
 
-:is(.btn-clay-blue, .btn-clay-yellow, .btn-clay-peach, .btn-clay-lime, .btn-clay-mint, .btn-clay-pink,
-    .pill-clay-blue, .pill-clay-yellow, .pill-clay-peach, .pill-clay-lime, .pill-clay-mint, .pill-clay-pink) {
+:is(.btn-clay-blue, .btn-clay-yellow, .btn-clay-peach, .btn-clay-lime, .btn-clay-mint, .btn-clay-pink, .btn-clay-grey,
+    .pill-clay-blue, .pill-clay-yellow, .pill-clay-peach, .pill-clay-lime, .pill-clay-mint, .pill-clay-pink, .pill-clay-grey) {
   background-image: var(--clay-fill);
   box-shadow: var(--clay-shadow-rest);
 }
 
 /* Hover lift only on devices that really hover, so a tap on a phone doesn't leave it stuck on */
 @media (hover: hover) and (pointer: fine) {
-  :is(.btn-clay-blue, .btn-clay-yellow, .btn-clay-peach, .btn-clay-lime, .btn-clay-mint, .btn-clay-pink,
-      .pill-clay-blue, .pill-clay-yellow, .pill-clay-peach, .pill-clay-lime, .pill-clay-mint, .pill-clay-pink):hover {
+  :is(.btn-clay-blue, .btn-clay-yellow, .btn-clay-peach, .btn-clay-lime, .btn-clay-mint, .btn-clay-pink, .btn-clay-grey,
+      .pill-clay-blue, .pill-clay-yellow, .pill-clay-peach, .pill-clay-lime, .pill-clay-mint, .pill-clay-pink, .pill-clay-grey):hover {
     box-shadow: var(--clay-shadow-raised);
   }
 }
@@ -276,12 +338,14 @@ body {
   .btn-clay-lime,
   .btn-clay-mint,
   .btn-clay-pink,
+  .btn-clay-grey,
   .pill-clay-yellow,
   .pill-clay-blue,
   .pill-clay-peach,
   .pill-clay-lime,
   .pill-clay-mint,
-  .pill-clay-pink {
+  .pill-clay-pink,
+  .pill-clay-grey {
     transition: box-shadow 0.4s var(--ease-out);
   }
 }
@@ -478,15 +542,121 @@ html[data-vt="reduced"]::view-transition-new(*) {
   .lift-card:hover { translate: none; } /* keep the shadow, drop the movement */
 }
 
-/* "puru." logo: the letters hop one after another when the logo is hovered (mouse only) */
+/* ========================================================
+   Skills keycaps: the same clay buttons as the nav, sized as keys.
+   ======================================================== */
+/* The fill, border and soft layered shadow come from the nav's clay classes
+   (btn-clay-lime / btn-clay-grey); this only sets the key's shape and type. */
+.keycap {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 15px 9px;
+  border-radius: 15px;
+  border-width: 1px;
+  border-style: solid;
+  font-family: var(--font-sans);
+  font-size: 15px; /* the t-ui size */
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.15px;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+@media (min-width: 640px) {
+  .keycap { padding: 9px 16px 10px; }
+}
+.keycap-lime { color: #3F6212; }
+.keycap-grey { color: #4A4A46; }
+/* A lighter shadow than the nav buttons: many keys side by side would otherwise read as a muddy haze.
+   Two classes, so these win over the shared clay shadow (same structure at rest and on hover, so it animates). */
+.keycap.btn-clay-lime,
+.keycap.btn-clay-grey {
+  box-shadow: 0px 3px 8px -2px rgba(88, 88, 150, 0.07),
+              0px 1px 2px rgba(88, 88, 150, 0.04),
+              inset 0px 1px 0px rgba(255, 255, 255, 0.6),
+              inset 0px -4px 8px rgba(255, 255, 255, 0.12);
+}
+@media (hover: hover) and (pointer: fine) {
+  .keycap.btn-clay-lime:hover,
+  .keycap.btn-clay-grey:hover {
+    box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.07),
+                0px 2px 4px rgba(0, 0, 0, 0.04),
+                inset 0px 1px 0px rgba(255, 255, 255, 0.7),
+                inset 0px -4px 8px rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Company logo wall: logos in their own colours, with a small lift on hover. Multiply drops the white
+   backgrounds some logo files carry, so they never show as boxes. */
+.company-logo {
+  mix-blend-mode: multiply;
+  transition: scale 300ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .company-logo:hover {
+    scale: 1.05;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .company-logo:hover { scale: none; }
+}
+
+/* Hero word retype: each newly typed letter fades and settles in, instead of popping */
+@keyframes type-in {
+  from { opacity: 0; translate: 0 0.08em; }
+  to { opacity: 1; translate: 0 0; }
+}
+.type-in {
+  display: inline-block;
+  white-space: pre; /* keeps the space in "best friends" */
+  animation: type-in 220ms var(--ease-out) both;
+}
+
+/* Tool app icons: a squircle tile with a soft clay highlight on top */
+.tool-tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 24%;
+  background: #FFFFFF;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 6px 14px -4px rgba(88, 88, 150, 0.18),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.tool-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.45), inset 0 -4px 8px rgba(0, 0, 0, 0.04);
+  pointer-events: none;
+}
+
+/* "puru." logo: the letters hop one after another when the mouse enters the logo. The hop is started from
+   JS (data-hop on .logo-wave), not :hover, so it always plays to the end even if the cursor leaves straight
+   away. "a"/"b" alternate on every entry (two identical keyframes) so each entry replays it. */
 @keyframes logo-hop {
   0% { transform: translateY(0); }
   40% { transform: translateY(-4px); }
   100% { transform: translateY(0); }
 }
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .logo-wave:hover .logo-char {
+@keyframes logo-hop-b {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .logo-wave[data-hop="a"] .logo-char {
     animation: logo-hop 420ms var(--ease-out) both;
+    animation-delay: calc(var(--i) * 45ms);
+  }
+  .logo-wave[data-hop="b"] .logo-char {
+    animation: logo-hop-b 420ms var(--ease-out) both;
     animation-delay: calc(var(--i) * 45ms);
   }
 }

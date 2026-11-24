@@ -1,4 +1,4 @@
-import { APPROVED_TESTIMONIALS_CSV_URL } from '../config';
+import { APPROVED_TESTIMONIALS_CSV_URL, TESTIMONIAL_ORDER } from '../config';
 import { parseCsv } from './csv';
 
 const LIMITS = { name: 60, role: 60, company: 60, quote: 600 } as const;
@@ -34,7 +34,13 @@ export async function fetchApprovedTestimonials(signal?: AbortSignal): Promise<A
         quote: quote.slice(0, LIMITS.quote),
       });
     });
-    return out;
+    // Pinned names first (TESTIMONIAL_ORDER), everyone else after in Sheet order (sort is stable)
+    const rank = (name: string) => {
+      const first = name.trim().split(/\s+/)[0].toLowerCase();
+      const i = TESTIMONIAL_ORDER.findIndex((n) => n.toLowerCase() === first);
+      return i < 0 ? TESTIMONIAL_ORDER.length : i;
+    };
+    return out.sort((a, b) => rank(a.name) - rank(b.name));
   } catch {
     return [];
   }

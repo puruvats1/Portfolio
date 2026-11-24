@@ -140,7 +140,7 @@ export function ProjectViewer({ project, onBack }: Props) {
     >
       <ArrowLeft className="w-4 h-4 stroke-[2.4] text-[#3F74E3]" />
       {!compact && (
-        <span className="font-sans font-bold text-[15.5px] leading-[21px] tracking-[-0.25px] lowercase bg-gradient-to-b from-[#1D4ED8] to-[#1E3A8A] bg-clip-text text-transparent">
+        <span className="font-sans t-ui font-bold lowercase bg-gradient-to-b from-[#1D4ED8] to-[#1E3A8A] bg-clip-text text-transparent">
           back
         </span>
       )}
@@ -186,8 +186,8 @@ export function ProjectViewer({ project, onBack }: Props) {
               type="button"
               onClick={() => jumpTo(m.panel)}
               aria-current={i === activeMilestone}
-              className={`relative isolate shrink-0 px-2.5 py-2 font-sans text-[12.5px] sm:text-[14px] cursor-pointer transition-colors duration-200 ${
-                i === activeMilestone ? 'text-ink font-semibold' : 'text-[#9B9B96] font-medium'
+              className={`relative isolate shrink-0 px-2.5 py-2 font-sans t-meta cursor-pointer transition-colors duration-200 ${
+                i === activeMilestone ? 'text-ink font-semibold' : 'text-ink-subtle font-medium'
               }`}
             >
               {i === activeMilestone && (
@@ -217,7 +217,7 @@ export function ProjectViewer({ project, onBack }: Props) {
               initial={{ opacity: 0, scale: 0.8, y: 6 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ type: 'spring', duration: 0.5, bounce: 0.35, delay: 0.3 + i * 0.05 }}
-              className="px-2.5 py-0.5 rounded-full bg-[#F3F2EE] text-[10.5px] sm:text-[11px] font-medium text-neutral-600 border border-neutral-200/60"
+              className="px-3 py-1 rounded-full bg-[#F3F2EE] t-ui text-ink-muted border border-neutral-200/60"
             >
               {tag}
             </motion.span>
@@ -230,7 +230,7 @@ export function ProjectViewer({ project, onBack }: Props) {
             animate={{ y: 0 }}
             transition={{ duration: 0.7, ease: EASE_OUT, delay: 0.18 }}
           >
-            <h1 className="font-display text-2xl sm:text-[28px] lg:text-[30px] font-semibold leading-tight tracking-tight heading-gradient">
+            <h1 className="font-display t-display heading-gradient">
               {project.title}
             </h1>
           </motion.div>
@@ -255,8 +255,8 @@ export function ProjectViewer({ project, onBack }: Props) {
                     onClick={() => jumpTo(m.panel)}
                     aria-current={isActive}
                     {...rise(0.35 + i * 0.05)}
-                    className={`relative text-left font-sans text-[14px] leading-none cursor-pointer select-none outline-none focus-visible:underline transition-colors duration-200 ${
-                      isActive ? 'text-ink font-semibold' : 'text-[#9B9B96] font-medium hover:text-[#60605D]'
+                    className={`relative text-left font-sans t-meta !leading-none cursor-pointer select-none outline-none focus-visible:underline transition-colors duration-200 ${
+                      isActive ? 'text-ink font-semibold' : 'text-ink-subtle font-medium hover:text-ink-muted'
                     }`}
                   >
                     {isActive && (
@@ -313,7 +313,7 @@ export function ProjectViewer({ project, onBack }: Props) {
       {suggestions.length > 0 && (
         <section className="mt-16 sm:mt-24 min-w-0 lg:col-start-2 lg:row-start-3" aria-label="More projects">
           <div className="mb-8 sm:mb-10 lg:mb-12">
-            <h2 className="font-display text-2xl sm:text-3xl lg:text-[32px] font-semibold leading-tight tracking-tight heading-gradient">More work</h2>
+            <h2 className="font-display t-display heading-gradient">More work</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 w-full">
             {suggestions.map((p, i) => (
@@ -343,7 +343,7 @@ export function ProjectViewer({ project, onBack }: Props) {
                     {p.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-0.5 rounded-full bg-[#F3F2EE] text-[10.5px] sm:text-[11px] font-medium text-neutral-600 border border-neutral-200/60"
+                        className="px-3 py-1 rounded-full bg-[#F3F2EE] t-ui text-ink-muted border border-neutral-200/60"
                       >
                         {tag}
                       </span>
@@ -351,12 +351,12 @@ export function ProjectViewer({ project, onBack }: Props) {
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="font-display text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-snug heading-gradient">
+                      <h3 className="font-display t-title heading-gradient">
                         {p.title}
                       </h3>
                       <ArrowUpRight className="w-6 h-6 stroke-[2.25] text-neutral-500 shrink-0 opacity-0 -translate-x-3 translate-y-3 scale-75 transition-[opacity,translate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100" />
                     </div>
-                    <div className="text-[13.5px] sm:text-[14px] text-neutral-500 font-medium">
+                    <div className="t-ui text-ink-subtle">
                       <span>{p.category}</span>
                     </div>
                   </div>
@@ -439,7 +439,7 @@ export function ProjectViewer({ project, onBack }: Props) {
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="min-w-[72px] text-center font-sans text-[14px] font-medium text-white/80 tabular-nums select-none">
+              <div className="min-w-[72px] text-center font-sans t-meta text-white/80 tabular-nums select-none">
                 {viewing} / {project.panelCount}
               </div>
               <button

@@ -1,5 +1,20 @@
 # Testimonials: setup (one-time, ~10 minutes)
 
+---
+
+## Index
+
+1. [Create the form](#1-create-the-form)
+2. [Point the site at the form](#2-point-the-site-at-the-form)
+3. [Add the approval checkbox](#3-add-the-approval-checkbox)
+4. [Create the Published tab](#4-create-the-published-tab)
+5. [Publish only that tab](#5-publish-only-that-tab)
+6. [Deploy](#6-deploy)
+7. [Day to day](#day-to-day)
+8. [If a submission seems to be missing](#if-a-submission-seems-to-be-missing)
+
+---
+
 How it works
 
 1. A visitor clicks **Leave a testimonial** on the site. It opens **your Google Form** in a new tab and
