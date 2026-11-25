@@ -58,7 +58,11 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
     const body = encodeURIComponent(
       `Category: ${category}\nFrom: ${name.trim() || 'Anonymous'} (${email.trim() || 'No email'})\n\nFeedback:\n${message}`
     );
-    window.location.href = `mailto:hello.puruvats@gmail.com?subject=${subject}&body=${body}`;
+    window.open(
+      `https://mail.google.com/mail/?view=cm&fs=1&to=hello.puruvats@gmail.com&su=${subject}&body=${body}`,
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
 
   const handleResetAndClose = () => {

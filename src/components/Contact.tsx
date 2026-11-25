@@ -60,7 +60,9 @@ export function Contact() {
                   {...pop()}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  href="mailto:hello.puruvats@gmail.com" 
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=hello.puruvats@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors t-ui text-white"
                 >
                   <div className="flex items-center gap-2">
