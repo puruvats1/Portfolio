@@ -148,13 +148,13 @@ export function TopNav({ hideOnScroll = false, onHome }: { hideOnScroll?: boolea
               ))}
             </span>
 
-            {/* Interaction Design Student @ IDC IIT Bombay - same size as body text */}
+            {/* Interaction Design @ IDC IIT Bombay - same size as body text */}
             <span
               className={`font-sans t-ui !font-normal hidden md:inline ${
                 isDark ? 'text-neutral-400' : 'text-ink-subtle'
               }`}
             >
-              Interaction Design Student @ IDC IIT Bombay
+              Interaction Design @ IDC IIT Bombay
             </span>
           </button>
         </div>
