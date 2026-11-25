@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ArrowUp, ArrowUpRight, Mail, ExternalLink, FileText, MessageSquareQuote } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ArrowUp, ArrowUpRight, Check, Copy, Mail, ExternalLink, FileText, MessageSquareQuote } from 'lucide-react';
 import { motion } from 'motion/react';
 import { EASE_OUT } from "../lib/motion";
 import { ScrollRevealTitle } from './ScrollRevealTitle';
@@ -8,6 +8,28 @@ import { FeedbackModal } from './FeedbackModal';
 
 export function Contact() {
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  const copyEmail = async () => {
+    const address = 'hello.puruvats@gmail.com';
+    try {
+      await navigator.clipboard.writeText(address);
+    } catch {
+      // clipboard API unavailable (older browsers / insecure context): fall back to a hidden textarea
+      const ta = document.createElement('textarea');
+      ta.value = address;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    setCopied(true);
+    clearTimeout(copyTimer.current);
+    copyTimer.current = setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <footer
@@ -55,22 +77,22 @@ export function Contact() {
               </div>
 
               <div className="flex flex-wrap gap-2.5 sm:gap-3">
-                {/* Email Link */}
-                <motion.a 
+                {/* Email: copies the address to the clipboard */}
+                <motion.button
                   {...pop()}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=hello.puruvats@gmail.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors t-ui text-white"
+                  type="button"
+                  onClick={copyEmail}
+                  aria-label={copied ? 'Email address copied' : 'Copy email address'}
+                  className="group flex items-center justify-between gap-2.5 px-4 sm:px-5 py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-colors t-ui text-white cursor-pointer"
                 >
                   <div className="flex items-center gap-2">
                     <Mail size={15} />
-                    <span>Email</span>
+                    <span aria-live="polite">{copied ? 'Copied' : 'Email'}</span>
                   </div>
-                  <ArrowUpRight size={15} className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </motion.a>
+                  {copied ? <Check size={15} /> : <Copy size={15} />}
+                </motion.button>
 
                 {/* LinkedIn Link */}
                 <motion.a 
